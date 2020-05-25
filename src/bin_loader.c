@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+//Comment to test branching 
+
 //debugging
 void printBits(uint32_t x){
  uint32_t mask = 1 << 31;
