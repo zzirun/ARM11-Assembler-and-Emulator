@@ -17,4 +17,4 @@ add_executable(arm11_17
         src/bin_loader.c
         src/decode.c
         src/emulate.c
-        src/types.h)
+        src/types.h src/execute.c)

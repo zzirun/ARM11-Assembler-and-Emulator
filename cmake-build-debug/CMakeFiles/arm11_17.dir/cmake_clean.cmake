@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/arm11_17.dir/src/bin_loader.c.o"
   "CMakeFiles/arm11_17.dir/src/decode.c.o"
   "CMakeFiles/arm11_17.dir/src/emulate.c.o"
+  "CMakeFiles/arm11_17.dir/src/execute.c.o"
   "CMakeFiles/arm11_17.dir/src/instructions/branch.c.o"
   "CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o"
   "CMakeFiles/arm11_17.dir/src/instructions/halt.c.o"

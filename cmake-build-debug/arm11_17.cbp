@@ -94,6 +94,9 @@
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/emulate.c">
 			<Option target="arm11_17"/>
 		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/execute.c">
+			<Option target="arm11_17"/>
+		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/branch.c">
 			<Option target="arm11_17"/>
 		</Unit>

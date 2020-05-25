@@ -231,6 +231,33 @@ src/emulate.c.s:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/emulate.c.s
 .PHONY : src/emulate.c.s
 
+src/execute.o: src/execute.c.o
+
+.PHONY : src/execute.o
+
+# target to build an object file
+src/execute.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/execute.c.o
+.PHONY : src/execute.c.o
+
+src/execute.i: src/execute.c.i
+
+.PHONY : src/execute.i
+
+# target to preprocess a source file
+src/execute.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/execute.c.i
+.PHONY : src/execute.c.i
+
+src/execute.s: src/execute.c.s
+
+.PHONY : src/execute.s
+
+# target to generate assembly for a file
+src/execute.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/execute.c.s
+.PHONY : src/execute.c.s
+
 src/instructions/branch.o: src/instructions/branch.c.o
 
 .PHONY : src/instructions/branch.o
@@ -387,6 +414,9 @@ help:
 	@echo "... src/emulate.o"
 	@echo "... src/emulate.i"
 	@echo "... src/emulate.s"
+	@echo "... src/execute.o"
+	@echo "... src/execute.i"
+	@echo "... src/execute.s"
 	@echo "... src/instructions/branch.o"
 	@echo "... src/instructions/branch.i"
 	@echo "... src/instructions/branch.s"
