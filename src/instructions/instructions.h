@@ -34,6 +34,6 @@ typedef struct {
     // A only in M
     bool A;
 
-};
+} instruction_type;
 
 #endif //ARM11_17_INSTRUCTIONS_H
