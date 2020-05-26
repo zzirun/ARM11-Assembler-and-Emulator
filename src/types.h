@@ -2,6 +2,7 @@
 // Created by Ivy Tam on 25/05/2020.
 //
 #include <stdint.h>
+#include "instructions/instructions.h"
 #ifndef ARM11_17_TYPES_H
 #define ARM11_17_TYPES_H
 
@@ -13,26 +14,25 @@ enum inst_type{
     HALT
 };
 
-typedef uint32_t Register;
+typedef uint32_t register;
 // type alias for a 32-bit register value
-typedef struct Registers{
-    Register regs[13];
-    Register pc;
-    Register cpsr;
+typedef struct {
+    register regs[13];
+    register pc;
+    register cpsr;
     /* Regs 0-12 are general registers
      * There are actually 17 registers, register 13(SP) and 14 (LR) are ignored
        ignored for this exercise */
-};
+} registers;
 
 typedef int8_t memory[65536];
 
-typedef struct MachineState{
-  inst_type typeToExecute;
-  uint32_t instrToExecute;
+typedef struct {
+  instruction_type *instrToExecute;
   uint32_t instrToDecode;
   uint32_t instrFetched;
-  Registers registers;
+  registers registers;
   memory memory;
-}
+} machine_state;
 
 #endif //ARM11_17_TYPES_H
