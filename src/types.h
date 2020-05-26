@@ -16,9 +16,9 @@
 */
 
 typedef struct registers{
-    uint32_t gpr[13];
-    uint32_t PC;
-    uint32_t CPSR;
+  uint32_t gpr[13];
+  uint32_t PC;
+  uint32_t CPSR;
 } registers;
 
 // 4 CPSR Flags : 31 - 28 : NZCV
@@ -29,11 +29,15 @@ enum cpsrFlags {
   N = 8;
 }
 
+typedef struct memory {
+  uint8_t address[65536];
+} memory;
+
 typedef struct machine_state {
-  bool fetched;
   uint32_t instrFetched;
   uint32_t instrToDecode;
   decoded_inst instrToExecute;
+  bool fetched;
 } machine_state;
 
 

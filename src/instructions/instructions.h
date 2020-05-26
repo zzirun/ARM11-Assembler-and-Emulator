@@ -22,8 +22,11 @@ typedef enum inst_type{
 typedef struct decoded_inst {
     inst_type type;
 
-    //used for I, operand2, offset
-    uint32_t operand_offset;
+    //used for branch offset
+    int32_t branch_offset;
+
+    //used for data processing and single data transfer
+    uint16_t operand_offset;
 
     uint8_t cond;
 
