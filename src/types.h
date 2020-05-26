@@ -28,11 +28,13 @@ typedef struct {
 typedef int8_t memory[65536];
 
 typedef struct {
-  instruction_type *instrToExecute;
-  uint32_t instrToDecode;
-  uint32_t instrFetched;
-  registers registers;
-  memory memory;
+    instruction_type *instrToExecute;
+    uint32_t instrToDecode;
+    uint32_t instrFetched;
+    bool fetch;
+    registers registers;
+    memory memory;
 } machine_state;
+
 
 #endif //ARM11_17_TYPES_H
