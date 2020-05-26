@@ -20,8 +20,8 @@ void mult(machine_state* ms, registers* regs){
 
     //Update flags if S bit is set
     if(instr.S == 1){
-        // clear the CPSR
-        uint32_t newCPSR = 0;
+        // extract the top 4 bits of the CPSR
+        uint32_t newCPSR = (regs->CPSR) >> 28 ;
         //set Z using mask
         if(result == 0){
             newCPSR |= 0x4 ;
