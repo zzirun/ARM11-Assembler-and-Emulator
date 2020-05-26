@@ -3,37 +3,28 @@
 //
 #include <stdint.h>
 #include "instructions/instructions.h"
+
 #ifndef ARM11_17_TYPES_H
 #define ARM11_17_TYPES_H
 
-enum inst_type{
-    DATA_PROC,
-    MULT,
-    DATA_TRANS,
-    BRANCH,
-    HALT
-};
+/*
+  Each register is 32 bits.
+  Regs 0-12 are general purpose registers (gpr).
+  There are actually 17 registers, register 13(SP) and 14 (LR) are ignored
+  ignored for this exercise.
+*/
 
-typedef uint32_t register;
-// type alias for a 32-bit register value
-typedef struct {
-    register regs[13];
-    register pc;
-    register cpsr;
-    /* Regs 0-12 are general registers
-     * There are actually 17 registers, register 13(SP) and 14 (LR) are ignored
-       ignored for this exercise */
+typedef struct registers{
+    uint32_t gpr[13];
+    uint32_t PC;
+    uint32_t CPSR;
 } registers;
 
-typedef int8_t memory[65536];
 
-typedef struct {
-    instruction_type *instrToExecute;
-    uint32_t instrToDecode;
-    uint32_t instrFetched;
-    bool fetch;
-    registers registers;
-    memory memory;
+typedef struct machine_state {
+  uint32_t instrFetched;
+  uint32_t instrToDecode;
+  decoded_inst instrToExecute;
 } machine_state;
 
 

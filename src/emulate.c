@@ -1,23 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <math.h>
 #include "utils.h"
-
-//dp is data processing, sdt is single data transfer
-typedef enum instruction_set {dp, mult, sdt, branch} instruction_set;
-
-char* enumStrings[4] = {"dp", "mult", "sdt", "branch"};
-
-typedef struct registers {
-  uint32_t rBase[13];
-  uint32_t PC;
-  uint32_t CPSR;
-} reg;
+#include "types.h"
+#include "decode.h"
 
 /*
   Refer to spec
-*/
 instruction_set decode(uint32_t i) {
   if (extractBits(i, 26, 26) == 1) {
     return sdt;
@@ -29,6 +18,7 @@ instruction_set decode(uint32_t i) {
     return dp;
   }
 }
+*/
 
 void binLoad(FILE* fp, uint8_t* array) {
 
@@ -51,10 +41,10 @@ void binLoad(FILE* fp, uint8_t* array) {
 }
 
 //Output at termination
-void output(reg rs, uint8_t* ptr) {
+void output(registers rs, uint8_t* ptr) {
   printf("Registers:\n");
   for (int i = 0; i < 13; i++) {
-    printf("$%-3d:          %d (0x%08x)\n", i, *(rs.rBase+i), *(rs.rBase+i));
+    printf("$%-3d:          %d (0x%08x)\n", i, *(rs.gpr+i), *(rs.gpr+i));
   }
   printf("PC  :          %d (0x%08x)\n", rs.PC, rs.PC);
   printf("CPSR:          %d (0x%08x)\n", rs.CPSR, rs.CPSR);
@@ -77,8 +67,11 @@ int main(int argc, char **argv) {
   binLoad(fp, memory);
   fclose(fp);
 
-  reg* rs = (reg*) calloc(15, 4);
+  registers* rs = (registers*) calloc(15, 4);
   output(*rs, memory);
+
+  machine_state* ms = (machine_state*) calloc(28, 1);
+  decode(buildInstruction(&memory[4]), ms);
 
   return EXIT_SUCCESS;
 }
