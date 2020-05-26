@@ -54,6 +54,9 @@ typedef struct decoded_inst {
     // A only in M
     bool A;
 
+    //shift amount used in SDT
+    uint8_t shift_amt;
+
 } decoded_inst;
 
 // instr condition codes
