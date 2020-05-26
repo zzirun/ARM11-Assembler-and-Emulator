@@ -21,7 +21,7 @@ void decode(uint32_t inst, machine_state* ms) {
     result.operand_offset = extractBits(inst, 0, 11);
   } else if (extractBits(inst, 27, 27) == 1) {
     result.type = BRANCH;
-    result.operand_offset = extractBits(inst, 0, 23);
+    result.branch_offset = extractBits(inst, 0, 23);
   } else if (extractBits(inst, 4, 7) == 9) { //9 in binary is 1001
     result.type = MULT;
     result.A = extractBits(inst, 21, 21);
