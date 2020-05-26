@@ -14,7 +14,9 @@ add_executable(arm11_17
         src/instructions/multiply.c
         src/instructions/single_data_transfer.c
         src/assemble.c
-        src/bin_loader.c
         src/decode.c
         src/emulate.c
-        src/types.h src/execute.c)
+        src/execute.c
+        src/types.h
+        src/utils.c
+        src/utils.h)

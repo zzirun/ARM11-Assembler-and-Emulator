@@ -5,7 +5,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/Users/zirun/Documents/arm11_17/src/assemble.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assemble.c.o"
-  "/Users/zirun/Documents/arm11_17/src/bin_loader.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/bin_loader.c.o"
   "/Users/zirun/Documents/arm11_17/src/decode.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/decode.c.o"
   "/Users/zirun/Documents/arm11_17/src/emulate.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/emulate.c.o"
   "/Users/zirun/Documents/arm11_17/src/execute.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/execute.c.o"
@@ -14,6 +13,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/zirun/Documents/arm11_17/src/instructions/halt.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/instructions/halt.c.o"
   "/Users/zirun/Documents/arm11_17/src/instructions/multiply.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o"
   "/Users/zirun/Documents/arm11_17/src/instructions/single_data_transfer.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o"
+  "/Users/zirun/Documents/arm11_17/src/utils.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/utils.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 
