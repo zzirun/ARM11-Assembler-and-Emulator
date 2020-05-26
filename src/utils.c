@@ -28,6 +28,7 @@ void printBits(uint32_t x) {
   printf("\n");
 }
 
+//Builds 32 bit instructions according to little endian format
 uint32_t buildInstruction(uint8_t* ptr) {
   uint32_t result = 0;
   for (int i = 0; i < 4; i++) {
@@ -36,6 +37,7 @@ uint32_t buildInstruction(uint8_t* ptr) {
   return result;
 }
 
+//Builds 32 bit non zero value according to little endian format
 uint32_t buildNonZeroValue(uint8_t* ptr) {
   uint32_t result = 0;
   for (int i = 0; i < 4; i++) {
