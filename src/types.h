@@ -16,6 +16,8 @@ enum inst_type{
     HALT
 };
 
+
+
 typedef uint32_t Register;
 // type alias for a 32-bit register value
 typedef struct Registers{
