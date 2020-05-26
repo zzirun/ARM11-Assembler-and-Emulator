@@ -31,6 +31,7 @@ typedef struct {
   instruction_type *instrToExecute;
   uint32_t instrToDecode;
   uint32_t instrFetched;
+  bool fetch;
   registers registers;
   memory memory;
 } machine_state;
