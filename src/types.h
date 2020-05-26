@@ -2,6 +2,7 @@
 // Created by Ivy Tam on 25/05/2020.
 //
 #include <stdint.h>
+#include <stdbool.h>
 #include "instructions/instructions.h"
 
 #ifndef ARM11_17_TYPES_H
@@ -22,6 +23,7 @@ typedef struct registers{
 
 
 typedef struct machine_state {
+  bool fetched;
   uint32_t instrFetched;
   uint32_t instrToDecode;
   decoded_inst instrToExecute;
