@@ -1,7 +1,6 @@
 #include "instructions.h"
 #include <stdbool.h>
 #include "../types.h"
-#include "../utils.h"
 
 /* dp instr format : bits : field : var
   31 - 28 : condition code          : uint8_t cond
@@ -15,26 +14,6 @@
 */
 
 void dataProc(machine_state *ms, registers *regs) {
-
-  // check cond with most significant 4 bits of CPSR (NZCV)
-  uint8_t cc = ms -> instrToExecute.cond;
-  uint32_t cpsrMSFour = (regs -> CPSR) >> 28
-  switch (cc) {
-    case EQ:
-      return cpsrMSFour & Z;
-    case NE:
-      return !(cpsrMSFour & Z);
-    case GE:
-      return cpsrMSFour & 
-    case LT:
-    case GT:
-    case LE:
-    case AL:
-  }
-
-
-
-  // cond check
 
   int32_t op1 = regs -> gpr[Rn];
   int32_t op2;
