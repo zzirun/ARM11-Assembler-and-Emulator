@@ -53,4 +53,15 @@ typedef struct decoded_inst {
 
 } decoded_inst;
 
+// instr condition codes
+enum cc {
+  EQ = 0,   // check Z = 1
+  NE = 1,   // check Z = 0
+  GE = 10,  // check N == V
+  LT = 11,  // check N != V
+  GT = 12,  // check Z == 0 && N == V
+  LE = 13,  // check Z == 1 || N != V
+  AL = 14   // any
+};
+
 #endif //ARM11_17_INSTRUCTIONS_H

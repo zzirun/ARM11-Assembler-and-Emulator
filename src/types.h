@@ -21,6 +21,13 @@ typedef struct registers{
     uint32_t CPSR;
 } registers;
 
+// 4 CPSR Flags : 31 - 28 : NZCV
+enum cpsrFlags {
+  V = 1;
+  C = 2;
+  Z = 4;
+  N = 8;
+}
 
 typedef struct machine_state {
   bool fetched;
