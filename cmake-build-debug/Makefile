@@ -150,33 +150,6 @@ src/assemble.c.s:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assemble.c.s
 .PHONY : src/assemble.c.s
 
-src/bin_loader.o: src/bin_loader.c.o
-
-.PHONY : src/bin_loader.o
-
-# target to build an object file
-src/bin_loader.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/bin_loader.c.o
-.PHONY : src/bin_loader.c.o
-
-src/bin_loader.i: src/bin_loader.c.i
-
-.PHONY : src/bin_loader.i
-
-# target to preprocess a source file
-src/bin_loader.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/bin_loader.c.i
-.PHONY : src/bin_loader.c.i
-
-src/bin_loader.s: src/bin_loader.c.s
-
-.PHONY : src/bin_loader.s
-
-# target to generate assembly for a file
-src/bin_loader.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/bin_loader.c.s
-.PHONY : src/bin_loader.c.s
-
 src/decode.o: src/decode.c.o
 
 .PHONY : src/decode.o
@@ -393,6 +366,33 @@ src/instructions/single_data_transfer.c.s:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.s
 .PHONY : src/instructions/single_data_transfer.c.s
 
+src/utils.o: src/utils.c.o
+
+.PHONY : src/utils.o
+
+# target to build an object file
+src/utils.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/utils.c.o
+.PHONY : src/utils.c.o
+
+src/utils.i: src/utils.c.i
+
+.PHONY : src/utils.i
+
+# target to preprocess a source file
+src/utils.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/utils.c.i
+.PHONY : src/utils.c.i
+
+src/utils.s: src/utils.c.s
+
+.PHONY : src/utils.s
+
+# target to generate assembly for a file
+src/utils.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/utils.c.s
+.PHONY : src/utils.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -405,9 +405,6 @@ help:
 	@echo "... src/assemble.o"
 	@echo "... src/assemble.i"
 	@echo "... src/assemble.s"
-	@echo "... src/bin_loader.o"
-	@echo "... src/bin_loader.i"
-	@echo "... src/bin_loader.s"
 	@echo "... src/decode.o"
 	@echo "... src/decode.i"
 	@echo "... src/decode.s"
@@ -432,6 +429,9 @@ help:
 	@echo "... src/instructions/single_data_transfer.o"
 	@echo "... src/instructions/single_data_transfer.i"
 	@echo "... src/instructions/single_data_transfer.s"
+	@echo "... src/utils.o"
+	@echo "... src/utils.i"
+	@echo "... src/utils.s"
 .PHONY : help
 
 

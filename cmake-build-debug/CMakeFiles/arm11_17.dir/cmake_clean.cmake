@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/arm11_17.dir/src/assemble.c.o"
-  "CMakeFiles/arm11_17.dir/src/bin_loader.c.o"
   "CMakeFiles/arm11_17.dir/src/decode.c.o"
   "CMakeFiles/arm11_17.dir/src/emulate.c.o"
   "CMakeFiles/arm11_17.dir/src/execute.c.o"
@@ -9,6 +8,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/arm11_17.dir/src/instructions/halt.c.o"
   "CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o"
   "CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o"
+  "CMakeFiles/arm11_17.dir/src/utils.c.o"
   "arm11_17"
   "arm11_17.pdb"
 )

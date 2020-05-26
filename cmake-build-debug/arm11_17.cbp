@@ -85,9 +85,6 @@
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/assemble.c">
 			<Option target="arm11_17"/>
 		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/bin_loader.c">
-			<Option target="arm11_17"/>
-		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/decode.c">
 			<Option target="arm11_17"/>
 		</Unit>
@@ -116,6 +113,12 @@
 			<Option target="arm11_17"/>
 		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/types.h">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/utils.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/utils.h">
 			<Option target="arm11_17"/>
 		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/CMakeLists.txt">
