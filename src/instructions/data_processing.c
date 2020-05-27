@@ -84,12 +84,12 @@ void dataProc(machine_state *ms, registers *regs) {
     - V unaffected
     - C set :
       logical op (AND, EOR, ORR, TEQ, TST, MOV) : shifter carry
-      arithmetic op (ADD, SUB, RSB, CMP) : ALU bit 31's carry
+      arithmetic op (ADD, SUB, RSB, CMP) : ALU carry
     - Z set only if result all 0s
     - N set to logical bit 31 of result
     */
     uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31);
-    regs -> CPSR = regs -> CPSR & 0x8FFFFFFF | (flagsNew << 28);
+    regs -> CPSR = regs -> CPSR & 0x1FFFFFFF | (flagsNew << 29);
 
   }
 
