@@ -3,17 +3,18 @@
 #include "instructions.h"
 #include "types.h"
 #include "utils.c"
+#include "operandExtraction.h"
 
 void data_processing(machine_state *machine, registers *r, memory mem) {
     decoded_inst inst = machine->instrToExecute;
     uint32_t address;
     uint32_t offset;
-
-
+    
     if (inst.I) {
         // immediate flag is set, offset interpreted as
         // shifted register
-
+        bool carry;
+        offset = regExtract(inst.operand_offset, r, &carry);
     } else {
         // immediate flag not set, offset interpreted as
         // an unsigned 12 bit immediate offset
@@ -43,9 +44,6 @@ void data_processing(machine_state *machine, registers *r, memory mem) {
         // L bit is not set, word is stored into memory
         store_word(address, mem, r->gpr[inst.Rd]);
     }
-
-
-
 
 
 
