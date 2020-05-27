@@ -45,3 +45,33 @@ uint32_t buildNonZeroValue(uint8_t* ptr) {
   }
   return result;
 }
+
+//Shifter: returns shifted operand and updates carry
+//param: shiftT(ype), op(erand), shift(amount), *carry
+uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
+  // carry always last discarded/rotated bit
+  if (shiftT == LSL) {
+    // logical shift left
+    *carry = extractBits(op, 32 - shift, 32 - shift);
+    return op << shift;
+  }
+  *carry = extractBits(op, shift - 1, shift - 1);
+  switch (shiftT) {
+    case LSR:
+      // logical shift right
+      return op >> shift;
+    case ASR:
+      // arithmetic shift right
+      uint32_t mask = 0;
+      if (extractBits(op, 31, 31)) {
+        mask = (pow(2, shift) - 1) << (32 - shift);
+      }
+      return (op >> shift) | mask;
+    case ROR:
+      // rotate right
+      uint32_t mask = extractBits(op, 0, shift - 1) << (32 - shift);
+      return (op >> shift) | mask;
+    default:
+      fprintf(stderr, "Invalid Shift Instruction");
+  }
+}

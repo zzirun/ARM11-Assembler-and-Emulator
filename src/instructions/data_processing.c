@@ -15,19 +15,23 @@
 
 void dataProc(machine_state *ms, registers *regs) {
 
-  int32_t op1 = regs -> gpr[Rn];
-  int32_t op2;
-  int32_t result;
+  uint32_t op1 = regs -> gpr[Rn];
+  uint32_t op2;
+  uint32_t result;
   uint8_t opcode = ms -> instrToExecute.operation_code;
+  bool carry;
 
   // assign second operand
   if (ms -> instrToExecute.I) {
     // rotated 8-bit Imm
+    op2 = immExtract(ms -> instrToExecute.operand_offset, &carry);
   } else {
     //shifted reg
+    op2 = regExtract(ms -> instrToExecute.operand_offset, regs, &carry);
   }
 
   // arithmetic/logic operation based on opcode
+  // alter carry for arithmetic op (ADD, SUB, CMP, RSB)
   switch (opcode) {
     case AND:
     case TST:
@@ -40,12 +44,18 @@ void dataProc(machine_state *ms, registers *regs) {
     case SUB:
     case CMP:
       result = op1 - op2;
+      // set carry if no borrow
+      carry = op1 < op2 ? 0 : 1;
       break;
     case RSB:
       result = op2 - op1;
+      // set carry if no borrow
+      carry = op2 < op1 ? 0 : 1;
       break;
     case ADD:
       result = op1 + op2;
+      // set carry if unsigned overflow
+      carry = result < op1 ? 1 : 0;
       break;
     case ORR:
       result = op1 | op2;
@@ -77,6 +87,9 @@ void dataProc(machine_state *ms, registers *regs) {
     - Z set only if result all 0s
     - N set to logical bit 31 of result
     */
+    uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31)
+    regs -> CPSR = regs -> CPSR & 0x8FFFFFFF | (flagsNew << 28)
+
   }
 
 }

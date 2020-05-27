@@ -6,4 +6,15 @@ void printBits(uint32_t x);
 uint32_t buildInstruction(uint8_t* ptr);
 uint32_t buildNonZeroValue(uint8_t* ptr);
 
+// shifter
+enum shiftType {
+  LSL, // logical L
+  LSR, // logical R
+  ASR, // arithmetic R
+  ROR  // rotate R
+};
+uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry);
+
+
+
 #endif
