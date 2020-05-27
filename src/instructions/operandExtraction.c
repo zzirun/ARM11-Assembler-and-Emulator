@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "../utils.h"
+#include "../types.h"
 #include "operandExtraction.h"
 
 /* returns operand2 for DP, offset for SDT */
@@ -27,7 +28,7 @@ uint32_t regExtract(uint16_t op, registers *regs, bool *carry) {
   // check bit 4 to assign shift amount
   if (extractBits(op, 4, 4)) {
     // shift by register value
-    shift = regs -> gpr[extractBits(op, 8, 11)]
+    shift = regs -> gpr[extractBits(op, 8, 11)];
   } else {
     // shift by constant
     shift = extractBits(op, 7, 11);

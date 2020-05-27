@@ -1,6 +1,7 @@
 #include "instructions.h"
 #include <stdbool.h>
 #include "../types.h"
+#include "instructions.h"
 
 /* dp instr format : bits : field : var
   31 - 28 : condition code          : uint8_t cond
@@ -15,7 +16,7 @@
 
 void dataProc(machine_state *ms, registers *regs) {
 
-  uint32_t op1 = regs -> gpr[Rn];
+  uint32_t op1 = regs -> gpr[ms -> instrToExecute.Rn];
   uint32_t op2;
   uint32_t result;
   uint8_t opcode = ms -> instrToExecute.operation_code;
@@ -87,8 +88,8 @@ void dataProc(machine_state *ms, registers *regs) {
     - Z set only if result all 0s
     - N set to logical bit 31 of result
     */
-    uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31)
-    regs -> CPSR = regs -> CPSR & 0x8FFFFFFF | (flagsNew << 28)
+    uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31);
+    regs -> CPSR = regs -> CPSR & 0x8FFFFFFF | (flagsNew << 28);
 
   }
 
