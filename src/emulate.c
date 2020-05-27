@@ -26,9 +26,8 @@ void binLoad(FILE* fp, uint8_t* array) {
 
   uint8_t* ptr = array; //Helper pointer to store instructions into array
 
-  while (!feof(fp)) {
-    int i  = fread(ptr, 1, 1, fp);
-    read += i;
+  while (fread(ptr, 1, 1, fp) == 1) {
+    read++;
     ptr++;
   }
 
@@ -53,25 +52,27 @@ void output(registers rs, uint8_t* ptr) {
 }
 
 int main(int argc, char **argv) {
-  //Memory of ARM emulator has 64KB, initialised to all zero
-  uint8_t memory[65536] = {0};
+  /*
+  Machine state when turned on is zero
+  15 registers initialised to zero
+  Memory of ARM emulator has 64KB, initialised to zero
+  */
+  machine_state* ms = (machine_state*) calloc(28, 1);
+  registers* rs = (registers*) calloc(15, 4);
+  memory* mem = (memory*) calloc(65536, 1);
 
   FILE* fp = fopen(argv[1], "r"); //Opens file, argv[1] to skip space character
   /*
-  //Unused now but may be useful later?
+    //Unused now but may be useful later?
   fseek(fp, 0, SEEK_END); //Navigates to end of file to get size
   long filesize = ftell(fp); //size of file
   int arraysize = filesize / 4; //Size of instructionsArray
   rewind(fp); // Returns to beginning of file
   */
-  binLoad(fp, memory);
+  binLoad(fp, mem->address);
   fclose(fp);
 
-  registers* rs = (registers*) calloc(15, 4);
-  output(*rs, memory);
-
-  machine_state* ms = (machine_state*) calloc(28, 1);
-  decode(buildInstruction(&memory[4]), ms);
+  output(*rs, mem->address);
 
   return EXIT_SUCCESS;
 }
