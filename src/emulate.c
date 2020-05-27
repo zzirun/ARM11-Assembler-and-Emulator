@@ -26,9 +26,8 @@ void binLoad(FILE* fp, uint8_t* array) {
 
   uint8_t* ptr = array; //Helper pointer to store instructions into array
 
-  while (!feof(fp)) {
-    int i  = fread(ptr, 1, 1, fp);
-    read += i;
+  while (fread(ptr, 1, 1, fp) == 1) {
+    read++;
     ptr++;
   }
 
