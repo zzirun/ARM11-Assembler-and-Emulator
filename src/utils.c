@@ -49,7 +49,9 @@ uint32_t buildNonZeroValue(uint8_t* ptr) {
 }
 
 uint32_t load_word(uint32_t address, memory mem) {
-    //to be implemented: bounds checking
+    if (address > ADDRESS_COUNT - 4) {
+        fprintf(stderr, "Address 0x%x out of bounds", address);
+    }
     uint32_t word = 0;
     for (size_t i = 0; i < 4; i++) {
         word |= mem.address[address + i] << (i * 8);
@@ -58,7 +60,9 @@ uint32_t load_word(uint32_t address, memory mem) {
 }
 
 void store_word(uint32_t address, memory mem, uint32_t word) {
-    //to be implemented: bounds checking
+    if (address > ADDRESS_COUNT - 4) {
+        fprintf(stderr, "Address 0x%x out of bounds", address);
+    }
     for (size_t i = 0; i < 4; i++) {
         mem.address[address + i] = word & 0xFF;
         word >>= 8;

@@ -9,7 +9,7 @@ void data_processing(machine_state *machine, registers *r, memory mem) {
     decoded_inst inst = machine->instrToExecute;
     uint32_t address;
     uint32_t offset;
-    
+
     if (inst.I) {
         // immediate flag is set, offset interpreted as
         // shifted register
@@ -23,7 +23,7 @@ void data_processing(machine_state *machine, registers *r, memory mem) {
 
     if (!inst.U) {
         // U flag not set, offset is subtracted from base register
-        offset = ~offset;
+        offset = (~offset) + 1;
     }
 
     if (inst.P) {

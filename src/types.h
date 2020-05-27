@@ -29,6 +29,8 @@ typedef enum cpsrFlags {
   N = 8
 } cpsrFlags;
 
+int ADDRESS_COUNT = 65536;
+
 typedef struct memory {
   uint8_t address[65536];
 } memory;
