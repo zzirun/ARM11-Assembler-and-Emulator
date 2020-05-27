@@ -22,12 +22,12 @@ typedef struct registers{
 } registers;
 
 // 4 CPSR Flags : 31 - 28 : NZCV
-enum cpsrFlags {
-  V = 1;
-  C = 2;
-  Z = 4;
-  N = 8;
-}
+typedef enum cpsrFlags {
+  V = 1,
+  C = 2,
+  Z = 4,
+  N = 8
+} cpsrFlags;
 
 typedef struct memory {
   uint8_t address[65536];
