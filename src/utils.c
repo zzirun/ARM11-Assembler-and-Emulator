@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <math.h>
 #include "utils.h"
+#include "types.h"
 
 //start >= 0 && end <= 31
 uint32_t extractBits(uint32_t target, int start, int end) {
@@ -45,3 +46,23 @@ uint32_t buildNonZeroValue(uint8_t* ptr) {
   }
   return result;
 }
+
+uint32_t load_word(uint32_t address, memory mem) {
+    //to be implemented: bounds checking
+    uint32_t word = 0;
+    for (size_t i = 0; i < 4; i++) {
+        word |= mem.address[address + i] << (i * 8);
+    }
+    return word;
+}
+
+void store_word(uint32_t address, memory mem, uint32_t word) {
+    //to be implemented: bounds checking
+    for (size_t i = 0; i < 4; i++) {
+        mem.address[address + i] = word & 0xFF;
+        word >>= 8;
+    }
+
+}
+
+
