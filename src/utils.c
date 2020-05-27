@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
+#include <stdbool.h>
 #include "utils.h"
 
 //start >= 0 && end <= 31
@@ -56,22 +57,23 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
     return op << shift;
   }
   *carry = extractBits(op, shift - 1, shift - 1);
+  uint32_t mask = 0;
   switch (shiftT) {
     case LSR:
       // logical shift right
       return op >> shift;
     case ASR:
       // arithmetic shift right
-      uint32_t mask = 0;
       if (extractBits(op, 31, 31)) {
-        mask = (pow(2, shift) - 1) << (32 - shift);
+        mask = (int) (pow(2, shift) - 1) << (32 - shift);
       }
       return (op >> shift) | mask;
     case ROR:
       // rotate right
-      uint32_t mask = extractBits(op, 0, shift - 1) << (32 - shift);
+      mask = extractBits(op, 0, shift - 1) << (32 - shift);
       return (op >> shift) | mask;
     default:
       fprintf(stderr, "Invalid Shift Instruction");
+      return 0;
   }
 }
