@@ -100,3 +100,10 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
       return 0;
   }
 }
+// exits program with unsuccessful termination and frees allocated memory
+void terminate(machine_state* ms, registers* regs, memory* mem){
+    free(ms);
+    free(regs);
+    free(mem);
+    exit(EXIT_FAILURE);
+}

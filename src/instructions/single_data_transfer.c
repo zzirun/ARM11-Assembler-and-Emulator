@@ -5,7 +5,7 @@
 #include "utils.c"
 #include "operandExtraction.h"
 
-void data_processing(machine_state *machine, registers *r, memory mem) {
+void single_data_transfer(machine_state *machine, registers *r, memory mem) {
     decoded_inst inst = machine->instrToExecute;
     uint32_t address;
     uint32_t offset;
