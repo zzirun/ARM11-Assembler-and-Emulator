@@ -24,11 +24,11 @@ void mult(machine_state* ms, registers* regs){
         uint32_t newCPSR = (regs->CPSR) >> 28 ;
         //set Z using mask
         if(result == 0){
-            newCPSR |= 0x4 ;
+            newCPSR |= Z ;
         }
         //set n flag to 31 bit of result using mask
         if(result >> 31){
-            newCPSR |= 0x8;
+            newCPSR |= N;
         }
 
         //Update CPSR to newCPSR

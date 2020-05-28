@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "../types.h"
 #include "instructions.h"
+#include "operandExtraction.h"
 
 /* dp instr format : bits : field : var
   31 - 28 : condition code          : uint8_t cond
