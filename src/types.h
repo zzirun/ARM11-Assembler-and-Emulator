@@ -29,17 +29,16 @@ typedef enum cpsrFlags {
   N = 8
 } cpsrFlags;
 
-int ADDRESS_COUNT = 65536;
-
-typedef struct memory {
-  uint8_t address[65536];
-} memory;
+#define ADDRESS_COUNT 65536
+typedef uint8_t memory[ADDRESS_COUNT];
 
 typedef struct machine_state {
   uint32_t instrFetched;
   uint32_t instrToDecode;
   decoded_inst instrToExecute;
   bool fetched;
+  memory mem;
+  registers regs;
 } machine_state;
 
 

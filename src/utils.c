@@ -54,7 +54,7 @@ uint32_t load_word(uint32_t address, memory mem) {
     }
     uint32_t word = 0;
     for (size_t i = 0; i < 4; i++) {
-        word |= mem.address[address + i] << (i * 8);
+        word |= mem[address + i] << (i * 8);
     }
     return word;
 }
@@ -64,7 +64,7 @@ void store_word(uint32_t address, memory mem, uint32_t word) {
         fprintf(stderr, "Address 0x%x out of bounds", address);
     }
     for (size_t i = 0; i < 4; i++) {
-        mem.address[address + i] = word & 0xFF;
+        mem[address + i] = word & 0xFF;
         word >>= 8;
     }
 
@@ -97,13 +97,11 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
       return (op >> shift) | mask;
     default:
       fprintf(stderr, "Invalid Shift Instruction");
-      return 0;
+      exit(EXIT_FAILURE); //free?
   }
 }
 // exits program with unsuccessful termination and frees allocated memory
-void terminate(machine_state* ms, registers* regs, memory* mem){
+void terminate(machine_state* ms){
     free(ms);
-    free(regs);
-    free(mem);
     exit(EXIT_FAILURE);
 }

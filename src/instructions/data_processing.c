@@ -1,8 +1,9 @@
-#include "instructions.h"
+#include <stdio.h>
 #include <stdbool.h>
 #include "../types.h"
 #include "instructions.h"
 #include "operandExtraction.h"
+#include "../utils.h"
 
 /* dp instr format : bits : field : var
   31 - 28 : condition code          : uint8_t cond
@@ -15,21 +16,21 @@
   11 - 0  : op2                     : uint32_t operand_offset
 */
 
-void dataProc(machine_state *ms, registers *regs) {
+void dataProc(machine_state *ms) {
 
-  uint32_t op1 = regs -> gpr[ms -> instrToExecute.Rn];
+  uint32_t op1 = ms->regs.gpr[ms->instrToExecute.Rn];
   uint32_t op2;
   uint32_t result;
-  uint8_t opcode = ms -> instrToExecute.operation_code;
+  uint8_t opcode = ms->instrToExecute.operation_code;
   bool carry;
 
   // assign second operand
-  if (ms -> instrToExecute.I) {
+  if (ms->instrToExecute.I) {
     // rotated 8-bit Imm
-    op2 = immExtract(ms -> instrToExecute.operand_offset, &carry);
+    op2 = immExtract(ms->instrToExecute.operand_offset, &carry);
   } else {
     //shifted reg
-    op2 = regExtract(ms -> instrToExecute.operand_offset, regs, &carry);
+    op2 = regExtract(ms->instrToExecute.operand_offset, &(ms->regs), &carry);
   }
 
   // arithmetic/logic operation based on opcode
@@ -65,6 +66,9 @@ void dataProc(machine_state *ms, registers *regs) {
     case MOV:
       result = op2;
       break;
+    default:
+      fprintf(stderr, "Invalid Data Processing Opcode");
+      terminate(ms);
   }
 
   // write to destination for specific operations
@@ -76,11 +80,11 @@ void dataProc(machine_state *ms, registers *regs) {
       break;
     default:
       // destReg = result
-      regs -> gpr[ms -> instrToExecute.Rd] = result;
+      ms->regs.gpr[ms->instrToExecute.Rd] = result;
   }
 
   // set flags if needed
-  if (ms -> instrToExecute.S) {
+  if (ms->instrToExecute.S) {
     /* CPSR = 31 - 28 : NZCV
     - V unaffected
     - C set :
@@ -90,7 +94,8 @@ void dataProc(machine_state *ms, registers *regs) {
     - N set to logical bit 31 of result
     */
     uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31);
-    regs -> CPSR = regs -> CPSR & 0x1FFFFFFF | (flagsNew << 29);
+    // clear top 4 bits and set to new flags
+    ms->regs.CPSR = ms->regs.CPSR & 0x1FFFFFFF | (flagsNew << 29);
 
   }
 

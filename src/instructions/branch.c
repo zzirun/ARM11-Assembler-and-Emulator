@@ -4,13 +4,14 @@
 #include "../utils.h"
 #include "../types.h"
 
-void branch(decoded_inst* inst, registers* rs) {
-  int32_t offset = inst -> branch_offset;
+//void branch(decoded_inst* inst, registers* rs) {
+void branch(machine_state *ms) {
+  int32_t offset = ms->instrToExecute.branch_offset;
   offset <<= 2;
   if (offset < 0) {
     offset = abs(offset);
-    rs -> PC -= offset;
+    ms->regs.PC -= offset;
   } else {
-    rs -> PC += offset;
+    ms->regs.PC += offset;
   }
 }

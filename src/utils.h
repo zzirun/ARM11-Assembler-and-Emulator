@@ -21,6 +21,6 @@ typedef enum shiftType {
 uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry);
 
 // exits program with unsuccessful termination and frees allocated memory
-void terminate(machine_state* ms, registers* regs, memory* mem);
+void terminate(machine_state* ms);
 
 #endif

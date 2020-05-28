@@ -3,7 +3,7 @@
 #include "types.h"
 #include "utils.h"
 
-void mult(machine_state* ms, registers* regs){
+void mult(machine_state* ms){
     decoded_inst instr = ms->instrToExecute;
     uint32_t result;
 
@@ -16,12 +16,12 @@ void mult(machine_state* ms, registers* regs){
     }
 
     // Write to destination register
-    regs->gpr[instr.Rd] = result;
+    ms->regs.gpr[instr.Rd] = result;
 
     //Update flags if S bit is set
     if(instr.S == 1){
         // extract the top 4 bits of the CPSR
-        uint32_t newCPSR = (regs->CPSR) >> 28 ;
+        uint32_t newCPSR = (ms->regs.CPSR) >> 28 ;
         //set Z using mask
         if(result == 0){
             newCPSR |= Z ;
@@ -32,7 +32,7 @@ void mult(machine_state* ms, registers* regs){
         }
 
         //Update CPSR to newCPSR
-        regs->CPSR = newCPSR << 28;
+        ms->regs.CPSR = newCPSR << 28;
 
     }
 

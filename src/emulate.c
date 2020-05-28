@@ -40,13 +40,13 @@ void binLoad(FILE* fp, uint8_t* array) {
 }
 
 //Output at termination
-void output(registers rs, uint8_t* ptr) {
+void output(machine_state ms) {
   printf("Registers:\n");
   for (int i = 0; i < 13; i++) {
-    printf("$%-3d:          %d (0x%08x)\n", i, *(rs.gpr+i), *(rs.gpr+i));
+    printf("$%-3d:          %d (0x%08x)\n", i, *(ms.regs.gpr+i), *(ms.regs.gpr+i));
   }
-  printf("PC  :          %d (0x%08x)\n", rs.PC, rs.PC);
-  printf("CPSR:          %d (0x%08x)\n", rs.CPSR, rs.CPSR);
+  printf("PC  :          %d (0x%08x)\n", ms.regs.PC, ms.regs.PC);
+  printf("CPSR:          %d (0x%08x)\n", ms.regs.CPSR, ms.regs.CPSR);
   printf("Non zero memory : \n");
   //TODO : Add printf for non zero memory
 }
@@ -57,11 +57,19 @@ int main(int argc, char **argv) {
   15 registers initialised to zero
   Memory of ARM emulator has 64KB, initialised to zero
   */
-  machine_state* ms = (machine_state*) calloc(28, 1);
-  registers* rs = (registers*) calloc(15, 4);
-  memory* mem = (memory*) calloc(65536, 1);
+  machine_state* ms = (machine_state*) calloc(sizeof(machine_state), 1);
+  // check for successful memory allocation
+  if (!ms) {
+    fprintf(stderr, "Unsuccessful Memory Allocation");
+    return EXIT_FAILURE;
+  }
 
-  FILE* fp = fopen(argv[1], "r"); //Opens file, argv[1] to skip space character
+  //Opens file, argv[1] to skip space character
+  FILE* fp;
+  if (!(fp = fopen(argv[1], "rb"))) {
+    perror("Cannot Open File");
+    terminate(ms);
+  }; 
   /*
     //Unused now but may be useful later?
   fseek(fp, 0, SEEK_END); //Navigates to end of file to get size
@@ -69,10 +77,12 @@ int main(int argc, char **argv) {
   int arraysize = filesize / 4; //Size of instructionsArray
   rewind(fp); // Returns to beginning of file
   */
-  binLoad(fp, mem->address);
+  binLoad(fp, ms->mem);
   fclose(fp);
 
-  output(*rs, mem->address);
+  output(*ms);
+
+  free(ms);
 
   return EXIT_SUCCESS;
 }
