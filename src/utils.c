@@ -48,23 +48,25 @@ uint32_t buildNonZeroValue(uint8_t* ptr) {
   return result;
 }
 
-uint32_t load_word(uint32_t address, memory mem) {
+uint32_t load_word(uint32_t address, machine_state *ms) {
     if (address > ADDRESS_COUNT - 4) {
         fprintf(stderr, "Address 0x%x out of bounds", address);
+        terminate(ms);
     }
     uint32_t word = 0;
     for (size_t i = 0; i < 4; i++) {
-        word |= mem[address + i] << (i * 8);
+        word |= ms->mem[address + i] << (i * 8);
     }
     return word;
 }
 
-void store_word(uint32_t address, memory mem, uint32_t word) {
+void store_word(uint32_t address, machine_state *ms, uint32_t word) {
     if (address > ADDRESS_COUNT - 4) {
         fprintf(stderr, "Address 0x%x out of bounds", address);
+        terminate(ms);
     }
     for (size_t i = 0; i < 4; i++) {
-        mem[address + i] = word & 0xFF;
+        ms->mem[address + i] = word & 0xFF;
         word >>= 8;
     }
 
