@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
       case (FETCHED):
         decode(ms);
       case (EMPTY):
-        ms->instrFetched = load_word(ms->regs.PC, ms->mem);
+        ms->instrFetched = load_word(ms->regs.PC, ms);
         ms->regs.PC += 4;
         // update_processor_state(ms);
         ms->ps = !ms->ps ? FETCHED : DECODED;
