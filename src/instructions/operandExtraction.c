@@ -16,19 +16,19 @@ uint32_t immExtract(uint16_t op, bool *carry) {
 }
 
 // ASSUMING EXCLUSIVE OF PC AND CPSR <- CHECK
-uint32_t regExtract(uint16_t op, registers *regs, bool *carry) {
+uint32_t regExtract(uint16_t op, machine_state* ms, bool *carry) {
   // split to shift (bit 11 - 4) and register (bit 3 - 0)
   // shift type : bit 6 - 5
   // if bit 4 = 0, shift by constant (bits 11 - 7)
   // if bit 4 = 1, shift by bottom byte of register (bits 11 - 8) contents
 
-  uint32_t extracted = regs -> gpr[extractBits(op, 0, 3)];
+  uint32_t extracted = ms->regs.gpr[extractBits(op, 0, 3)];
   uint8_t shift;
 
   // check bit 4 to assign shift amount
   if (extractBits(op, 4, 4)) {
     // shift by register value
-    shift = regs -> gpr[extractBits(op, 8, 11)];
+    shift = ms->regs.gpr[extractBits(op, 8, 11)];
   } else {
     // shift by constant
     shift = extractBits(op, 7, 11);

@@ -30,6 +30,23 @@ void printBits(uint32_t x) {
   printf("\n");
 }
 
+//Output at termination
+void output(machine_state* ms) {
+  printf("Registers:\n");
+  for (int i = 0; i < 13; i++) {
+    printf("$%-3d: %10d (0x%08x)\n", i, *(ms->regs.gpr+i), *(ms->regs.gpr+i));
+  }
+  printf("PC  : %10d (0x%08x)\n", ms->regs.PC, ms->regs.PC);
+  printf("CPSR: %10d (0x%08x)\n", ms->regs.CPSR, ms->regs.CPSR);
+  printf("Non-zero memory:\n");
+  for (int i = 0; i < 65536; i += 4) {
+    uint32_t x = buildNonZeroValue(ms->mem+i);
+    if (x > 0) {
+      printf("0x%08x: 0x%08x\n", i, x);
+    }
+  }
+}
+
 //Builds 32 bit instructions according to little endian format
 uint32_t buildInstruction(uint8_t* ptr) {
   uint32_t result = 0;
@@ -50,31 +67,34 @@ uint32_t buildNonZeroValue(uint8_t* ptr) {
 
 uint32_t load_word(uint32_t address, machine_state *ms) {
     if (address > ADDRESS_COUNT - 4) {
-        fprintf(stderr, "Address 0x%x out of bounds", address);
-        terminate(ms);
+        printf("Error: Out of bounds memory access at address 0x%08x\n", address);
+        return 0;
+    } else {
+      uint32_t word = 0;
+      for (size_t i = 0; i < 4; i++) {
+          word |= ms->mem[address + i] << (i * 8);
+      }
+      return word;
     }
-    uint32_t word = 0;
-    for (size_t i = 0; i < 4; i++) {
-        word |= ms->mem[address + i] << (i * 8);
-    }
-    return word;
 }
 
 void store_word(uint32_t address, machine_state *ms, uint32_t word) {
     if (address > ADDRESS_COUNT - 4) {
-        fprintf(stderr, "Address 0x%x out of bounds", address);
-        terminate(ms);
+        printf("Error: Out of bounds memory access at address 0x%08x\n", address);
+    } else {
+      for (size_t i = 0; i < 4; i++) {
+          ms->mem[address + i] = word & 0xFF;
+          word >>= 8;
+      }
     }
-    for (size_t i = 0; i < 4; i++) {
-        ms->mem[address + i] = word & 0xFF;
-        word >>= 8;
-    }
-
 }
 
 //Shifter: returns shifted operand and updates carry
 //param: shiftT(ype), op(erand), shift(amount), *carry
 uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
+  if (shift == 0) {
+    return op;
+  }
   // carry always last discarded/rotated bit
   if (shiftT == LSL) {
     // logical shift left

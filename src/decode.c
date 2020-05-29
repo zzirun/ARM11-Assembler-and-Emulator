@@ -18,6 +18,9 @@ void decode(machine_state* ms) {
     result.U = extractBits(inst, 23, 23);
     result.L = extractBits(inst, 20, 20);
     result.Rn = extractBits(inst, 16, 19);
+    if (result.Rn == 15) { //Checks if Rn is PC
+      result.Rn -= 2; //According to implementation, PC is at index 13 of regs
+    }
     result.Rd = extractBits(inst, 12, 15);
     result.operand_offset = extractBits(inst, 0, 11);
   } else if (extractBits(inst, 27, 27) == 1) {

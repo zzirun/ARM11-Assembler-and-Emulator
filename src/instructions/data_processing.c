@@ -23,7 +23,7 @@ void dataProc(machine_state *ms) {
   uint32_t op2;
   uint32_t result;
   uint8_t opcode = ms->instrToExecute.operation_code;
-  bool carry;
+  bool carry = 0;
 
   // assign second operand
   if (ms->instrToExecute.I) {
@@ -31,7 +31,7 @@ void dataProc(machine_state *ms) {
     op2 = immExtract(ms->instrToExecute.operand_offset, &carry);
   } else {
     //shifted reg
-    op2 = regExtract(ms->instrToExecute.operand_offset, &(ms->regs), &carry);
+    op2 = regExtract(ms->instrToExecute.operand_offset, ms, &carry);
   }
 
   // arithmetic/logic operation based on opcode
@@ -94,9 +94,9 @@ void dataProc(machine_state *ms) {
     - Z set only if result all 0s
     - N set to logical bit 31 of result
     */
-    uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31);
+    uint32_t flagsNew = (C * carry) + (Z * (result == 0)) + (N * (result >> 31));
     // clear top 4 bits and set to new flags
-    ms->regs.CPSR = (ms->regs.CPSR & 0x1FFFFFFF) | (flagsNew << 29);
+    ms->regs.CPSR = (ms->regs.CPSR & 0x7FFFFFFF) | (flagsNew << 28);
 
   }
 

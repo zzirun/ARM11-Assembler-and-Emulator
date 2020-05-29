@@ -8,11 +8,11 @@ void mult(machine_state* ms){
     uint32_t result;
 
     // Multiplying Rm and Rs
-    result = instr.Rm * instr.Rs;
+    result = ms->regs.gpr[instr.Rm] * ms->regs.gpr[instr.Rs];
 
     // If A bit is set then accumulate with Rn
     if(instr.A == 1){
-        result += instr.Rn;
+        result += ms->regs.gpr[instr.Rn];
     }
 
     // Write to destination register

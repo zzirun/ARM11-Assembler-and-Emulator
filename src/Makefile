@@ -29,3 +29,5 @@ instructions/halt.o: instructions/halt.c utils.h types.h instructions/datafuncti
 
 clean:
 	rm -rf *.o instructions/*.o emulate
+
+.PHONY: clean

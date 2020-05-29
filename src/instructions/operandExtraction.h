@@ -5,7 +5,7 @@
 uint32_t immExtract(uint16_t op, bool *carry);
 
 // operand as shifted register contents
-uint32_t regExtract(uint16_t op, registers *regs, bool *carry);
+uint32_t regExtract(uint16_t op, machine_state* ms, bool *carry);
 
 
 #endif
