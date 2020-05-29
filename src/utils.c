@@ -129,12 +129,3 @@ void terminate(machine_state* ms){
     free(ms);
     exit(EXIT_FAILURE);
 }
-
-int32_t shift_2_sign_extension(uint32_t x) {
-  x <<= 2;
-  if ((x & (1 << 25)) != 0) { //check if bit 25 is 1
-    return (((int32_t) pow(2, 6) - 1) << 26 | x);
-  } else {
-    return x;
-  }
-}

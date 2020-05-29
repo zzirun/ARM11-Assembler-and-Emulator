@@ -16,7 +16,6 @@ void execute(machine_state* ms);
 uint32_t load_word(uint32_t address, machine_state *ms);
 void store_word(uint32_t address, machine_state *ms, uint32_t word);
 void output(machine_state* ms);
-int32_t shift_2_sign_extension(uint32_t x);
 
 // shifter
 typedef enum shiftType {
