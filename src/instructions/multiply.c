@@ -11,7 +11,7 @@ void mult(machine_state* ms){
     result = ms->regs.gpr[instr.Rm] * ms->regs.gpr[instr.Rs];
 
     // If A bit is set then accumulate with Rn
-    if(instr.A == 1){
+    if(instr.A){
         result += ms->regs.gpr[instr.Rn];
     }
 
@@ -19,7 +19,7 @@ void mult(machine_state* ms){
     ms->regs.gpr[instr.Rd] = result;
 
     //Update flags if S bit is set
-    if(instr.S == 1){
+    if(instr.S){
         // extract the top 4 bits of the CPSR
         uint32_t newCPSR = (ms->regs.CPSR) >> 28 ;
         //set Z using mask
