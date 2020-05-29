@@ -47,15 +47,6 @@ void output(machine_state* ms) {
   }
 }
 
-//Builds 32 bit instructions according to little endian format
-uint32_t buildInstruction(uint8_t* ptr) {
-  uint32_t result = 0;
-  for (int i = 0; i < 4; i++) {
-    result += *(ptr+i) << (8*i);
-  }
-  return result;
-}
-
 //Builds 32 bit non zero value according to little endian format
 uint32_t buildNonZeroValue(uint8_t* ptr) {
   uint32_t result = 0;
@@ -77,6 +68,17 @@ uint32_t load_word(uint32_t address, machine_state *ms) {
       return word;
     }
 }
+
+/* same as load word
+//Builds 32 bit instructions according to little endian format
+uint32_t buildInstruction(uint8_t* ptr) {
+  uint32_t result = 0;
+  for (int i = 0; i < 4; i++) {
+    result += *(ptr+i) << (8*i);
+  }
+  return result;
+}
+*/
 
 void store_word(uint32_t address, machine_state *ms, uint32_t word) {
     if (address > ADDRESS_COUNT - 4) {

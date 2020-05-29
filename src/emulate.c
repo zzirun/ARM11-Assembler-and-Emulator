@@ -26,6 +26,7 @@ void binLoad(FILE* fp, uint8_t* array) {
 
 }
 
+/*
 void fetch(machine_state* ms) {
   ms->instrFetched = buildInstruction(&(ms->mem[ms->regs.PC]));
 }
@@ -37,6 +38,7 @@ void update_processor_state(machine_state* ms) {
     ms->ps = DECODED;
   }
 }
+*/
 
 int main(int argc, char **argv) {
   /*
@@ -72,10 +74,12 @@ int main(int argc, char **argv) {
         execute(ms);
       case (FETCHED):
         decode(ms);
-      default:
-        fetch(ms);
+      case (EMPTY):
+        ms->instrFetched = load_word(ms->regs.PC, ms->mem);
         ms->regs.PC += 4;
-        update_processor_state(ms);
+        // update_processor_state(ms);
+        ms->ps = !ms->ps ? FETCHED : DECODED;
+      // default case?
     }
   }
 

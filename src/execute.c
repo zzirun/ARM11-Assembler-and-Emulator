@@ -56,7 +56,7 @@ void execute(machine_state* ms) {
                 branch(ms);
                 break;
             default:
-                fprintf(stderr, "Invalid Instruction Type at Address: %x \n", ms->instrFetched -8);
+                fprintf(stderr, "Invalid Instruction Type at Address: %x \n", ms->regs.PC -8);
                 terminate(ms);
                 // unsuccessful exit;
         }
