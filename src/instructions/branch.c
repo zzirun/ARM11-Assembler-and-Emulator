@@ -8,12 +8,7 @@
 //void branch(decoded_inst* inst, registers* rs) {
 void branch(machine_state *ms) {
   int32_t offset = ms->instrToExecute.branch_offset;
-  offset <<= 2;
-  if (offset < 0) {
-    offset = abs(offset);
-    ms->regs.PC -= offset;
-  } else {
-    ms->regs.PC += offset;
-  }
+  offset = shift_2_sign_extension(offset);
+  ms->regs.PC += offset;
   ms->ps = EMPTY;
 }
