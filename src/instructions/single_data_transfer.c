@@ -1,9 +1,10 @@
 //
 //
 #include "instructions.h"
-#include "types.h"
-#include "utils.c"
+#include "../types.h"
+#include "../utils.h"
 #include "operandExtraction.h"
+#include "datafunctions.h"
 
 void single_data_transfer(machine_state *ms) {
     decoded_inst inst = ms->instrToExecute;
@@ -49,5 +50,3 @@ void single_data_transfer(machine_state *ms) {
 
 
 }
-
-

@@ -3,6 +3,7 @@
 #include "instructions.h"
 #include "../utils.h"
 #include "../types.h"
+#include "datafunctions.h"
 
 //void branch(decoded_inst* inst, registers* rs) {
 void branch(machine_state *ms) {
@@ -14,4 +15,5 @@ void branch(machine_state *ms) {
   } else {
     ms->regs.PC += offset;
   }
+  ms->ps = EMPTY;
 }

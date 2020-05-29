@@ -5,8 +5,9 @@
 #include "decode.h"
 
 //To call decoder
-void decode(uint32_t inst, machine_state* ms) {
+void decode(machine_state* ms) {
   decoded_inst result;
+  uint32_t inst = ms -> instrFetched;
   result.cond = extractBits(inst, 28, 31); //Common to all instructions
   if (extractBits(inst, 0, 31) == 0) {
     result.type = HALT;

@@ -1,7 +1,7 @@
-
 #include "instructions.h"
-#include "types.h"
-#include "utils.h"
+#include "../types.h"
+#include "../utils.h"
+#include "datafunctions.h"
 
 void mult(machine_state* ms){
     decoded_inst instr = ms->instrToExecute;

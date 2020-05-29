@@ -1,7 +1,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "types.h"
-#include "instructions.h"
+#include "instructions/instructions.h"
+#include "instructions/datafunctions.h"
+#include "utils.h"
 
 // check instr cond codes with most significant 4 bits of CPSR (NZCV)
 bool checkCond(machine_state *ms) {
@@ -24,6 +26,7 @@ bool checkCond(machine_state *ms) {
     default:
       fprintf(stderr, "Invalid Instruction Condition Code\n");
       terminate(ms);
+      return false;
   }
 }
 
@@ -31,8 +34,14 @@ bool checkCond(machine_state *ms) {
  * is met
  */
 
-void execute(machine_state* ms){
-    if(checkCond(ms)){
+void execute(machine_state* ms) {
+    /* Not in switch cases as the checkCond for
+       HALT returns false according to the CPSR
+       flags, hence treated as special case */
+    if (ms->instrToExecute.type == HALT) { 
+      halt(ms);
+    }
+    if(checkCond(ms)) {
         switch(ms->instrToExecute.type){
             case DATA_PROC:
                 dataProc(ms);
@@ -53,5 +62,3 @@ void execute(machine_state* ms){
         }
     }
 }
-
-

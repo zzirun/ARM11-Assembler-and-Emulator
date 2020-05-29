@@ -5,21 +5,6 @@
 #include "types.h"
 #include "decode.h"
 
-/*
-  Refer to spec
-instruction_set decode(uint32_t i) {
-  if (extractBits(i, 26, 26) == 1) {
-    return sdt;
-  } else if (extractBits(i, 27, 27) == 1) {
-    return branch;
-  } else if (extractBits(i, 22, 27) == 0 && extractBits(i, 4, 7) == 9) {
-    return mult;
-  } else {
-    return dp;
-  }
-}
-*/
-
 void binLoad(FILE* fp, uint8_t* array) {
 
   int read = 0; //Number of instructions read
@@ -31,24 +16,26 @@ void binLoad(FILE* fp, uint8_t* array) {
     ptr++;
   }
 
+/*
   //Debugging
-  for (int i = 0; i < read / 4; i++) {
+  for (int i = 0; i < (read / 4) + 1; i++) {
     printf("%p : ", (void*) (array + 4 * i));
     printBits(buildInstruction(array + 4 * i));
   }
+*/
 
 }
 
-//Output at termination
-void output(machine_state ms) {
-  printf("Registers:\n");
-  for (int i = 0; i < 13; i++) {
-    printf("$%-3d:          %d (0x%08x)\n", i, *(ms.regs.gpr+i), *(ms.regs.gpr+i));
+void fetch(machine_state* ms) {
+  ms->instrFetched = buildInstruction(&(ms->mem[ms->regs.PC]));
+}
+
+void update_processor_state(machine_state* ms) {
+  if (ms->ps == EMPTY) {
+    ms->ps = FETCHED;
+  } else if (ms->ps == FETCHED) {
+    ms->ps = DECODED;
   }
-  printf("PC  :          %d (0x%08x)\n", ms.regs.PC, ms.regs.PC);
-  printf("CPSR:          %d (0x%08x)\n", ms.regs.CPSR, ms.regs.CPSR);
-  printf("Non zero memory : \n");
-  //TODO : Add printf for non zero memory
 }
 
 int main(int argc, char **argv) {
@@ -69,18 +56,30 @@ int main(int argc, char **argv) {
   if (!(fp = fopen(argv[1], "rb"))) {
     perror("Cannot Open File");
     terminate(ms);
-  }; 
-  /*
-    //Unused now but may be useful later?
+  };
+
   fseek(fp, 0, SEEK_END); //Navigates to end of file to get size
-  long filesize = ftell(fp); //size of file
-  int arraysize = filesize / 4; //Size of instructionsArray
+  int no_of_inst = (ftell(fp) / 4) + 1; //+1 to add HALT inst at the end
   rewind(fp); // Returns to beginning of file
-  */
+
+
   binLoad(fp, ms->mem);
   fclose(fp);
 
-  output(*ms);
+  while (ms->regs.PC <= 4 * no_of_inst) {
+    switch (ms->ps) {
+      case (DECODED):
+        execute(ms);
+      case (FETCHED):
+        decode(ms);
+      default:
+        fetch(ms);
+        ms->regs.PC += 4;
+        update_processor_state(ms);
+    }
+  }
+
+	execute(ms);
 
   free(ms);
 

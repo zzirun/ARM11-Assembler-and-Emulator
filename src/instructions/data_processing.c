@@ -4,6 +4,7 @@
 #include "instructions.h"
 #include "operandExtraction.h"
 #include "../utils.h"
+#include "datafunctions.h"
 
 /* dp instr format : bits : field : var
   31 - 28 : condition code          : uint8_t cond
@@ -95,7 +96,7 @@ void dataProc(machine_state *ms) {
     */
     uint32_t flagsNew = C * carry + Z * (result == 0) + N * (result >> 31);
     // clear top 4 bits and set to new flags
-    ms->regs.CPSR = ms->regs.CPSR & 0x1FFFFFFF | (flagsNew << 29);
+    ms->regs.CPSR = (ms->regs.CPSR & 0x1FFFFFFF) | (flagsNew << 29);
 
   }
 

@@ -14,6 +14,8 @@
   There are actually 17 registers, register 13(SP) and 14 (LR) are ignored
   ignored for this exercise.
 */
+#define ADDRESS_COUNT 65536
+typedef uint8_t memory[ADDRESS_COUNT];
 
 typedef struct registers{
   uint32_t gpr[13];
@@ -29,17 +31,20 @@ typedef enum cpsrFlags {
   N = 8
 } cpsrFlags;
 
-#define ADDRESS_COUNT 65536
-typedef uint8_t memory[ADDRESS_COUNT];
+typedef enum processor_state {
+  EMPTY,
+  FETCHED,
+  DECODED
+} processor_state;
 
 typedef struct machine_state {
-  uint32_t instrFetched;
-  uint32_t instrToDecode;
-  decoded_inst instrToExecute;
-  bool fetched;
   memory mem;
   registers regs;
+  uint32_t instrFetched;
+  decoded_inst instrToExecute;
+  processor_state ps;
+  //uint32_t instrToDecode;
+  //bool decode;
 } machine_state;
-
 
 #endif //ARM11_17_TYPES_H
