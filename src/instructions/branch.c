@@ -13,5 +13,6 @@ void branch(machine_state *ms) {
     offset = ((63 << 26) | offset); //63 = pow(2, 7) - 1
   }
   ms->regs.PC += offset;
-  ms->ps = FETCHED;
+  ms->regs.PC -= 4;
+  ms->ps = EMPTY;
 }
