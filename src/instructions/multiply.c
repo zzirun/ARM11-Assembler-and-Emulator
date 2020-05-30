@@ -26,7 +26,7 @@ void mult(machine_state* ms){
         if(result == 0){
             newCPSR |= Z ;
         }
-        //set n flag to 31 bit of result using mask
+        //set N flag to 31 bit of result using mask
         if(result >> 31){
             newCPSR |= N;
         }

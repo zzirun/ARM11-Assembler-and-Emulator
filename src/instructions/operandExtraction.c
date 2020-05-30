@@ -3,38 +3,44 @@
 #include "../types.h"
 #include "operandExtraction.h"
 
-/* returns operand2 for DP, offset for SDT */
+/* Returns operand2 for DP, offset for SDT */
 
-
+/* As a rotated 8-bit immediate constant 
+ * *splitting :
+ *  * bit 7 - 0 : unsigned immediate value (byte)
+ *  * bit 11 -8 : half of rotation amount
+ * *rotate right immediate value by rotation amount 
+ */
 uint32_t immExtract(uint16_t op, bool *carry) {
-  // split into rotation (bit 11 -8) and unsigned byte imm (bit 7 - 0)
-  uint8_t imm = op; // cuts off top 8 bits
-  uint8_t rotate = 2 * ((op >> 8) & 0xF); //extractBits(op, 8, 11)
-
-  // rotateRight
+  uint8_t imm = op; 
+  uint8_t rotate = 2 * ((op >> 8) & 0xF);  
   return shifter(ROR, imm, rotate, carry);
 }
 
-// ASSUMING EXCLUSIVE OF PC AND CPSR <- CHECK
+/* As a shifted register 
+ * Assuming - registers involved exclusive of PC and CPSR
+ * *splitting :
+ *  * bit 3 - 0 : register Rm
+ *  * bit 11 - 4 : shift 
+ * *shift contents of Rm :
+ *  * bit 6 - 5 : shift type 
+ *  * bit 4 == 0 -> shift by constant (bit 11 - 7)
+ *  * bit 4 == 1 -> shift by lowest byte in register Rs (bit 11 - 8)
+ */
 uint32_t regExtract(uint16_t op, machine_state* ms, bool *carry) {
-  // split to shift (bit 11 - 4) and register (bit 3 - 0)
-  // shift type : bit 6 - 5
-  // if bit 4 = 0, shift by constant (bits 11 - 7)
-  // if bit 4 = 1, shift by bottom byte of register (bits 11 - 8) contents
-
-  uint32_t extracted = ms->regs.gpr[(op & 0x7)]; //extractBits(op, 0, 3)
+  uint32_t rm = ms->regs.gpr[(op & 0x7)]; 
   uint8_t shift;
 
   // check bit 4 to assign shift amount
-  if ((op >> 4) & 0x1) { //extractBits(op, 4, 4)
+  if ((op >> 4) & 0x1) { 
     // shift by register value
-    shift = ms->regs.gpr[((op >> 8) & 0xF)]; //extractBits(op, 8, 11)
+    shift = ms->regs.gpr[((op >> 8) & 0xF)]; 
   } else {
     // shift by constant
-    shift = (op >> 7) & 0x1F; //extractBits(op, 7, 11)
+    shift = (op >> 7) & 0x1F; 
   }
 
   // shift on shift type
-  return shifter(((op >> 5) & 3), extracted, shift, carry); //extractBits(op, 5, 6)
+  return shifter(((op >> 5) & 3), rm, shift, carry); 
 
 }

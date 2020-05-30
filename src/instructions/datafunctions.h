@@ -8,6 +8,5 @@ void dataProc(machine_state *ms);
 void mult(machine_state *ms);
 void single_data_transfer(machine_state *ms);
 void branch(machine_state *ms);
-void halt(machine_state *ms);
 
 #endif

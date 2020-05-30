@@ -6,11 +6,14 @@
 #include "datafunctions.h"
 
 void branch(machine_state *ms) {
-  int32_t offset = ms->instrToExecute.branch_offset;
+  int32_t offset = ms->instrToExecute.operand_offset;
   offset <<= 2;
-  if ((offset & (1 << 25)) != 0) { //check if bit 25 is 1
-    offset = ((63 << 26) | offset); //63 = pow(2, 7) - 1
+  // sign extension
+  if ((offset >> 25) & 0x1) { //check if bit 25 is 1 
+    offset |= (63 << 26); //63 = pow(2, 7) - 1 (top 6)
   }
+  // set PC to new address
   ms->regs.PC += offset;
+  // reset pipeline
   ms->ps = EMPTY;
 }
