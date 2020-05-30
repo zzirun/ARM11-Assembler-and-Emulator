@@ -9,11 +9,10 @@
 //start >= 0 && end <= 31
 uint32_t extractBits(uint32_t target, int start, int end) {
   int size = end - start + 1;
-  uint32_t mask = pow(2, size) - 1;
-  mask <<= start;
-  target &= mask;
-  target >>= start;
-  return target;
+  if (size == 32) {
+    return (target >> start) & 0xFFFFFFFF;
+  }
+  return (target >> start) & ((1 << size) - 1);
 }
 
 //For debugging
@@ -100,10 +99,10 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
   // carry always last discarded/rotated bit
   if (shiftT == LSL) {
     // logical shift left
-    *carry = extractBits(op, 32 - shift, 32 - shift);
+    *carry = ((op >> (32 - shift)) & 0x1); //extractBits(op, 32 - shift, 32 - shift)
     return op << shift;
   }
-  *carry = extractBits(op, shift - 1, shift - 1);
+  *carry = ((op >> (shift - 1)) & 0x1); //extractBits(op, shift - 1, shift - 1)
   uint32_t mask = 0;
   switch (shiftT) {
     case LSR:
@@ -111,13 +110,13 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
       return op >> shift;
     case ASR:
       // arithmetic shift right
-      if (extractBits(op, 31, 31)) {
-        mask = (int) (pow(2, shift) - 1) << (32 - shift);
+      if ((op >> 31) & 0x1) { //extractBits(op, 31, 31)
+        mask = ((1 << shift) - 1) << (32 - shift); //(int) (pow(2, shift) - 1) << (32 - shift)
       }
       return (op >> shift) | mask;
     case ROR:
       // rotate right
-      mask = extractBits(op, 0, shift - 1) << (32 - shift);
+      mask = (op & ((1 << (shift - 1)) - 1)) << (32 - shift); //extractBits(op, 0, shift - 1) << (32 - shift)
       return (op >> shift) | mask;
     default:
       fprintf(stderr, "Invalid Shift Instruction");
