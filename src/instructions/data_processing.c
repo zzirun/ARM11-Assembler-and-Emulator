@@ -12,21 +12,21 @@
   25      : immediate flag for op2  : bool I
   24 - 21 : opcode                  : uint8_t operation_code
   20      : set cc flag             : bool S
-  19 - 16 : reg contents = op1      : int8_t Rn
-  15 - 12 : dest reg                : int8_t Rd
+  19 - 16 : reg contents = op1      : int8_t rn
+  15 - 12 : dest reg                : int8_t rd
   11 - 0  : op2                     : uint32_t operand_offset
 */
 
 void dataProc(machine_state *ms) {
 
-  uint32_t op1 = ms->regs.gpr[ms->instrToExecute.Rn];
+  uint32_t op1 = ms->regs.gpr[ms->instrToExecute.rn];
   uint32_t op2;
   uint32_t result;
   uint8_t opcode = ms->instrToExecute.operation_code;
   bool carry = 0;
 
   // assign second operand
-  if (ms->instrToExecute.I) {
+  if (ms->instrToExecute.imm) {
     // rotated 8-bit Imm
     op2 = immExtract(ms->instrToExecute.operand_offset, &carry);
   } else {
@@ -81,11 +81,11 @@ void dataProc(machine_state *ms) {
       break;
     default:
       // destReg = result
-      ms->regs.gpr[ms->instrToExecute.Rd] = result;
+      ms->regs.gpr[ms->instrToExecute.rd] = result;
   }
 
   // set flags if needed
-  if (ms->instrToExecute.S) {
+  if (ms->instrToExecute.set_cc) {
     /* CPSR = 31 - 28 : NZCV
     - V unaffected
     - C set :
@@ -95,7 +95,7 @@ void dataProc(machine_state *ms) {
     - N set to logical bit 31 of result
     */
     uint32_t flagsNew = (C * carry) + (Z * (result == 0)) + (N * (result >> 31));
-    // clear top 4 bits and set to new flags
+    // clear top 3 bits and set to new flags
     ms->regs.CPSR = (ms->regs.CPSR & 0x1FFFFFFF) | (flagsNew << 28);
 
   }

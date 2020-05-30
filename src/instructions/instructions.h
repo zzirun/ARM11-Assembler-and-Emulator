@@ -19,37 +19,40 @@ typedef enum inst_type{
 typedef struct decoded_inst {
     inst_type type;
 
+    uint8_t cond;
+
     //used for branch offset
     int32_t branch_offset;
 
     //used for data processing and single data transfer
     uint16_t operand_offset;
 
-    uint8_t cond;
-
     //opcode only in DP
     uint8_t operation_code;
 
     //For DP and SDT (To indicate immediate or shifted register)
-    bool I;
+    bool imm;
 
     //registers (only in DP, M, SDT)
-    int8_t Rn;
-    int8_t Rd;
+    int8_t rn;
+    int8_t rd;
     // Rs and Rm only in M
-    int8_t Rs;
-    int8_t Rm;
+    int8_t rs;
+    int8_t rm;
 
     //P, U and L only in SDT
-    bool P;
-    bool U;
-    bool L;
+    // pre/post indexing flag
+    bool p;
+    // up flag
+    bool u;
+    // load/store flag
+    bool l;
 
-    // S only in DP and M
-    bool S;
+    // only in DP and M (if to update CPSR flags)
+    bool set_cc;
 
-    // A only in M
-    bool A;
+    // only in M (if to multiply and accumulate)
+    bool accum;
 
 } decoded_inst;
 

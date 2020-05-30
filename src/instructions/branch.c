@@ -5,7 +5,6 @@
 #include "../types.h"
 #include "datafunctions.h"
 
-//void branch(decoded_inst* inst, registers* rs) {
 void branch(machine_state *ms) {
   int32_t offset = ms->instrToExecute.branch_offset;
   offset <<= 2;
