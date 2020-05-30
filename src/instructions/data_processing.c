@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../types.h"
-#include "instructions.h"
 #include "operandExtraction.h"
 #include "../utils.h"
 #include "datafunctions.h"
@@ -88,7 +87,6 @@ void dataProc(machine_state *ms) {
     uint32_t flagsNew = (C * carry) | (Z * (result == 0)) | (N * (result >> 31));
     // clear top 3 bits and set to new flags
     ms->regs.CPSR = (ms->regs.CPSR & 0x1FFFFFFF) | (flagsNew << 28);
-
   }
 
 }

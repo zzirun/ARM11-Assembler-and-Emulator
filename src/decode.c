@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "types.h"
-#include "instructions/instructions.h"
 #include "utils.h"
 
 void decode(machine_state* ms) {
