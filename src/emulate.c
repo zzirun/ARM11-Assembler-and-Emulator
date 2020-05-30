@@ -4,42 +4,6 @@
 #include <time.h>
 #include "utils.h"
 #include "types.h"
-#include "decode.h"
-
-void binLoad(FILE *fp, uint8_t *array) {
-
-    int read = 0; //Number of instructions read
-
-    uint8_t *ptr = array; //Helper pointer to store instructions into array
-
-    while (fread(ptr, 1, 1, fp) == 1) {
-        read++;
-        ptr++;
-    }
-
-/*
-  //Debugging
-  for (int i = 0; i < (read / 4) + 1; i++) {
-    printf("%p : ", (void*) (array + 4 * i));
-    printBits(buildInstruction(array + 4 * i));
-  }
-*/
-
-}
-
-/*
-void fetch(machine_state* ms) {
-  ms->instrFetched = buildInstruction(&(ms->mem[ms->regs.PC]));
-}
-
-void update_processor_state(machine_state* ms) {
-  if (ms->ps == EMPTY) {
-    ms->ps = FETCHED;
-  } else if (ms->ps == FETCHED) {
-    ms->ps = DECODED;
-  }
-}
-*/
 
 int main(int argc, char **argv) {
     /*
@@ -59,17 +23,17 @@ int main(int argc, char **argv) {
     if (!(fp = fopen(argv[1], "rb"))) {
         perror("Cannot Open File");
         terminate(ms);
-    };
-
-    fseek(fp, 0, SEEK_END); //Navigates to end of file to get size
-    int no_of_inst = (ftell(fp) / 4) + 1; //+1 to add HALT inst at the end
-    rewind(fp); // Returns to beginning of file
-
-
+    }
+    //Loads content of the file into memory
     binLoad(fp, ms->mem);
     fclose(fp);
 
-    while (ms->regs.PC <= 4 * no_of_inst) {
+    //PIPELINE
+    /*
+      Run this loop if we need to decode or
+      execute an instruction that isn't HALT
+    */
+    while ((ms->ps != DECODED) || (ms->instrToExecute.type != HALT)) {
         switch (ms->ps) {
             case (DECODED):
                 execute(ms);
@@ -84,7 +48,8 @@ int main(int argc, char **argv) {
         }
     }
 
-    execute(ms);
+    //HALT
+    output(ms);
 
     free(ms);
 

@@ -1,25 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <math.h>
 #include <stdbool.h>
 #include "utils.h"
 #include "types.h"
 
-//start >= 0 && end <= 31
-uint32_t extractBits(uint32_t target, int start, int end) {
-  int size = end - start + 1;
-  if (size == 32) {
-    return (target >> start) & 0xFFFFFFFF;
-  }
-  return (target >> start) & ((1 << size) - 1);
-}
-
-//For debugging
 void printBits(uint32_t x) {
   uint32_t mask = 1 << 31;
-  for(int i=0; i<32;i++) {
-    if((x & mask) == 0 ) {
+  for (int i = 0; i < 32; i++) {
+    if ((x & mask) == 0 ) {
       printf("0");
     } else {
       printf("1");
@@ -29,30 +18,13 @@ void printBits(uint32_t x) {
   printf("\n");
 }
 
-//Output at termination
-void output(machine_state* ms) {
-  printf("Registers:\n");
-  for (int i = 0; i < 13; i++) {
-    printf("$%-3d: %10d (0x%08x)\n", i, *(ms->regs.gpr+i), *(ms->regs.gpr+i));
-  }
-  printf("PC  : %10d (0x%08x)\n", ms->regs.PC, ms->regs.PC);
-  printf("CPSR: %10d (0x%08x)\n", ms->regs.CPSR, ms->regs.CPSR);
-  printf("Non-zero memory:\n");
-  for (int i = 0; i < 65536; i += 4) {
-    uint32_t x = buildNonZeroValue(ms->mem+i);
-    if (x > 0) {
-      printf("0x%08x: 0x%08x\n", i, x);
+void binLoad(FILE *fp, uint8_t *array) {
+    int read = 0; //Number of instructions read
+    uint8_t *ptr = array; //Helper pointer to store instructions into array
+    while (fread(ptr, 1, 1, fp) == 1) {
+        read++;
+        ptr++;
     }
-  }
-}
-
-//Builds 32 bit non zero value according to little endian format
-uint32_t buildNonZeroValue(uint8_t* ptr) {
-  uint32_t result = 0;
-  for (int i = 0; i < 4; i++) {
-    result += *(ptr+i) << (8 * (3-i));
-  }
-  return result;
 }
 
 uint32_t load_word(uint32_t address, machine_state *ms) {
@@ -68,17 +40,6 @@ uint32_t load_word(uint32_t address, machine_state *ms) {
     }
 }
 
-/* same as load word
-//Builds 32 bit instructions according to little endian format
-uint32_t buildInstruction(uint8_t* ptr) {
-  uint32_t result = 0;
-  for (int i = 0; i < 4; i++) {
-    result += *(ptr+i) << (8*i);
-  }
-  return result;
-}
-*/
-
 void store_word(uint32_t address, machine_state *ms, uint32_t word) {
     if (address > ADDRESS_COUNT - 4) {
         printf("Error: Out of bounds memory access at address 0x%08x\n", address);
@@ -90,8 +51,6 @@ void store_word(uint32_t address, machine_state *ms, uint32_t word) {
     }
 }
 
-//Shifter: returns shifted operand and updates carry
-//param: shiftT(ype), op(erand), shift(amount), *carry
 uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
   if (shift == 0) {
     return op;
@@ -120,10 +79,35 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
       return (op >> shift) | mask;
     default:
       fprintf(stderr, "Invalid Shift Instruction");
-      exit(EXIT_FAILURE); //free?
+      exit(EXIT_FAILURE);
   }
 }
-// exits program with unsuccessful termination and frees allocated memory
+
+//Helper for output function
+uint32_t buildNonZeroValue(uint8_t* ptr) {
+  uint32_t result = 0;
+  for (int i = 0; i < 4; i++) {
+    result += *(ptr+i) << (8 * (3-i));
+  }
+  return result;
+}
+
+void output(machine_state* ms) {
+  printf("Registers:\n");
+  for (int i = 0; i < 13; i++) {
+    printf("$%-3d: %10d (0x%08x)\n", i, *(ms->regs.gpr+i), *(ms->regs.gpr+i));
+  }
+  printf("PC  : %10d (0x%08x)\n", ms->regs.PC, ms->regs.PC);
+  printf("CPSR: %10d (0x%08x)\n", ms->regs.CPSR, ms->regs.CPSR);
+  printf("Non-zero memory:\n");
+  for (int i = 0; i < 65536; i += 4) {
+    uint32_t x = buildNonZeroValue(ms->mem+i);
+    if (x > 0) {
+      printf("0x%08x: 0x%08x\n", i, x);
+    }
+  }
+}
+
 void terminate(machine_state* ms){
     free(ms);
     exit(EXIT_FAILURE);

@@ -5,13 +5,13 @@ FILES = emulate.o utils.o decode.o execute.o instructions/branch.o instructions/
 #gcc -g -Wall -pedantic emulate.c utils.c decode.c execute.c instructions/branch.c instructions/data_processing.c instructions/multiply.c instructions/single_data_transfer.c instructions/operandExtraction.c instructions/halt.c -o emulate -lm
 
 emulate: $(FILES)
-	$(CC) $(CFLAGS) $(FILES) -o emulate -lm
+	$(CC) $(CFLAGS) $(FILES) -o emulate 
 
-emulate.o: emulate.c utils.h types.h decode.h 
+emulate.o: emulate.c utils.h types.h 
 
 utils.o: utils.c utils.h types.h
 
-decode.o: decode.c utils.h types.h decode.h instructions/instructions.h
+decode.o: decode.c utils.h types.h instructions/instructions.h
 
 execute.o: execute.c utils.h types.h instructions/instructions.h instructions/datafunctions.h
 

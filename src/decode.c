@@ -2,14 +2,7 @@
 #include "types.h"
 #include "instructions/instructions.h"
 #include "utils.h"
-#include "decode.h"
 
-//To call decoder
-/*
-Hard coded the bits extraction with masks as it is faster
-than our extractBits function which we tend to use in other
-functions for convenience and simplicity
-*/
 void decode(machine_state* ms) {
   decoded_inst result;
   uint32_t inst = ms -> instrFetched;

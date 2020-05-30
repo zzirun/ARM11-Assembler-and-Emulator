@@ -31,6 +31,14 @@ typedef enum cpsrFlags {
   N = 8
 } cpsrFlags;
 
+// shifter
+typedef enum shiftType {
+  LSL, // logical L
+  LSR, // logical R
+  ASR, // arithmetic R
+  ROR  // rotate R
+} shiftType;
+
 typedef enum processor_state {
   EMPTY,
   FETCHED,
