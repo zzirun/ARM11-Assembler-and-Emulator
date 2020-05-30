@@ -7,8 +7,8 @@
 
 void single_data_transfer(machine_state *ms) {
     decoded_inst inst = ms->instrToExecute;
-    uint32_t address;
-    uint32_t offset;
+    word_t address;
+    word_t offset;
 
     if (inst.imm) {
         // immediate flag is set, offset interpreted as

@@ -6,7 +6,7 @@
 
 // check instr cond codes with most significant 4 bits of CPSR (NZCV)
 bool checkCond(machine_state *ms) {
-  uint32_t cpsrMSFour = (ms->regs.CPSR) >> 28;
+  word_t cpsrMSFour = (ms->regs.CPSR) >> 28;
   switch (ms -> instrToExecute.cond) {
     case EQ:
       return cpsrMSFour & Z;

@@ -4,7 +4,7 @@
 
 void decode(machine_state* ms) {
   decoded_inst result;
-  uint32_t inst = ms -> instrFetched;
+  word_t inst = ms -> instrFetched;
   result.cond = inst >> 28; //Common to all instructions
   if (!inst) {
     result.type = HALT;

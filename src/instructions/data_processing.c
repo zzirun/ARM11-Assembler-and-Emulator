@@ -18,10 +18,10 @@
 
 void dataProc(machine_state *ms) {
 
-  uint32_t op1 = ms->regs.gpr[ms->instrToExecute.rn];
-  uint32_t op2;
-  uint32_t result;
-  uint8_t opcode = ms->instrToExecute.operation_code;
+  word_t op1 = ms->regs.gpr[ms->instrToExecute.rn];
+  word_t op2;
+  word_t result;
+  byte_t opcode = ms->instrToExecute.operation_code;
   bool carry = 0;
 
   // assign second operand
@@ -93,7 +93,7 @@ void dataProc(machine_state *ms) {
     - Z set only if result all 0s
     - N set to logical bit 31 of result
     */
-    uint32_t flagsNew = (C * carry) + (Z * (result == 0)) + (N * (result >> 31));
+    word_t flagsNew = (C * carry) + (Z * (result == 0)) + (N * (result >> 31));
     // clear top 3 bits and set to new flags
     ms->regs.CPSR = (ms->regs.CPSR & 0x1FFFFFFF) | (flagsNew << 28);
   }
