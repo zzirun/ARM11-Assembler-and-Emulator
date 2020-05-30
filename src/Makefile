@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -pedantic
-FILES = emulate.o utils.o decode.o execute.o instructions/branch.o instructions/data_processing.o instructions/multiply.o instructions/single_data_transfer.o instructions/operandExtraction.o instructions/halt.o
+FILES = emulate.o utils.o decode.o execute.o instructions/branch.o instructions/data_processing.o instructions/multiply.o instructions/single_data_transfer.o instructions/operandExtraction.o 
 
 #gcc -g -Wall -pedantic emulate.c utils.c decode.c execute.c instructions/branch.c instructions/data_processing.c instructions/multiply.c instructions/single_data_transfer.c instructions/operandExtraction.c instructions/halt.c -o emulate -lm
 
@@ -24,8 +24,6 @@ instructions/multiply.o: instructions/multiply.c utils.h types.h instructions/da
 instructions/single_data_transfer.o: instructions/single_data_transfer.c utils.h types.h instructions/datafunctions.h instructions/operandExtraction.h
 
 instructions/operandExtraction.o: instructions/operandExtraction.c utils.h types.h instructions/operandExtraction.h
-
-instructions/halt.o: instructions/halt.c utils.h types.h instructions/datafunctions.h
 
 clean:
 	rm -rf *.o instructions/*.o emulate

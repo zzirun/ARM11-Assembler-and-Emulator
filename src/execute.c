@@ -37,9 +37,6 @@ void execute(machine_state* ms) {
     /* Not in switch cases as the checkCond for
        HALT returns false according to the CPSR
        flags, hence treated as special case */
-    if (ms->instrToExecute.type == HALT) { 
-      halt(ms);
-    }
     if(checkCond(ms)) {
         switch(ms->instrToExecute.type){
             case DATA_PROC:

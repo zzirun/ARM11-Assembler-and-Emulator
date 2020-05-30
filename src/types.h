@@ -47,7 +47,7 @@ typedef enum inst_type{
     MULT,
     DATA_TRANS,
     BRANCH,
-    HALT 
+    HALT
 } inst_type;
 
 typedef struct decoded_inst {
@@ -56,7 +56,10 @@ typedef struct decoded_inst {
     // all: condition codes
     byte_t cond;
 
-    // DP, SDT, B
+    // B
+    int32_t branch_offset;
+
+    // DP, SDT
     uint16_t operand_offset;
 
     // DP : opcode
