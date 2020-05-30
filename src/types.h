@@ -1,6 +1,3 @@
-//
-// Created by Ivy Tam on 25/05/2020.
-//
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -45,34 +42,32 @@ typedef enum inst_type{
     MULT,
     DATA_TRANS,
     BRANCH,
-    HALT
+    HALT 
 } inst_type;
 
 typedef struct decoded_inst {
     inst_type type;
 
+    // all: condition codes
     uint8_t cond;
 
-    //used for branch offset
-    int32_t branch_offset;
-
-    //used for data processing and single data transfer
+    // DP, SDT, B
     uint16_t operand_offset;
 
-    //opcode only in DP
+    // DP : opcode
     uint8_t operation_code;
 
-    //For DP and SDT (To indicate immediate or shifted register)
+    // DP, SDT : indicate immediate or shifted register
     bool imm;
 
-    //registers (only in DP, M, SDT)
+    // DP, M, SDT : registers
     int8_t rn;
     int8_t rd;
-    // Rs and Rm only in M
+    // M : registers
     int8_t rs;
     int8_t rm;
 
-    //P, U and L only in SDT
+    // SDT : P, U, L bits
     // pre/post indexing flag
     bool p;
     // up flag
@@ -80,10 +75,10 @@ typedef struct decoded_inst {
     // load/store flag
     bool l;
 
-    // only in DP and M (if to update CPSR flags)
+    // DP, M : if to update CPSR flags
     bool set_cc;
 
-    // only in M (if to multiply and accumulate)
+    // M : if to multiply and accumulate
     bool accum;
 
 } decoded_inst;
