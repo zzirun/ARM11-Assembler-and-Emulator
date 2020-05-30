@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stdlib.h>
-#include "instructions.h"
 #include "../utils.h"
 #include "../types.h"
 #include "datafunctions.h"

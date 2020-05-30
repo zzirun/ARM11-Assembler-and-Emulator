@@ -11,17 +11,17 @@ emulate.o: emulate.c utils.h types.h
 
 utils.o: utils.c utils.h types.h
 
-decode.o: decode.c utils.h types.h instructions/instructions.h
+decode.o: decode.c utils.h types.h
 
-execute.o: execute.c utils.h types.h instructions/instructions.h instructions/datafunctions.h
+execute.o: execute.c utils.h types.h instructions/datafunctions.h
 
-instructions/branch.o: instructions/branch.c instructions/instructions.h utils.h types.h instructions/datafunctions.h
+instructions/branch.o: instructions/branch.c utils.h types.h instructions/datafunctions.h
 
-instructions/dataprocessing.o: instructions/dataprocessing.c instructions/instructions.h utils.h types.h instructions/datafunctions.h instructions/operandExtraction.h
+instructions/dataprocessing.o: instructions/dataprocessing.c utils.h types.h instructions/datafunctions.h instructions/operandExtraction.h
 
-instructions/multiply.o: instructions/multiply.c instructions/instructions.h utils.h types.h instructions/datafunctions.h
+instructions/multiply.o: instructions/multiply.c utils.h types.h instructions/datafunctions.h
 
-instructions/single_data_transfer.o: instructions/single_data_transfer.c instructions/instructions.h utils.h types.h instructions/datafunctions.h instructions/operandExtraction.h
+instructions/single_data_transfer.o: instructions/single_data_transfer.c utils.h types.h instructions/datafunctions.h instructions/operandExtraction.h
 
 instructions/operandExtraction.o: instructions/operandExtraction.c utils.h types.h instructions/operandExtraction.h
 
