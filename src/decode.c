@@ -4,7 +4,7 @@
 
 void decode(machine_state* ms) {
   decoded_inst result;
-  uint32_t inst = ms -> instrFetched;
+  word_t inst = ms -> instrFetched;
 
   // common to all instructions - top 4 bits : condition code
   result.cond = inst >> 28; 

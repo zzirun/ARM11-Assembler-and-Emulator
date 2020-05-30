@@ -5,8 +5,8 @@
 #include "utils.h"
 #include "types.h"
 
-void printBits(uint32_t x) {
-  uint32_t mask = 1 << 31;
+void printBits(word_t x) {
+  word_t mask = 1 << 31;
   for (int i = 0; i < 32; i++) {
     if ((x & mask) == 0 ) {
       printf("0");
@@ -18,21 +18,21 @@ void printBits(uint32_t x) {
   printf("\n");
 }
 
-void binLoad(FILE *fp, uint8_t *array) {
+void binLoad(FILE *fp, byte_t *array) {
     int read = 0; //Number of instructions read
-    uint8_t *ptr = array; //Helper pointer to store instructions into array
+    byte_t *ptr = array; //Helper pointer to store instructions into array
     while (fread(ptr, 1, 1, fp) == 1) {
         read++;
         ptr++;
     }
 }
 
-uint32_t load_word(uint32_t address, machine_state *ms) {
+word_t load_word(word_t address, machine_state *ms) {
     if (address > ADDRESS_COUNT - 4) {
         printf("Error: Out of bounds memory access at address 0x%08x\n", address);
         return 0;
     } else {
-      uint32_t word = 0;
+      word_t word = 0;
       for (size_t i = 0; i < 4; i++) {
           word |= ms->mem[address + i] << (i * 8);
       }
@@ -40,7 +40,7 @@ uint32_t load_word(uint32_t address, machine_state *ms) {
     }
 }
 
-void store_word(uint32_t address, machine_state *ms, uint32_t word) {
+void store_word(word_t address, machine_state *ms, word_t word) {
     if (address > ADDRESS_COUNT - 4) {
         printf("Error: Out of bounds memory access at address 0x%08x\n", address);
     } else {
@@ -51,7 +51,7 @@ void store_word(uint32_t address, machine_state *ms, uint32_t word) {
     }
 }
 
-uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
+word_t shifter(shiftType shiftT, word_t op, byte_t shift, bool *carry) {
   if (shift == 0) {
     return op;
   }
@@ -62,7 +62,7 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
     return op << shift;
   }
   *carry = ((op >> (shift - 1)) & 0x1); //extractBits(op, shift - 1, shift - 1)
-  uint32_t mask = 0;
+  word_t mask = 0;
   switch (shiftT) {
     case LSR:
       // logical shift right
@@ -84,8 +84,8 @@ uint32_t shifter(shiftType shiftT, uint32_t op, uint8_t shift, bool *carry) {
 }
 
 //Helper for output function
-uint32_t buildNonZeroValue(uint8_t* ptr) {
-  uint32_t result = 0;
+word_t buildNonZeroValue(byte_t* ptr) {
+  word_t result = 0;
   for (int i = 0; i < 4; i++) {
     result += *(ptr+i) << (8 * (3-i));
   }
@@ -101,7 +101,7 @@ void output(machine_state* ms) {
   printf("CPSR: %10d (0x%08x)\n", ms->regs.CPSR, ms->regs.CPSR);
   printf("Non-zero memory:\n");
   for (int i = 0; i < 65536; i += 4) {
-    uint32_t x = buildNonZeroValue(ms->mem+i);
+    word_t x = buildNonZeroValue(ms->mem+i);
     if (x > 0) {
       printf("0x%08x: 0x%08x\n", i, x);
     }

@@ -7,10 +7,10 @@
 
 void dataProc(machine_state *ms) {
 
-  uint32_t op1 = ms->regs.gpr[ms->instrToExecute.rn];
-  uint32_t op2;
-  uint32_t result;
-  uint8_t opcode = ms->instrToExecute.operation_code;
+  word_t op1 = ms->regs.gpr[ms->instrToExecute.rn];
+  word_t op2;
+  word_t result;
+  byte_t opcode = ms->instrToExecute.operation_code;
 
   // logical op (AND, EOR, ORR, TEQ, TST, MOV) : shifter carry
   // arithmetic op (ADD, SUB, RSB, CMP) : ALU carry
@@ -84,7 +84,7 @@ void dataProc(machine_state *ms) {
      * N set to logical bit 31 of result
    */
   if (ms->instrToExecute.set_cc) {
-    uint32_t flagsNew = (C * carry) | (Z * (result == 0)) | (N * (result >> 31));
+    word_t flagsNew = (C * carry) | (Z * (result == 0)) | (N * (result >> 31));
     // clear top 3 bits and set to new flags
     ms->regs.CPSR = (ms->regs.CPSR & 0x1FFFFFFF) | (flagsNew << 28);
   }

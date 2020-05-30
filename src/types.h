@@ -13,6 +13,11 @@
 
 #define ADDRESS_COUNT 65536
 #define REGISTER_COUNT 13
+
+typedef uint8_t byte_t;
+typedef uint32_t word_t;
+typedef int8_t reg_add_t;
+
 typedef uint8_t memory[ADDRESS_COUNT];
 
 typedef struct registers{
@@ -49,23 +54,23 @@ typedef struct decoded_inst {
     inst_type type;
 
     // all: condition codes
-    uint8_t cond;
+    byte_t cond;
 
     // DP, SDT, B
     uint16_t operand_offset;
 
     // DP : opcode
-    uint8_t operation_code;
+    byte_t operation_code;
 
     // DP, SDT : indicate immediate or shifted register
     bool imm;
 
     // DP, M, SDT : registers
-    int8_t rn;
-    int8_t rd;
+    reg_add_t rn;
+    reg_add_t rd;
     // M : registers
-    int8_t rs;
-    int8_t rm;
+    reg_add_t rs;
+    reg_add_t rm;
 
     // SDT : P, U, L bits
     // pre/post indexing flag
@@ -117,7 +122,7 @@ typedef enum processor_state {
 typedef struct machine_state {
   memory mem;
   registers regs;
-  uint32_t instrFetched;
+  word_t instrFetched;
   decoded_inst instrToExecute;
   processor_state ps;
 } machine_state;
