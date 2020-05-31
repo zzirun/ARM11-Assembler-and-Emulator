@@ -5,21 +5,21 @@
 #include "utils.h"
 
 // check instr cond codes with most significant 4 bits of CPSR (NZCV)
-bool checkCond(machine_state *ms) {
-  word_t cpsrMSFour = (ms->regs.CPSR) >> 28;
-  switch (ms -> instrToExecute.cond) {
+bool check_cond(machine_state *ms) {
+  word_t cpsr_ms4 = (ms->regs.cpsr) >> 28;
+  switch (ms -> instr_to_execute.cond) {
     case EQ:
-      return cpsrMSFour & Z;
+      return cpsr_ms4 & Z;
     case NE:
-      return !(cpsrMSFour & Z);
+      return !(cpsr_ms4 & Z);
     case GE:
-      return ((cpsrMSFour & N) >> 3) == (cpsrMSFour & V);
+      return ((cpsr_ms4 & N) >> 3) == (cpsr_ms4 & V);
     case LT:
-      return ((cpsrMSFour & N) >> 3) != (cpsrMSFour & V);
+      return ((cpsr_ms4 & N) >> 3) != (cpsr_ms4 & V);
     case GT:
-      return !(cpsrMSFour & Z) && (((cpsrMSFour & N) >> 3) == (cpsrMSFour & V));
+      return !(cpsr_ms4 & Z) && (((cpsr_ms4 & N) >> 3) == (cpsr_ms4 & V));
     case LE:
-      return (cpsrMSFour & Z) || (cpsrMSFour & N) >> 3 != (cpsrMSFour & V);
+      return (cpsr_ms4 & Z) || (cpsr_ms4 & N) >> 3 != (cpsr_ms4 & V);
     case AL:
       return true;
     default:
@@ -37,13 +37,13 @@ void execute(machine_state* ms) {
     /* Not in switch cases as the checkCond for
        HALT returns false according to the CPSR
        flags, hence treated as special case */
-    if(checkCond(ms)) {
-        switch(ms->instrToExecute.type){
+    if(check_cond(ms)) {
+        switch(ms->instr_to_execute.type){
             case DATA_PROC:
-                dataProc(ms);
+                data_processing(ms);
                 break;
             case MULT:
-                mult(ms);
+                multiply(ms);
                 break;
             case DATA_TRANS:
                 single_data_transfer(ms);
@@ -52,7 +52,7 @@ void execute(machine_state* ms) {
                 branch(ms);
                 break;
             default:
-                fprintf(stderr, "Invalid Instruction Type at Address: %x \n", ms->regs.PC -8);
+                fprintf(stderr, "Invalid Instruction Type at Address: %x \n", ms->regs.pc - 8);
                 terminate(ms);
                 // unsuccessful exit;
         }

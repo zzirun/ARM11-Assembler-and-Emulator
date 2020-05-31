@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
         terminate(ms);
     }
     //Loads content of the file into memory
-    binLoad(fp, ms->mem);
+    bin_load(fp, ms->mem);
     fclose(fp);
 
     //PIPELINE
@@ -31,16 +31,16 @@ int main(int argc, char **argv) {
       Run this loop if we need to decode or
       execute an instruction that isn't HALT
     */
-    while ((ms->ps != DECODED) || (ms->instrToExecute.type != HALT)) {
+    while ((ms->ps != DECODED) || (ms->instr_to_execute.type != HALT)) {
         switch (ms->ps) {
             case (DECODED):
                 execute(ms);
             case (FETCHED):
                 decode(ms);
             case (EMPTY):
-                ms->instrFetched = load_word(ms->regs.PC, ms);
-                ms->regs.PC += 4;
-                // update_processor_state(ms);
+                ms->instr_fetched = load_word(ms->regs.pc, ms);
+                ms->regs.pc += 4;
+                // update processor state
                 ms->ps = !ms->ps ? FETCHED : DECODED;
                 // default case?
         }

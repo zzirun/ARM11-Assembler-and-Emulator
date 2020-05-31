@@ -11,7 +11,7 @@
  *  * bit 11 -8 : half of rotation amount
  * *rotate right immediate value by rotation amount
  */
-word_t immExtract(uint16_t op, bool *carry) {
+word_t imm_extract(uint16_t op, bool *carry) {
   byte_t imm = op;
   byte_t rotate = 2 * ((op >> 8) & 0xF);
   return shifter(ROR, imm, rotate, carry);
@@ -27,8 +27,8 @@ word_t immExtract(uint16_t op, bool *carry) {
  *  * bit 4 == 0 -> shift by constant (bit 11 - 7)
  *  * bit 4 == 1 -> shift by lowest byte in register Rs (bit 11 - 8)
  */
-word_t regExtract(uint16_t op, machine_state* ms, bool *carry) {
-  word_t rm = ms->regs.gpr[(op & 0xF)]; //extractBits(op, 0, 3)
+word_t reg_extract(uint16_t op, machine_state* ms, bool *carry) {
+  word_t rm = ms->regs.gpr[(op & 0xF)]; 
   byte_t shift;
 
   // check bit 4 to assign shift amount
