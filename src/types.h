@@ -13,6 +13,16 @@
 
 #define ADDRESS_COUNT 65536
 #define REGISTER_COUNT 13
+#define WORD_SIZE 32
+//Masks to get the first N bits in GET_N_MASK when used with bitwise &.
+#define GET_1_MASK 0x1
+#define GET_4_MASK 0xF
+#define GET_12_MASK 0xFFF
+#define GET_24_MASK 0xFFFFFF
+#define GET_29_MASK 0x1FFFFFFF
+//Mask which sign extends a negative 26 bit number when used with bitwise |;
+#define NEG_SIGN_EXT_MASK 0xFC000000
+
 
 typedef uint8_t byte_t;
 typedef uint32_t word_t;

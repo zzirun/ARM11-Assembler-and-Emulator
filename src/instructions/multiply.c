@@ -20,7 +20,7 @@ void multiply(machine_state* ms){
     //Update flags if S bit is set
     if(instr->set_cc){
         // extract the top 4 bits of the cpsr
-        word_t new_cpsr = (ms->regs.cpsr) >> 28 ;
+        word_t new_cpsr = (ms->regs.cpsr) >> (WORD_SIZE - 4);
         //set Z using mask
         if(result == 0){
             new_cpsr |= Z ;
@@ -31,7 +31,7 @@ void multiply(machine_state* ms){
         }
 
         //Update cpsr to newcpsr
-        ms->regs.cpsr = new_cpsr << 28;
+        ms->regs.cpsr = new_cpsr << (WORD_SIZE - 4);
 
     }
 

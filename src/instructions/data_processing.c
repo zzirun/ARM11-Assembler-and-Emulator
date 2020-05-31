@@ -85,7 +85,7 @@ void data_processing(machine_state *ms) {
   if (instr->set_cc) {
     word_t flags_new = (C * carry) | (Z * (result == 0)) | (N * (result >> 31));
     // clear top 3 bits and set to new flags
-    ms->regs.cpsr = (ms->regs.cpsr & 0x1FFFFFFF) | (flags_new << 28);
+    ms->regs.cpsr = (ms->regs.cpsr & GET_29_MASK) | (flags_new << 28);
   }
 
 }
