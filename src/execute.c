@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "types.h"
-#include "instructions/datafunctions.h"
+#include "instructions/data_functions.h"
 #include "utils.h"
 
 // check instr cond codes with most significant 4 bits of CPSR (NZCV)

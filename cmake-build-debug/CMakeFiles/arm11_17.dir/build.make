@@ -57,74 +57,9 @@ include CMakeFiles/arm11_17.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/arm11_17.dir/flags.make
 
-CMakeFiles/arm11_17.dir/src/instructions/branch.c.o: CMakeFiles/arm11_17.dir/flags.make
-CMakeFiles/arm11_17.dir/src/instructions/branch.c.o: ../src/instructions/branch.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/arm11_17.dir/src/instructions/branch.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/instructions/branch.c.o   -c /Users/zirun/Documents/arm11_17/src/instructions/branch.c
-
-CMakeFiles/arm11_17.dir/src/instructions/branch.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/arm11_17.dir/src/instructions/branch.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/zirun/Documents/arm11_17/src/instructions/branch.c > CMakeFiles/arm11_17.dir/src/instructions/branch.c.i
-
-CMakeFiles/arm11_17.dir/src/instructions/branch.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/instructions/branch.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/instructions/branch.c -o CMakeFiles/arm11_17.dir/src/instructions/branch.c.s
-
-CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o: CMakeFiles/arm11_17.dir/flags.make
-CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o: ../src/instructions/data_processing.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o   -c /Users/zirun/Documents/arm11_17/src/instructions/data_processing.c
-
-CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/zirun/Documents/arm11_17/src/instructions/data_processing.c > CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.i
-
-CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/instructions/data_processing.c -o CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.s
-
-CMakeFiles/arm11_17.dir/src/instructions/halt.c.o: CMakeFiles/arm11_17.dir/flags.make
-CMakeFiles/arm11_17.dir/src/instructions/halt.c.o: ../src/instructions/halt.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/arm11_17.dir/src/instructions/halt.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/instructions/halt.c.o   -c /Users/zirun/Documents/arm11_17/src/instructions/halt.c
-
-CMakeFiles/arm11_17.dir/src/instructions/halt.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/arm11_17.dir/src/instructions/halt.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/zirun/Documents/arm11_17/src/instructions/halt.c > CMakeFiles/arm11_17.dir/src/instructions/halt.c.i
-
-CMakeFiles/arm11_17.dir/src/instructions/halt.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/instructions/halt.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/instructions/halt.c -o CMakeFiles/arm11_17.dir/src/instructions/halt.c.s
-
-CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o: CMakeFiles/arm11_17.dir/flags.make
-CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o: ../src/instructions/multiply.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o   -c /Users/zirun/Documents/arm11_17/src/instructions/multiply.c
-
-CMakeFiles/arm11_17.dir/src/instructions/multiply.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/arm11_17.dir/src/instructions/multiply.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/zirun/Documents/arm11_17/src/instructions/multiply.c > CMakeFiles/arm11_17.dir/src/instructions/multiply.c.i
-
-CMakeFiles/arm11_17.dir/src/instructions/multiply.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/instructions/multiply.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/instructions/multiply.c -o CMakeFiles/arm11_17.dir/src/instructions/multiply.c.s
-
-CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o: CMakeFiles/arm11_17.dir/flags.make
-CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o: ../src/instructions/single_data_transfer.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o   -c /Users/zirun/Documents/arm11_17/src/instructions/single_data_transfer.c
-
-CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/zirun/Documents/arm11_17/src/instructions/single_data_transfer.c > CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.i
-
-CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/instructions/single_data_transfer.c -o CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.s
-
 CMakeFiles/arm11_17.dir/src/assemble.c.o: CMakeFiles/arm11_17.dir/flags.make
 CMakeFiles/arm11_17.dir/src/assemble.c.o: ../src/assemble.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/arm11_17.dir/src/assemble.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/arm11_17.dir/src/assemble.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/assemble.c.o   -c /Users/zirun/Documents/arm11_17/src/assemble.c
 
 CMakeFiles/arm11_17.dir/src/assemble.c.i: cmake_force
@@ -137,7 +72,7 @@ CMakeFiles/arm11_17.dir/src/assemble.c.s: cmake_force
 
 CMakeFiles/arm11_17.dir/src/decode.c.o: CMakeFiles/arm11_17.dir/flags.make
 CMakeFiles/arm11_17.dir/src/decode.c.o: ../src/decode.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/arm11_17.dir/src/decode.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/arm11_17.dir/src/decode.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/decode.c.o   -c /Users/zirun/Documents/arm11_17/src/decode.c
 
 CMakeFiles/arm11_17.dir/src/decode.c.i: cmake_force
@@ -150,7 +85,7 @@ CMakeFiles/arm11_17.dir/src/decode.c.s: cmake_force
 
 CMakeFiles/arm11_17.dir/src/emulate.c.o: CMakeFiles/arm11_17.dir/flags.make
 CMakeFiles/arm11_17.dir/src/emulate.c.o: ../src/emulate.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/arm11_17.dir/src/emulate.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/arm11_17.dir/src/emulate.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/emulate.c.o   -c /Users/zirun/Documents/arm11_17/src/emulate.c
 
 CMakeFiles/arm11_17.dir/src/emulate.c.i: cmake_force
@@ -163,7 +98,7 @@ CMakeFiles/arm11_17.dir/src/emulate.c.s: cmake_force
 
 CMakeFiles/arm11_17.dir/src/execute.c.o: CMakeFiles/arm11_17.dir/flags.make
 CMakeFiles/arm11_17.dir/src/execute.c.o: ../src/execute.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/arm11_17.dir/src/execute.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/arm11_17.dir/src/execute.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/execute.c.o   -c /Users/zirun/Documents/arm11_17/src/execute.c
 
 CMakeFiles/arm11_17.dir/src/execute.c.i: cmake_force
@@ -176,7 +111,7 @@ CMakeFiles/arm11_17.dir/src/execute.c.s: cmake_force
 
 CMakeFiles/arm11_17.dir/src/utils.c.o: CMakeFiles/arm11_17.dir/flags.make
 CMakeFiles/arm11_17.dir/src/utils.c.o: ../src/utils.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/arm11_17.dir/src/utils.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/arm11_17.dir/src/utils.c.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/utils.c.o   -c /Users/zirun/Documents/arm11_17/src/utils.c
 
 CMakeFiles/arm11_17.dir/src/utils.c.i: cmake_force
@@ -187,35 +122,40 @@ CMakeFiles/arm11_17.dir/src/utils.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/utils.c.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/utils.c -o CMakeFiles/arm11_17.dir/src/utils.c.s
 
+CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o: CMakeFiles/arm11_17.dir/flags.make
+CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o: ../src/instructions/data_functions.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o   -c /Users/zirun/Documents/arm11_17/src/instructions/data_functions.c
+
+CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/zirun/Documents/arm11_17/src/instructions/data_functions.c > CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.i
+
+CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/zirun/Documents/arm11_17/src/instructions/data_functions.c -o CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.s
+
 # Object files for target arm11_17
 arm11_17_OBJECTS = \
-"CMakeFiles/arm11_17.dir/src/instructions/branch.c.o" \
-"CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o" \
-"CMakeFiles/arm11_17.dir/src/instructions/halt.c.o" \
-"CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o" \
-"CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o" \
 "CMakeFiles/arm11_17.dir/src/assemble.c.o" \
 "CMakeFiles/arm11_17.dir/src/decode.c.o" \
 "CMakeFiles/arm11_17.dir/src/emulate.c.o" \
 "CMakeFiles/arm11_17.dir/src/execute.c.o" \
-"CMakeFiles/arm11_17.dir/src/utils.c.o"
+"CMakeFiles/arm11_17.dir/src/utils.c.o" \
+"CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o"
 
 # External object files for target arm11_17
 arm11_17_EXTERNAL_OBJECTS =
 
-arm11_17: CMakeFiles/arm11_17.dir/src/instructions/branch.c.o
-arm11_17: CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o
-arm11_17: CMakeFiles/arm11_17.dir/src/instructions/halt.c.o
-arm11_17: CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o
-arm11_17: CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o
 arm11_17: CMakeFiles/arm11_17.dir/src/assemble.c.o
 arm11_17: CMakeFiles/arm11_17.dir/src/decode.c.o
 arm11_17: CMakeFiles/arm11_17.dir/src/emulate.c.o
 arm11_17: CMakeFiles/arm11_17.dir/src/execute.c.o
 arm11_17: CMakeFiles/arm11_17.dir/src/utils.c.o
+arm11_17: CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o
 arm11_17: CMakeFiles/arm11_17.dir/build.make
 arm11_17: CMakeFiles/arm11_17.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking C executable arm11_17"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable arm11_17"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/arm11_17.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

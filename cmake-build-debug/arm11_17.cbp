@@ -94,22 +94,10 @@
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/execute.c">
 			<Option target="arm11_17"/>
 		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/branch.c">
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/data_functions.c">
 			<Option target="arm11_17"/>
 		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/data_processing.c">
-			<Option target="arm11_17"/>
-		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/halt.c">
-			<Option target="arm11_17"/>
-		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/instructions.h">
-			<Option target="arm11_17"/>
-		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/multiply.c">
-			<Option target="arm11_17"/>
-		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/single_data_transfer.c">
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/data_functions.h">
 			<Option target="arm11_17"/>
 		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/types.h">

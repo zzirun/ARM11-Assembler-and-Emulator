@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "../utils.h"
 #include "../types.h"
-#include "operandExtraction.h"
+#include "operand_extraction.h"
 
 /* Returns operand2 for DP, offset for SDT */
 

@@ -231,140 +231,32 @@ src/execute.c.s:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/execute.c.s
 .PHONY : src/execute.c.s
 
-src/instructions/branch.o: src/instructions/branch.c.o
+src/instructions/data_functions.o: src/instructions/data_functions.c.o
 
-.PHONY : src/instructions/branch.o
-
-# target to build an object file
-src/instructions/branch.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/branch.c.o
-.PHONY : src/instructions/branch.c.o
-
-src/instructions/branch.i: src/instructions/branch.c.i
-
-.PHONY : src/instructions/branch.i
-
-# target to preprocess a source file
-src/instructions/branch.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/branch.c.i
-.PHONY : src/instructions/branch.c.i
-
-src/instructions/branch.s: src/instructions/branch.c.s
-
-.PHONY : src/instructions/branch.s
-
-# target to generate assembly for a file
-src/instructions/branch.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/branch.c.s
-.PHONY : src/instructions/branch.c.s
-
-src/instructions/data_processing.o: src/instructions/data_processing.c.o
-
-.PHONY : src/instructions/data_processing.o
+.PHONY : src/instructions/data_functions.o
 
 # target to build an object file
-src/instructions/data_processing.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.o
-.PHONY : src/instructions/data_processing.c.o
+src/instructions/data_functions.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o
+.PHONY : src/instructions/data_functions.c.o
 
-src/instructions/data_processing.i: src/instructions/data_processing.c.i
+src/instructions/data_functions.i: src/instructions/data_functions.c.i
 
-.PHONY : src/instructions/data_processing.i
-
-# target to preprocess a source file
-src/instructions/data_processing.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.i
-.PHONY : src/instructions/data_processing.c.i
-
-src/instructions/data_processing.s: src/instructions/data_processing.c.s
-
-.PHONY : src/instructions/data_processing.s
-
-# target to generate assembly for a file
-src/instructions/data_processing.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_processing.c.s
-.PHONY : src/instructions/data_processing.c.s
-
-src/instructions/halt.o: src/instructions/halt.c.o
-
-.PHONY : src/instructions/halt.o
-
-# target to build an object file
-src/instructions/halt.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/halt.c.o
-.PHONY : src/instructions/halt.c.o
-
-src/instructions/halt.i: src/instructions/halt.c.i
-
-.PHONY : src/instructions/halt.i
+.PHONY : src/instructions/data_functions.i
 
 # target to preprocess a source file
-src/instructions/halt.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/halt.c.i
-.PHONY : src/instructions/halt.c.i
+src/instructions/data_functions.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.i
+.PHONY : src/instructions/data_functions.c.i
 
-src/instructions/halt.s: src/instructions/halt.c.s
+src/instructions/data_functions.s: src/instructions/data_functions.c.s
 
-.PHONY : src/instructions/halt.s
-
-# target to generate assembly for a file
-src/instructions/halt.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/halt.c.s
-.PHONY : src/instructions/halt.c.s
-
-src/instructions/multiply.o: src/instructions/multiply.c.o
-
-.PHONY : src/instructions/multiply.o
-
-# target to build an object file
-src/instructions/multiply.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/multiply.c.o
-.PHONY : src/instructions/multiply.c.o
-
-src/instructions/multiply.i: src/instructions/multiply.c.i
-
-.PHONY : src/instructions/multiply.i
-
-# target to preprocess a source file
-src/instructions/multiply.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/multiply.c.i
-.PHONY : src/instructions/multiply.c.i
-
-src/instructions/multiply.s: src/instructions/multiply.c.s
-
-.PHONY : src/instructions/multiply.s
+.PHONY : src/instructions/data_functions.s
 
 # target to generate assembly for a file
-src/instructions/multiply.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/multiply.c.s
-.PHONY : src/instructions/multiply.c.s
-
-src/instructions/single_data_transfer.o: src/instructions/single_data_transfer.c.o
-
-.PHONY : src/instructions/single_data_transfer.o
-
-# target to build an object file
-src/instructions/single_data_transfer.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.o
-.PHONY : src/instructions/single_data_transfer.c.o
-
-src/instructions/single_data_transfer.i: src/instructions/single_data_transfer.c.i
-
-.PHONY : src/instructions/single_data_transfer.i
-
-# target to preprocess a source file
-src/instructions/single_data_transfer.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.i
-.PHONY : src/instructions/single_data_transfer.c.i
-
-src/instructions/single_data_transfer.s: src/instructions/single_data_transfer.c.s
-
-.PHONY : src/instructions/single_data_transfer.s
-
-# target to generate assembly for a file
-src/instructions/single_data_transfer.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/single_data_transfer.c.s
-.PHONY : src/instructions/single_data_transfer.c.s
+src/instructions/data_functions.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.s
+.PHONY : src/instructions/data_functions.c.s
 
 src/utils.o: src/utils.c.o
 
@@ -414,21 +306,9 @@ help:
 	@echo "... src/execute.o"
 	@echo "... src/execute.i"
 	@echo "... src/execute.s"
-	@echo "... src/instructions/branch.o"
-	@echo "... src/instructions/branch.i"
-	@echo "... src/instructions/branch.s"
-	@echo "... src/instructions/data_processing.o"
-	@echo "... src/instructions/data_processing.i"
-	@echo "... src/instructions/data_processing.s"
-	@echo "... src/instructions/halt.o"
-	@echo "... src/instructions/halt.i"
-	@echo "... src/instructions/halt.s"
-	@echo "... src/instructions/multiply.o"
-	@echo "... src/instructions/multiply.i"
-	@echo "... src/instructions/multiply.s"
-	@echo "... src/instructions/single_data_transfer.o"
-	@echo "... src/instructions/single_data_transfer.i"
-	@echo "... src/instructions/single_data_transfer.s"
+	@echo "... src/instructions/data_functions.o"
+	@echo "... src/instructions/data_functions.i"
+	@echo "... src/instructions/data_functions.s"
 	@echo "... src/utils.o"
 	@echo "... src/utils.i"
 	@echo "... src/utils.s"
