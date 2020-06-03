@@ -7,8 +7,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "utils.h"
-#include "types.h"
+#include "../utils.h"
+#include "../types.h"
 #include "operand_extraction.h"
 
 void branch(machine_state *ms) {
@@ -184,5 +184,3 @@ void single_data_transfer(machine_state *ms) {
         store_word(address, ms, ms->regs.gpr[instr->rd]);
     }
 }
-
-
