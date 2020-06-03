@@ -183,5 +183,3 @@ void single_data_transfer(machine_state *ms) {
         store_word(address, ms, ms->regs.gpr[instr->rd]);
     }
 }
-
-
