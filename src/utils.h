@@ -30,4 +30,10 @@ uint32_t shifter(shift_type shift_t, uint32_t op, uint8_t shift, bool *carry);
 // exits program with unsuccessful termination and frees allocated memory
 void terminate(machine_state* ms);
 
+// operand as rotated immediate
+uint32_t imm_extract(uint16_t op, bool *carry);
+
+// operand as shifted register contents
+uint32_t reg_extract(uint16_t op, machine_state* ms, bool *carry);
+
 #endif

@@ -9,7 +9,6 @@
 
 #include "utils.h"
 #include "types.h"
-#include "operand_extraction.h"
 
 void branch(machine_state *ms) {
     int32_t offset = ms->instr_to_execute.br.offset;

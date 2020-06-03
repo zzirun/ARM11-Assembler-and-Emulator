@@ -13,4 +13,4 @@ add_executable(arm11_17
         src/execute.c
         src/types.h
         src/utils.c
-        src/utils.h src/instructions/data_functions.c)
+        src/utils.h src/data_functions.c)

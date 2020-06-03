@@ -1,4 +1,4 @@
-#include "../types.h"
+#include "types.h"
 
 #ifndef ARM11_17_FUNCTIONS
 #define ARM11_17_FUNCTIONS
