@@ -4,27 +4,45 @@
 
 \begin{document}
 
-\title{ARM Checkpoint... }
-\author{TODO}
+\title{ARM Checkpoint}
+\author{Ivy Tam, Weiyi Tee, Zirun Zhai, Soon Zhi Ho (Brandon)}
 
 \maketitle
 
 \section{Group Organisation}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+Before starting work, our group read through the specification before having a discussion to resolve any uncertainties. We decided to split the task of implementing the emulator into a few parts. \par 
+First, we had to work on the framework for the emulator. This section still entailed a great amount of discussion as we had to make sure that we reached a common understanding of the structure. Once we were confident with our design choice, we worked on implementing the framework together which required creating a binary file loader, defining data structures for memory, registers, machine states, instructions and common constants. We then delegated the tasks and worked individually to maximize efficiency. Weiyi worked on the Data Processing Instructions, Ivy implemented the Multiply Instructions, Zirun worked on the Single Data Transfer Instructions, while Brandon completed the Branch Instructions and the decoder portion of the pipeline. \par 
+Following this, we completed the execute portion of the pipeline together and then debugged the code according the test cases. Through this process we demonstrated great synergy when we faced one particular challenge where our program would timeout in one of the test cases - loop 01, which had about 4 million iterations. We made use of the gprof tool and were able to identify that decode was very inefficient. This was because decode was written with a function which extracted bits from a number by computing masks through pow. Our solution was to hard-code the appropriate masks and apply bitwise operations to extract the bits instead. This improved efficiency tremendously and we were finally able to pass all the test cases. \par 
+Finally, we cleaned up the code and made sure that it had consistent style, contained minimal magic numbers by defining constants and used type aliases to improve readability. We completed our code for the emulator four days before the deadline to allow time for thorough checking, clean up any remaining errors, and to write our report. \par 
+Our group has worked well for the tasks thus far. We have been able to overcome the constraint of not being able to meet up physically through strong and constant communication via Whatsapp messaging or Discord calls. Our emphasis on clear and readable coding styles made it very easy for members to read and edit each other’s work. We adapted very fluidly to both collaborating on a task and individually working on separate parts. However, we could utilize git pull requests in the future as suggested by our mentor to coordinate the pushing of code and reduce time wasted on resolving unnecessary merge conflicts. We also tend to be indecisive when making design decisions together, we intend to overcome this in future tasks by realising that there is no right or wrong implementation - it boils down to design choice. 
+
 
 \section{Implementation Strategies}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+We decided to split the \textbf{\emph{emulator}} into 5 main files :
+
+\begin{itemize}
+	\item \textbf{\emph{emulate.c}} : The main function of the emulator and therefore handles parsing the input argument (path to binary instruction file). 
+	\begin{itemize}
+		\item We initialised the struct machine\_state (stores registers, memory, instructions and processor state) on the heap because we want it to be persistent throughout the program as it will be accessed 				  and modified by most function calls. Alternatively, we could have stored the struct in the stack frame of the main function, but we ultimately decided against this as it increases the risk of stack 			  overflow.
+		\item The input file is read and each byte is loaded into memory (little endian format) by a binary file loader. 
+		\item It also contains a simulation of the ARM pipeline in the form of a loop which will fetch, decode and execute the appropriate instructions by calling the load, decode and execute functions.
+	\end{itemize}
+	\item \textbf{\emph{decode.c}} : Contains the decode function translating binary instructions into a decoded instruction struct, making the instruction fields more accessible during the 									     execution stage of the pipeline.
+	\begin{itemize}
+		\item As described above, we decided to use hard-coded masks to extract bits of the binary instruction. We realised that by doing so we increased efficiency at the cost of lower extensibility. For 		          example if we wanted to extend our code to implement more types of instructions, hard-coded masks will make it harder to extend our code as it is not as scalable as a function which extracts bits 				  for us. 
+	\end{itemize}
+	\item \textbf{\emph{execute.c}} : Contains the execute function which first checks the condition codes of the instruction. If it succeeds, it then calls the execution function according to its 								 		  instruction type. 
+	\item \textbf{\emph{types.h}} : Contains definitions of various types we will use throughout our project such as constants, enums and structs which model the state of the machine and instructions.
+	\begin{itemize}
+		\item We defined a struct - decoded\_instr which contains the fields of an instruction according to its type (through a union)  such as its opcodes, destination register, offset etc. We will be able 				  to reuse this struct as a ‘stepping stone’ when encoding assembly code to binary code in the assembler.
+	\end{itemize}
+	\item \textbf{\emph{utils.c}} : Contains some generic functions to avoid code repetition and aid in debugging.
+\end{itemize}
+
+\begin{flushleft}
+Some tasks moving forward which we think may be challenging include parsing text-based input and writing into a binary file, implementation of the symbol table during the first pass, as well as conversion between endianness. Furthermore, we have yet to come up with a topic for our extension. However, we plan to draw from the given theme and brainstorm as a team with our mentor for inspiration to come up with an original topic. We have also decided to focus on the upcoming C Programming Test over the next few days before continuing with the project.  
+\end{flushleft}
 
 \end{document}
