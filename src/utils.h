@@ -3,16 +3,19 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 #include "types.h"
 
-// exits program with unsuccessful termination and frees allocated memory
+// Exits program with unsuccessful termination and frees allocated memory
 void terminate(machine_state* ms);
+
+// Helper for output function in emulator
+// builds 32-bit word from 4 bytes stored in array (little endian)
+word_t build_nonzero_value(byte_t *ptr);
 
 // For debugging
 void print_bits(uint32_t x);
-
-// Binary loader (binary file to array)
-void bin_load(FILE *fp, uint8_t *array);
 
 // Loads word from memory at specified address
 uint32_t load_word(uint32_t address, machine_state *ms);

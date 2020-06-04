@@ -1,7 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "utils.h"
-#include "types.h"
 #include "emulate.h"
 
 int main(int argc, char **argv) {
@@ -17,16 +14,10 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    // Opens file, argv[1] to skip space character
-    FILE *fp;
-    if (!(fp = fopen(argv[1], "rb"))) {
-        perror("Cannot Open File");
-        terminate(ms);
-    }
-    // Loads content of the file into memory
-    bin_load(fp, ms->mem);
-    fclose(fp);
-
+    // Load content of binary file into memory
+    // argv[1] to skip space character
+    bin_load(argv[1], ms);
+    
     // PIPELINE - Execute, Decode, Fetch cycle
     /*
      *  Run this loop if we need to decode or
@@ -39,6 +30,7 @@ int main(int argc, char **argv) {
             case (FETCHED):
                 decode(ms);
             case (EMPTY):
+                // fetch
                 ms->instr_fetched = load_word(ms->regs.pc, ms);
                 // update PC
                 ms->regs.pc += 4;
@@ -58,3 +50,4 @@ int main(int argc, char **argv) {
 
     return EXIT_SUCCESS;
 }
+
