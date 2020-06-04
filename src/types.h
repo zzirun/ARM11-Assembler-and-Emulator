@@ -1,8 +1,8 @@
-#include <stdint.h>
-#include <stdbool.h>
-
 #ifndef ARM11_17_TYPES_H
 #define ARM11_17_TYPES_H
+
+#include <stdint.h>
+#include <stdbool.h>
 
 /*
   Each register is 32 bits.
@@ -43,14 +43,6 @@ typedef enum cpsr_flags {
   Z = 4,
   N = 8
 } cpsr_flags;
-
-// shifter
-typedef enum shift_type {
-  LSL, // logical L
-  LSR, // logical R
-  ASR, // arithmetic R
-  ROR  // rotate R
-} shift_type;
 
 typedef enum instr_type {
   DATA_PROC,

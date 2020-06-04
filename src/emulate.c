@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include "utils.h"
 #include "types.h"
+#include "emulate.h"
 
 int main(int argc, char **argv) {
     /*
-    Machine state when turned on is zero
-    15 registers initialised to zero
-    Memory of ARM emulator has 64KB, initialised to zero
-    */
+     *  Machine state when turned on is zero
+     *  15 registers initialised to zero
+     *  Memory of ARM emulator has 64KB, initialised to zero
+     */
     machine_state *ms = (machine_state *) calloc(sizeof(machine_state), 1);
     // check for successful memory allocation
     if (!ms) {
@@ -16,21 +17,21 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    //Opens file, argv[1] to skip space character
+    // Opens file, argv[1] to skip space character
     FILE *fp;
     if (!(fp = fopen(argv[1], "rb"))) {
         perror("Cannot Open File");
         terminate(ms);
     }
-    //Loads content of the file into memory
+    // Loads content of the file into memory
     bin_load(fp, ms->mem);
     fclose(fp);
 
-    //PIPELINE
+    // PIPELINE - Execute, Decode, Fetch cycle
     /*
-      Run this loop if we need to decode or
-      execute an instruction that isn't HALT
-    */
+     *  Run this loop if we need to decode or
+     *  execute an instruction that isn't HALT
+     */
     while ((ms->ps != DECODED) || (ms->instr_to_execute.type != HALT)) {
         switch (ms->ps) {
             case (DECODED):
@@ -39,10 +40,14 @@ int main(int argc, char **argv) {
                 decode(ms);
             case (EMPTY):
                 ms->instr_fetched = load_word(ms->regs.pc, ms);
+                // update PC
                 ms->regs.pc += 4;
                 // update processor state
                 ms->ps = !ms->ps ? FETCHED : DECODED;
-                // default case?
+                break;
+            default:
+                fprintf(stderr, "Invalid Processor State");
+                return EXIT_FAILURE;
         }
     }
 
