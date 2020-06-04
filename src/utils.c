@@ -1,9 +1,34 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include "utils.h"
-#include "types.h"
+#include "emulate.h"
+
+void terminate(machine_state* ms){
+    free(ms);
+    exit(EXIT_FAILURE);
+}
+
+word_t build_nonzero_value(byte_t *ptr) {
+  word_t result = 0;
+  for (int i = 0; i < 4; i++) {
+    result += *(ptr + i) << (BYTE_SIZE * (3 - i));
+  }
+  return result;
+}
+
+void output(machine_state *ms) {
+  printf("Registers:\n");
+  for (int i = 0; i < 13; i++) {
+    printf("$%-3d: %10d (0x%08x)\n", i, *(ms->regs.gpr + i), *(ms->regs.gpr + i));
+  }
+  printf("PC  : %10d (0x%08x)\n", ms->regs.pc, ms->regs.pc);
+  printf("CPSR: %10d (0x%08x)\n", ms->regs.cpsr, ms->regs.cpsr);
+  printf("Non-zero memory:\n");
+  for (int i = 0; i < ADDRESS_COUNT; i += 4) {
+    word_t x = build_nonzero_value(ms->mem + i);
+    if (x > 0) {
+      printf("0x%08x: 0x%08x\n", i, x);
+    }
+  }
+}
 
 void print_bits(word_t x) {
   word_t mask = 1 << 31;
@@ -18,13 +43,18 @@ void print_bits(word_t x) {
   printf("\n");
 }
 
-void bin_load(FILE *fp, byte_t *array) {
-    int read = 0; //Number of instructions read
-    byte_t *ptr = array; //Helper pointer to store instructions into array
-    while (fread(ptr, 1, 1, fp) == 1) {
-        read++;
-        ptr++;
-    }
+void bin_load(char *f, machine_state *ms) {
+  // Opens file
+  FILE *fp;
+  if (!(fp = fopen(f, "rb"))) {
+      perror("Cannot Open File");
+      terminate(ms);
+  }
+  byte_t *ptr = ms->mem; //Helper pointer to store instructions into array
+  while (fread(ptr, 1, 1, fp) == 1) {
+      ptr++;
+  }
+  fclose(fp);
 }
 
 word_t load_word(word_t address, machine_state *ms) {
@@ -34,7 +64,7 @@ word_t load_word(word_t address, machine_state *ms) {
     } else {
       word_t word = 0;
       for (size_t i = 0; i < 4; i++) {
-          word |= ms->mem[address + i] << (i * 8);
+          word |= ms->mem[address + i] << (i * BYTE_SIZE);
       }
       return word;
     }
@@ -58,10 +88,10 @@ word_t shifter(shift_type shift_t, word_t op, byte_t shift, bool *carry) {
   // carry always last discarded/rotated bit
   if (shift_t == LSL) {
     // logical shift left
-    *carry = ((op >> (32 - shift)) & 0x1); //extractBits(op, 32 - shift, 32 - shift)
+    *carry = ((op >> (32 - shift)) & 0x1); 
     return op << shift;
   }
-  *carry = ((op >> (shift - 1)) & 0x1); //extractBits(op, shift - 1, shift - 1)
+  *carry = ((op >> (shift - 1)) & 0x1); 
   word_t mask = 0;
   switch (shift_t) {
     case LSR:
@@ -69,48 +99,18 @@ word_t shifter(shift_type shift_t, word_t op, byte_t shift, bool *carry) {
       return op >> shift;
     case ASR:
       // arithmetic shift right
-      if ((op >> 31) & 0x1) { //extractBits(op, 31, 31)
-        mask = ((1 << shift) - 1) << (32 - shift); //(int) (pow(2, shift) - 1) << (32 - shift)
+      if ((op >> 31) & 0x1) { 
+        mask = ((1 << shift) - 1) << (32 - shift); 
       }
       return (op >> shift) | mask;
     case ROR:
       // rotate right
-      mask = (op & ((1 << (shift - 1)) - 1)) << (32 - shift); //extractBits(op, 0, shift - 1) << (32 - shift)
+      mask = (op & ((1 << (shift - 1)) - 1)) << (32 - shift); 
       return (op >> shift) | mask;
     default:
       fprintf(stderr, "Invalid Shift Instruction");
       exit(EXIT_FAILURE);
   }
-}
-
-//Helper for output function
-word_t build_nonzero_value(byte_t* ptr) {
-  word_t result = 0;
-  for (int i = 0; i < 4; i++) {
-    result += *(ptr+i) << (8 * (3-i));
-  }
-  return result;
-}
-
-void output(machine_state* ms) {
-  printf("Registers:\n");
-  for (int i = 0; i < 13; i++) {
-    printf("$%-3d: %10d (0x%08x)\n", i, *(ms->regs.gpr+i), *(ms->regs.gpr+i));
-  }
-  printf("PC  : %10d (0x%08x)\n", ms->regs.pc, ms->regs.pc);
-  printf("CPSR: %10d (0x%08x)\n", ms->regs.cpsr, ms->regs.cpsr);
-  printf("Non-zero memory:\n");
-  for (int i = 0; i < 65536; i += 4) {
-    word_t x = build_nonzero_value(ms->mem+i);
-    if (x > 0) {
-      printf("0x%08x: 0x%08x\n", i, x);
-    }
-  }
-}
-
-void terminate(machine_state* ms){
-    free(ms);
-    exit(EXIT_FAILURE);
 }
 
 /* Returns operand2 for DP, offset for SDT */

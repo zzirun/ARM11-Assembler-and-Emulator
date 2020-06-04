@@ -1,19 +1,13 @@
-#include <stdint.h>
-#include <stdbool.h>
-
 #ifndef ARM11_17_TYPES_H
 #define ARM11_17_TYPES_H
 
-/*
-  Each register is 32 bits.
-  Regs 0-12 are general purpose registers (gpr).
-  There are actually 17 registers, register 13(SP) and 14 (LR) are ignored
-  ignored for this exercise.
-*/
+#include <stdint.h>
+#include <stdbool.h>
 
 #define ADDRESS_COUNT 65536
 #define REGISTER_COUNT 13
 #define WORD_SIZE 32
+#define BYTE_SIZE 8
 //Masks to get the first N bits in GET_N_MASK when used with bitwise &.
 #define GET_1_MASK 0x1
 #define GET_4_MASK 0xF
@@ -23,13 +17,18 @@
 //Mask which sign extends a negative 26 bit number when used with bitwise |;
 #define NEG_SIGN_EXT_MASK 0xFC000000
 
-
 typedef uint8_t byte_t;
 typedef uint32_t word_t;
 typedef int8_t reg_add_t;
 
 typedef uint8_t memory[ADDRESS_COUNT];
 
+/**
+ * Each register is 32 bits.
+ * Regs 0-12 are general purpose registers (gpr).
+ * There are actually 17 registers, 
+ * register 13(SP) and 14 (LR) are ignored for this exercise.
+ */
 typedef struct registers {
   uint32_t gpr[REGISTER_COUNT];
   uint32_t pc;
@@ -44,14 +43,6 @@ typedef enum cpsr_flags {
   N = 8
 } cpsr_flags;
 
-// shifter
-typedef enum shift_type {
-  LSL, // logical L
-  LSR, // logical R
-  ASR, // arithmetic R
-  ROR  // rotate R
-} shift_type;
-
 typedef enum instr_type {
   DATA_PROC,
   MULT,
@@ -60,7 +51,7 @@ typedef enum instr_type {
   HALT
 } instr_type;
 
-// instr condition codes
+// Instr condition codes
 typedef enum cc {
   EQ = 0,  // check Z = 1
   NE = 1,  // check Z = 0
@@ -71,7 +62,7 @@ typedef enum cc {
   AL = 14  // any
 } cc;
 
-// dp instr opcode representations
+// DP instr opcode representations
 typedef enum opcode {
   AND = 0,  // 0000 : a & b
   EOR = 1,  // 0001 : a ^ b

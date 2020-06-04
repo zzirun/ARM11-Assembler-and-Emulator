@@ -1,6 +1,5 @@
-#include <stdlib.h>
-#include "types.h"
 #include "utils.h"
+#include "emulate.h"
 
 void decode(machine_state* ms) {
   decoded_instr *decoded = &ms->instr_to_execute;
