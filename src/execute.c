@@ -153,20 +153,17 @@ void multiply(machine_state* ms){
     // Write to destination register
     ms->regs.gpr[instr->rd] = result;
 
-    // Update flags if S bit is set
+    /* Update CPSR flags if S bit set
+    * CPSR - bit 31 - 28 : NZCV
+      * V unaffected
+      * C unaffected
+      * Z set only if result all 0s
+      * N set to logical bit 31 of result
+    */
     if(instr->set_cc){
-        // extract the top 4 bits of the CPSR
-        word_t new_cpsr = (ms->regs.cpsr) >> (WORD_SIZE - 4);
-        // set Z using mask
-        if(result == 0){
-            new_cpsr |= Z ;
-        }
-        // set N flag to 31 bit of result using mask
-        if(result >> (WORD_SIZE - 1)){
-            new_cpsr |= N;
-        }
-        // update CPSR 
-        ms->regs.cpsr = new_cpsr << (WORD_SIZE - 4);
+        word_t flags_new = (Z * (result == 0)) | (N * (result >> (WORD_SIZE - 1)));
+        // update CPSR : clear top 2 bits and set to new flags.
+        ms->regs.cpsr = (ms->regs.cpsr & GET_30_MASK) | (flags_new << (WORD_SIZE - 4));
 
     }
 }

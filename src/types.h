@@ -14,6 +14,7 @@
 #define GET_12_MASK 0xFFF
 #define GET_24_MASK 0xFFFFFF
 #define GET_29_MASK 0x1FFFFFFF
+#define GET_30_MASK 0x3FFFFFFF
 //Mask which sign extends a negative 26 bit number when used with bitwise |;
 #define NEG_SIGN_EXT_MASK 0xFC000000
 
