@@ -28,7 +28,7 @@ typedef struct symbol_table_t {
 } symbol_table_t;
 
 symbol_table_t *symbol_table_new();
-void *symbol_table_add(symbol_table_t *table, const char *label, uint16_t address);
+void *add_mapping(symbol_table_t *table, const char *label, uint16_t address);
 void free_symbol_table(symbol_table_t *table);
 
 /**************************************************/
@@ -54,7 +54,7 @@ typedef struct instr_list_t {
 } instr_list_t;
 
 instr_list_t *instr_list_new();
-void *instr_list_add(instr_list_t *instr_list, const char *instr_str);
+void *add_instr(instr_list_t *instr_list, const char *instr_str);
 void free_instr_list(instr_list_t *instr_list);
 
 /*************************************************************************/
