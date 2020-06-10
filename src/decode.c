@@ -2,7 +2,7 @@
 #include "emulate.h"
 
 void decode(machine_state* ms) {
-  decoded_instr *decoded = &ms->instr_to_execute;
+  decoded_instr_t *decoded = &ms->instr_to_execute;
   word_t instr = ms -> instr_fetched;
 
   // common to all instructions - top 4 bits : condition code

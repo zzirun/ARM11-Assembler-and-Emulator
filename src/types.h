@@ -129,7 +129,7 @@ typedef struct branch_t {
 } branch_t;
 
 // Decoded Instruction Format
-typedef struct decoded_instr {
+typedef struct decoded_instr_t {
   // instr type
   instr_type type;
   // condition codes
@@ -142,7 +142,7 @@ typedef struct decoded_instr {
     branch_t br;
   };
 
-} decoded_instr;
+} decoded_instr_t;
 
 typedef enum processor_state {
   EMPTY,
@@ -154,7 +154,7 @@ typedef struct machine_state {
   memory mem;
   registers regs;
   word_t instr_fetched;
-  decoded_instr instr_to_execute;
+  decoded_instr_t instr_to_execute;
   processor_state ps;
 } machine_state;
 
