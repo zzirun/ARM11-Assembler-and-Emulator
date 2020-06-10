@@ -4,6 +4,8 @@ FILES = emulate.o utils.o decode.o execute.o
 
 #gcc -g -Wall -pedantic emulate.c utils.c decode.c execute.c -o emulate -lm
 
+all: emulate assemble
+
 emulate: $(FILES)
 	$(CC) $(CFLAGS) $(FILES) -o emulate 
 
@@ -15,7 +17,9 @@ decode.o: decode.c utils.h emulate.h
 
 execute.o: execute.c utils.h emulate.h
 
-clean:
-	rm -rf *.o instructions/*.o assemble emulate
+assemble: assemble.c
 
-.PHONY: clean
+clean:
+	rm -rf *.o instructions/*.o assemble emulate bin/*
+
+.PHONY: clean all

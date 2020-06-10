@@ -15,9 +15,8 @@ int main(int argc, char **argv) {
     }
 
     // Load content of binary file into memory
-    // argv[1] to skip space character
     bin_load(argv[1], ms);
-    
+
     // PIPELINE - Execute, Decode, Fetch cycle
     /*
      *  Run this loop if we need to decode or
@@ -50,4 +49,3 @@ int main(int argc, char **argv) {
 
     return EXIT_SUCCESS;
 }
-
