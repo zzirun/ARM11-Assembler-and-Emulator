@@ -5,7 +5,7 @@
 #include "../types.h"
 
 // instr mnemonic (first word of instr)
-typedef enum mnemonic {
+typedef enum mnemonic_t {
   ADD,
   SUB,
   RSB,
@@ -29,11 +29,12 @@ typedef enum mnemonic {
   B, 
   LSL, 
   ANDEQ
-} mnemonic;
+} mnemonic_t;
 
 // instr split into string operands
 typedef struct tokenized_instr_t {
-  //void (*assemble)(struct instr_t *);
+  void (*assemble)(instr_t *);
+  mnemonic_t mnemonic;
   char **operands;
 } tokenized_instr_t;
 
