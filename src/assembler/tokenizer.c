@@ -97,7 +97,7 @@ mneomonic_t get_mnemonic(char *str) {
 
 void tokenizer(instr_list_t *i_l) {
     instr_t *curr = i_l->head;
-    while (!curr->next) {
+    while (!curr) {
         tokenised_instr_t *token_i = (tokenised_instr_t *) calloc(1, sizeof(tokenised_instr_t));
         if (!token_i) {
             perror("Error allocating memory for tokenized instruction");
