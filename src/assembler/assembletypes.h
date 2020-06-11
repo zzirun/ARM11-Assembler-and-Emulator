@@ -5,17 +5,19 @@
 #include "../types.h"
 
 // instr mnemonic (first word of instr)
+// for DP, set to same integer as opcode enum -
+// - for ease of conversion of mnemonic to opcode
 typedef enum mnemonic_t {
-  ADD,
-  SUB,
-  RSB,
-  AND, 
-  EOR, 
-  ORR, 
-  MOV, 
-  TST, 
-  TEQ, 
-  CMP, 
+  AND = 0,  
+  EOR = 1,  
+  SUB = 2, 
+  RSB = 3,  
+  ADD = 4,  
+  TST = 8,  
+  TEQ = 9,  
+  CMP = 10, 
+  ORR = 12, 
+  MOV = 13,  
   MUL, 
   MLA, 
   LDR, 
