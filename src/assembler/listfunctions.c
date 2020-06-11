@@ -12,7 +12,7 @@ symbol_table_t *symbol_table_new() {
   return elem;
 }
 
-void *add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
+void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
   char *l = calloc(1, sizeof(strlen(label) + 1));
   if (!elem || !l) {
@@ -61,14 +61,14 @@ instr_list_t *instr_list_new() {
   return instr_list;
 }
 
-void *add_instr(instr_list_t *instr_list, const char *instr_str) {
+void add_instr(instr_list_t *instr_list, const char *inst) {
   instr_t *instr = calloc(1, sizeof(instr_t));
-  char *i = calloc(1, sizeof(strlen(instr_str) + 1));
+  char *i = calloc(1, sizeof(strlen(inst) + 1));
   if (!instr || !i) {
       perror("Failed Memory Allocation for Instruction");
       exit(EXIT_FAILURE);
   }
-  strcpy(i, instr_str);
+  strcpy(i, inst);
   instr->instr_str = i;
   
   instr_list->tail->next = instr;
@@ -86,4 +86,3 @@ void free_instr_list(instr_list_t *instr_list) {
   }
   free(instr_list);
 }
-    
