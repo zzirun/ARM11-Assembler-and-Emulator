@@ -17,7 +17,7 @@ typedef struct tokenized_instr_t {
 // assume as in emulator - 2^16 bytes of memory :
 // addresses can be represented in 16 bits
 typedef struct symbol_table_elem_t {
-  char *label;  
+  const char *label;  
   uint16_t address;
   symbol_table_elem_t *next;
 } symbol_table_elem_t;
@@ -29,6 +29,7 @@ typedef struct symbol_table_t {
 
 symbol_table_t *symbol_table_new();
 void *add_mapping(symbol_table_t *table, const char *label, uint16_t address);
+bool map(symbol_table_t *table, const char *label, uint16_t *address);
 void free_symbol_table(symbol_table_t *table);
 
 /**************************************************/

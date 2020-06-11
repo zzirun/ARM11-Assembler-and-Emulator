@@ -1,11 +1,14 @@
 #include "assembletypes.h"
 
 symbol_table_t *symbol_table_new() {
-  symbol_table_t *elem = calloc(1, sizeof(symbol_table_t));
-  if (!elem) {
+  symbol_table_t *table = calloc(1, sizeof(symbol_table_t));
+  symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
+  if (!table || !elem) {
     perror("Failed Memory Allocation for Symbol Table");
     exit(EXIT_FAILURE);
   }
+  table->head = elem;
+  table->tail = elem;
   return elem;
 }
 
@@ -20,38 +23,42 @@ void *add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   elem->label = l;
   elem->address = address;
   
-  if (table->head && table->tail) {
-    // elements > 1
-    table->tail->next = elem;
-    table->tail = elem; 
-  } else {
-    // where first element is added
-    table->head = elem;
-    table->tail = elem;
-  }
-  // REDUNDANCY WITH INSTR LIST ADD
+  table->tail->next = elem;
+  table->tail = elem; 
 }
 
-static void free_st_elem(symbol_table_elem_t *elem) {
-  if (elem) {
-    free_st(elem->label);
-    free_st(elem->next);
+bool map(symbol_table_t *table, const char *label, uint16_t *address) {
+  symbol_table_elem_t *curr = table->head->next;
+  for (; curr; curr = curr->next) {
+    if (!strcmp(label, curr->label)) {
+      *address = curr->address;
+      return true;
+    }
   }
-  free(elem);
+  return false;
 }
 
 void free_symbol_table(symbol_table_t *table) {
-  free_st(table->head);
+  symbol_table_elem_t *curr = table->head;
+  while (curr) {
+    symbol_table_elem_t *next = curr->next;
+    free(curr->label);
+    free(curr);
+    curr = next;
+  }
   free(table);
 }
 
 instr_list_t *instr_list_new() {
-    instr_list_t *instr_list = calloc(1, sizeof(instr_list_t));
-    if (!instr_list) {
-        perror("Failed Memory Allocation for Symbol Table");
-        exit(EXIT_FAILURE);
-    }
-    return instr_list;
+  instr_list_t *instr_list = calloc(1, sizeof(instr_list_t));
+  instr_t *instr = calloc(1, sizeof(instr_t));
+  if (!instr_list || !instr) {
+    perror("Failed Memory Allocation for Instructions List");
+    exit(EXIT_FAILURE);
+  }
+  instr_list->head = instr;
+  instr_list->tail = instr;
+  return instr_list;
 }
 
 void *add_instr(instr_list_t *instr_list, const char *instr_str) {
@@ -64,27 +71,19 @@ void *add_instr(instr_list_t *instr_list, const char *instr_str) {
   strcpy(i, instr_str);
   instr->instr_str = i;
   
-  if (instr_list->head && instr_list->tail) {
-    // instr > 1
-    instr_list->tail->next = instr;
-    instr_list->tail = instr; 
-  } else {
-    // where first instr is added
-    instr_list->head = instr;
-    instr_list->tail = instr;
-  }
-  // REDUNDANCY WITH SYMBOL TABLE ADD
+  instr_list->tail->next = instr;
+  instr_list->tail = instr; 
 }
 
 // freed after binary file writing
 // string field should have already been freed
-static void free_il(instr_t *instr) {
-  if (instr) free_instr_list(instr->next);
-  free(instr);
-}
-
 void free_instr_list(instr_list_t *instr_list) {
-  free_il(instr_list->head);
+  instr_t *curr = instr_list->head;
+  while (curr) {
+    instr_t *next  = curr->next;
+    free(curr);
+    curr = next;
+  }
   free(instr_list);
 }
     
