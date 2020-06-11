@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "assembletypes.h"
 
 symbol_table_t *symbol_table_new() {
@@ -9,7 +11,7 @@ symbol_table_t *symbol_table_new() {
   return elem;
 }
 
-void *add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
+void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
   char *l = calloc(1, sizeof(strlen(label) + 1));
   if (!elem || !l) {
@@ -19,11 +21,11 @@ void *add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   strcpy(l, label);
   elem->label = l;
   elem->address = address;
-  
+
   if (table->head && table->tail) {
     // elements > 1
     table->tail->next = elem;
-    table->tail = elem; 
+    table->tail = elem;
   } else {
     // where first element is added
     table->head = elem;
@@ -34,14 +36,14 @@ void *add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
 
 static void free_st_elem(symbol_table_elem_t *elem) {
   if (elem) {
-    free_st(elem->label);
-    free_st(elem->next);
+    free(elem->label);
+    free_st_elem(elem->next);
   }
   free(elem);
 }
 
 void free_symbol_table(symbol_table_t *table) {
-  free_st(table->head);
+  free_st_elem(table->head);
   free(table);
 }
 
@@ -54,20 +56,20 @@ instr_list_t *instr_list_new() {
     return instr_list;
 }
 
-void *add_instr(instr_list_t *instr_list, const char *instr_str) {
+void add_instr(instr_list_t *instr_list, const char *inst) {
   instr_t *instr = calloc(1, sizeof(instr_t));
-  char *i = calloc(1, sizeof(strlen(instr_str) + 1));
+  char *i = calloc(1, sizeof(strlen(inst) + 1));
   if (!instr || !i) {
       perror("Failed Memory Allocation for Instruction");
       exit(EXIT_FAILURE);
   }
-  strcpy(i, instr_str);
+  strcpy(i, inst);
   instr->instr_str = i;
-  
+
   if (instr_list->head && instr_list->tail) {
     // instr > 1
     instr_list->tail->next = instr;
-    instr_list->tail = instr; 
+    instr_list->tail = instr;
   } else {
     // where first instr is added
     instr_list->head = instr;
@@ -79,7 +81,7 @@ void *add_instr(instr_list_t *instr_list, const char *instr_str) {
 // freed after binary file writing
 // string field should have already been freed
 static void free_il(instr_t *instr) {
-  if (instr) free_instr_list(instr->next);
+  if (instr->next) free_il(instr->next);
   free(instr);
 }
 
@@ -87,4 +89,3 @@ void free_instr_list(instr_list_t *instr_list) {
   free_il(instr_list->head);
   free(instr_list);
 }
-    

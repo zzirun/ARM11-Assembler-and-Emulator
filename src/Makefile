@@ -17,7 +17,11 @@ decode.o: decode.c utils.h emulate.h
 
 execute.o: execute.c utils.h emulate.h
 
-assemble: assemble.c
+assemble: assemble.o
+
+assemble.o: assemble.c assembler/listfunctions.o
+
+assembler/listfunctions.o: assembler/assembletypes.h assembler/listfunctions.c
 
 clean:
 	rm -rf *.o instructions/*.o assemble emulate bin/*
