@@ -31,16 +31,6 @@ typedef enum mnemonic_t {
   ANDEQ
 } mnemonic_t;
 
-typedef enum {
-    EQ, //equal
-    NE, //not equal
-    GE, //greater or equal
-    LT, //less than
-    GT, //greater than
-    LE, //less than or equal
-    AL, //always
-} condition_t;
-
 // instr split into string operands
 typedef struct tokenized_instr_t {
   void (*assemble)(instr_t *);
