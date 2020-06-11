@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "assembler/listfunctions.c"
+#include "assembler/assembletypes.h"
 
 #define MAX_LINE_LENGTH (512) //Assumption made according to the spec
 #define NUMBER_OF_BYTES_PER_INST (4)
@@ -51,8 +51,8 @@ void binary_writer(uint32_t instruction, FILE* stream) {
 
 int main(int argc, char **argv) {
 
-	symbol_table_t* s_t = calloc(1, sizeof(symbol_table_t));
-	instr_list_t* i_l = calloc(1, sizeof(instr_list_t));
+	symbol_table_t* s_t = symbol_table_new();
+	instr_list_t* i_l = instr_list_new();
 
 	first_pass(argv[1], s_t, i_l);
 
@@ -61,14 +61,23 @@ int main(int argc, char **argv) {
 
 
 	/*
-		Just trying to see if writing
-		random stuff out to binary works
+		Trying to write a specific tokenized inst to binary
 	*/
 	FILE* fp;
-	uint32_t inst = 3818917889; //11100011101000000001000000000001
-	uint32_t inst1 = 3800113154; //11100010100000010010000000000010
 	fp = fopen(argv[2], "wb");
-	binary_writer(inst, fp);
-	binary_writer(inst1, fp);
+	//mul r3,r1,r2
+	tokenized_instr_t* test = calloc(1, sizeof(tokenized_instr_t));
+	test->func = &mult_assembly;
+	test->mnemonic = MUL;
+	char* r3 = "r3";
+	char* r1 = "r1";
+	char* r2 = "r2";
+	test->operands = calloc(3, sizeof(char*));
+	test->operands[0] = r3;
+	test->operands[1] = r1;
+	test->operands[2] = r2;
+	binary_writer(test->func(test), fp);
+	free(test->operands);
+	free(test);
 	fclose(fp);
 }

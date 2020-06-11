@@ -9,7 +9,7 @@ symbol_table_t *symbol_table_new() {
   }
   table->head = elem;
   table->tail = elem;
-  return elem;
+  return table;
 }
 
 void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
@@ -22,9 +22,9 @@ void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   strcpy(l, label);
   elem->label = l;
   elem->address = address;
-  
+
   table->tail->next = elem;
-  table->tail = elem; 
+  table->tail = elem;
 }
 
 bool map(symbol_table_t *table, const char *label, uint16_t *address) {
@@ -70,9 +70,9 @@ void add_instr(instr_list_t *instr_list, const char *inst) {
   }
   strcpy(i, inst);
   instr->instr_str = i;
-  
+
   instr_list->tail->next = instr;
-  instr_list->tail = instr; 
+  instr_list->tail = instr;
 }
 
 // freed after binary file writing

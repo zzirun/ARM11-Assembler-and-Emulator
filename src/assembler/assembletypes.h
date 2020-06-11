@@ -1,3 +1,6 @@
+#ifndef ARM11_17_ASSEMBLER
+#define ARM11_17_ASSEMBLER
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -9,31 +12,31 @@ typedef enum mnemonic_t {
   ADD,
   SUB,
   RSB,
-  AND, 
-  EOR, 
-  ORR, 
-  MOV, 
-  TST, 
-  TEQ, 
-  CMP, 
-  MUL, 
-  MLA, 
-  LDR, 
-  STR, 
-  BEQ, 
-  BNE, 
-  BGE, 
-  BLT, 
-  BGT, 
-  BLE, 
-  B, 
-  LSL, 
+  AND,
+  EOR,
+  ORR,
+  MOV,
+  TST,
+  TEQ,
+  CMP,
+  MUL,
+  MLA,
+  LDR,
+  STR,
+  BEQ,
+  BNE,
+  BGE,
+  BLT,
+  BGT,
+  BLE,
+  B,
+  LSL,
   ANDEQ
 } mnemonic_t;
 
 // instr split into string operands
 typedef struct tokenized_instr_t {
-  void (*assemble)(instr_t *);
+  uint32_t (*func)(struct tokenized_instr_t *i_t);
   mnemonic_t mnemonic;
   char **operands;
 } tokenized_instr_t;
@@ -45,7 +48,7 @@ typedef struct tokenized_instr_t {
 // assume as in emulator - 2^16 bytes of memory :
 // addresses can be represented in 16 bits
 typedef struct symbol_table_elem_t {
-  const char *label;  
+  char *label;
   uint16_t address;
   struct symbol_table_elem_t *next;
 } symbol_table_elem_t;
@@ -71,7 +74,7 @@ typedef struct instr_t {
     char *instr_str;
     // RMB to free during tokenisation or implement using char[511]
     tokenized_instr_t tokenised_instr;
-    decoded_instr_t decoded_instr;
+    //decoded_instr_t decoded_instr;
     uint32_t binary_instr;
   };
   struct instr_t *next;
@@ -87,3 +90,7 @@ void add_instr(instr_list_t *instr_list, const char *instr_str);
 void free_instr_list(instr_list_t *instr_list);
 
 /*************************************************************************/
+
+uint32_t mult_assembly(tokenized_instr_t* instr);
+
+#endif
