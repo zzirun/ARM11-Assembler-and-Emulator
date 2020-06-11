@@ -4,6 +4,33 @@
 #include <stdint.h>
 #include "../types.h"
 
+// instr mnemonic (first word of instr)
+typedef enum mnemonic {
+  ADD,
+  SUB,
+  RSB,
+  AND, 
+  EOR, 
+  ORR, 
+  MOV, 
+  TST, 
+  TEQ, 
+  CMP, 
+  MUL, 
+  MLA, 
+  LDR, 
+  STR, 
+  BEQ, 
+  BNE, 
+  BGE, 
+  BLT, 
+  BGT, 
+  BLE, 
+  B, 
+  LSL, 
+  ANDEQ
+} mnemonic;
+
 // instr split into string operands
 typedef struct tokenized_instr_t {
   //void (*assemble)(struct instr_t *);

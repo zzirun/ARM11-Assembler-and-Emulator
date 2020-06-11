@@ -65,16 +65,16 @@ typedef enum cc {
 
 // DP instr opcode representations
 typedef enum opcode {
-  AND = 0,  // 0000 : a & b
-  EOR = 1,  // 0001 : a ^ b
-  SUB = 2,  // 0010 : a - b
-  RSB = 3,  // 0011 : b - a
-  ADD = 4,  // 0100 : a + b
-  TST = 8,  // 1000 : AND, no write
-  TEQ = 9,  // 1001 : EOR, no write
-  CMP = 10, // 1010 : SUB, no write
-  ORR = 12, // 1100 : a | b
-  MOV = 13  // 1101 : b
+  AND_OP = 0,  // 0000 : a & b
+  EOR_OP = 1,  // 0001 : a ^ b
+  SUB_OP = 2,  // 0010 : a - b
+  RSB_OP = 3,  // 0011 : b - a
+  ADD_OP = 4,  // 0100 : a + b
+  TST_OP = 8,  // 1000 : AND, no write
+  TEQ_OP = 9,  // 1001 : EOR, no write
+  CMP_OP = 10, // 1010 : SUB, no write
+  ORR_OP = 12, // 1100 : a | b
+  MOV_OP = 13  // 1101 : b
 } opcode;
 
 // Data Processing Instr Fields

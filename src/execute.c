@@ -76,34 +76,34 @@ void data_processing(machine_state *ms) {
     // Arithmetic/logic operation based on opcode
     // Set carry for arithmetic op (ADD, SUB, CMP, RSB) to ALU carry
     switch (instr->opcode) {
-        case AND:
-        case TST:
+        case AND_OP:
+        case TST_OP:
             result = op1 & op2;
             break;
-        case EOR:
-        case TEQ:
+        case EOR_OP:
+        case TEQ_OP:
             result = op1 ^ op2;
             break;
-        case SUB:
-        case CMP:
+        case SUB_OP:
+        case CMP_OP:
             result = op1 - op2;
             // set carry if no borrow
             carry = op1 < op2 ? 0 : 1;
             break;
-        case RSB:
+        case RSB_OP:
             result = op2 - op1;
             // set carry if no borrow
             carry = op2 < op1 ? 0 : 1;
             break;
-        case ADD:
+        case ADD_OP:
             result = op1 + op2;
             // set carry if unsigned overflow
             carry = result < op1 ? 1 : 0;
             break;
-        case ORR:
+        case ORR_OP:
             result = op1 | op2;
             break;
-        case MOV:
+        case MOV_OP:
             result = op2;
             break;
         default:
@@ -113,9 +113,9 @@ void data_processing(machine_state *ms) {
 
     // Write to destination for specific operations
     switch (instr->opcode) {
-        case TST:
-        case TEQ:
-        case CMP:
+        case TST_OP:
+        case TEQ_OP:
+        case CMP_OP:
             // don't write
             break;
         default:
