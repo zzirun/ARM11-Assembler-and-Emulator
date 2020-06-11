@@ -5,14 +5,30 @@
 
 void tokenizer(instr_list_t* i_l){
     instr_t *curr = i_l->head;
-    tokenised_instr_t *token_i = (tokenised_instr_t *) calloc(1, sizeof(tokenised_instr_t));
-    while(curr != i_l->tail){
-        char *mnemonic = strtok(curr->instr_str, " ");
-        token_i->mnemonic_t = get_mnemonic(mnemonic);
+    while(!curr->next){
+        tokenised_instr_t *token_i = (tokenised_instr_t *) calloc(1, sizeof(tokenised_instr_t));
+        if(!token_i){
+            perror("Error allocating memory for tokenized instruction");
+            exit(EXIT_FAILURE);
+        }
+        // Get the mnemonic
+        char *instr = strtok(curr->instr_str, " ");
+        token_i->mnemonic_t = get_mnemonic(instr);
+        //Get the operands of the instruction
+        for(int i = 0; instr != NULL; i++){
+            instr = strtok(NULL, ",");
+            token_i->operands[i] = (char *) malloc(sizeof(instr));
+            if(!token_i->operands[i]){
+                perror("Error allocating memory for operand in tokenized instruction");
+                exit(EXIT_FAILURE);
+            }
+            token_i->operands[i] = instr;
+        }
+        free(curr->instr_str);
+        curr->tokenised_instr = token_i;
         curr = curr->next;
     }
 }
-
 
 mneomonic_t get_mnemonic(char *str){
     if(!strcmp(str, "add")){
