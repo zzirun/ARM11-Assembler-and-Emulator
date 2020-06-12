@@ -1,7 +1,5 @@
 #include "dp.h"
 
-#define GET_REG_FROM_STR(reg_as_str) (atoi(reg_as_str + 1))
-
 void assemble_dp(instr_t *instr) {
   decoded_instr_t dec;
   dec.type = DATA_PROC;

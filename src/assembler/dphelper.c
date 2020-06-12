@@ -38,10 +38,50 @@ int parse_hex(char *hex_str) {
   return num;
 }
 
+shift_type get_shift_type(char *shift_type_str) {
+  if (!strcmp("lsl", shift_type_str)) return LSL;
+  if (!strcmp("lsr", shift_type_str)) return LSR;
+  if (!strcmp("asr", shift_type_str)) return ASR;
+  if (!strcmp("ror", shift_type_str)) return ROR;
+  
+  fprintf(stderr, "Invalid Shift Type");
+  exit(EXIT_FAILURE);
+}
+
+uint8_t parse_shift(char *shift_str) {
+  // No shift
+  if (!shift_str) return 0;
+  // Has shift
+  char *shift_field = strtok(shift_str, " ");
+  uint8_t shift_t = get_shift_type(shift_field);
+  shift_field = strtok(NULL, "");
+  bool shift_by_reg;
+  uint8_t shift_amount;
+  if (*shift_field == '#') {
+    // shift by constant amount <#expression>
+    shift_by_reg = 0;
+    shift_amount = parse_numerical_expr(shift_field);
+    shift_amount <<= 3;
+  } else if (*shift_field == 'r') {
+    // shift by bottom byte of register <register>
+    shift_by_reg = 1;
+    shift_amount = GET_REG_FROM_STR(shift_field);
+    shift_amount <<= 4
+  } else {
+    fprintf(stderr, "Invalid Shift Operand");
+    exit(EXIT_FAILURE);
+  }
+  shift_t <<= 1;
+  // build binary representation of shift  
+  return shift_amount | shift_t | shift_by_reg;
+}
+
+
 #define MAX_IMM (0xFF)
 #define MAX_SHAMT (0xF)
 #define GET_MS_2 (0xC0000000) // mask to get top 2 bits of a word
 
+// TO DO : ADD ERRORS FOR INVALID CASES
 void get_op_from_str(char *op_as_str, data_processing_t *dp) {
   dp->imm = *op_as_str == '#';
   uint16_t op2 = 0;
@@ -66,7 +106,19 @@ void get_op_from_str(char *op_as_str, data_processing_t *dp) {
     }
     op2 = ((op2 | shift) << 8) | num;
   } else {
-    // operand2 as Rm{, <shift>}  
+    /*  Operand2 as Rm{, <shift>}
+     *  1. get Rm
+     *  2. process shift
+     */  
+    // 1 : 
+    char *rm_str = strtok(op_as_str, " ,"); 
+    uint8_t rm = GET_REG_FROM_STR(rm_str);
+    // 2 : 
+    char *shift_str = strtok(NULL, "");
+    uint8_t shift = parse_shift(shift_str);
+
+    op2 = ((op2 | shift) << 4) | rm;  
+
   }
   dp->operand2 = op2;
 }

@@ -1,4 +1,7 @@
 #include "assembletypes.h"
+#include "../utils.h"
+
+#define GET_REG_FROM_STR(reg_as_str) (atoi(reg_as_str + 1))
 
 void assemble_dp(instr_t *instr);
 void get_op_from_str(char *op_as_str, data_processing_t *dp);
