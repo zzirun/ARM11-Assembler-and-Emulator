@@ -94,6 +94,74 @@ mneomonic_t get_mnemonic(char *str) {
     }
 
 }
+// function which returns a function pointer depending on its type
+uint32_t (*get_func(char *str))(struct tokenized_instr_t *){
+    if (!strcmp(str, "add")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "sub")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "rsb")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "and")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "eor")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "orr")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "mov")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "tst")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "teq")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "cmp")) {
+        return assemble_dp;
+    }
+    if (!strcmp(str, "mul")) {
+        return mult_assembly;
+    }
+    if (!strcmp(str, "mla")) {
+        return mult_assembly;
+    }
+    if (!strcmp(str, "ldr")) {
+        return assemble_sdt;
+    }
+    if (!strcmp(str, "str")) {
+        return assemble_sdt;
+    }
+    if (!strcmp(str, "beq")) {
+        return assemble_br;
+    }
+    if (!strcmp(str, "bne")) {
+        return assemble_br;
+    }
+    if (!strcmp(str, "bge")) {
+        return assemble_br;
+    }
+    if (!strcmp(str, "blt")) {
+        return assemble_br;
+    }
+    if (!strcmp(str, "ble")) {
+        return assemble_br;
+    }
+    if (!strcmp(str, "b")) {
+        return assemble_br;
+    }
+    if (!strcmp(str, "andeq")) {
+        return assemble_halt;
+    }
+    return NULL;
+    // for special cases like lsl
+}
 
 void tokenizer(instr_list_t *i_l) {
     instr_t *curr = i_l->head;
@@ -105,7 +173,9 @@ void tokenizer(instr_list_t *i_l) {
         }
         // Get the mnemonic
         char *instr = strtok(curr->instr_str, " ");
-        token_i->mnemonic_t = get_mnemonic(trim_whitespcae(instr));
+        token_i->mnemonic_t = get_mnemonic(trim_whitespace(instr));
+        token_i->func = get_func(trim_whitespace(instr));
+        // Not quite sure if its right
         //Get the operands of the instruction
         for (int i = 0;; i++) {
             instr = strtok(NULL, ",\n");
