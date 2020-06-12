@@ -92,7 +92,8 @@ mneomonic_t get_mnemonic(char *str) {
     if (!strcmp(str, "andeq")) {
         return ANDEQ;
     }
-
+    perror("Error in finding mnemonic");
+    exit(EXIT_FAILURE);
 }
 // function which returns a function pointer depending on its type
 uint32_t (*get_func(char *str))(struct tokenized_instr_t *){
@@ -156,11 +157,15 @@ uint32_t (*get_func(char *str))(struct tokenized_instr_t *){
     if (!strcmp(str, "b")) {
         return assemble_br;
     }
+    if (!strcmp(str, "lsl")) {
+        return assemble_dp;
+        //for now
+    }
     if (!strcmp(str, "andeq")) {
         return assemble_halt;
     }
-    return NULL;
-    // for special cases like lsl
+    perror("Error in finding mnemonic");
+    exit(EXIT_FAILURE);
 }
 
 void tokenizer(instr_list_t *i_l) {
