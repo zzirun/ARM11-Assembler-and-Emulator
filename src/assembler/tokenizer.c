@@ -105,7 +105,7 @@ void tokenizer(instr_list_t *i_l) {
         }
         // Get the mnemonic
         char *instr = strtok(curr->instr_str, " ");
-        token_i->mnemonic_t = get_mnemonic(instr);
+        token_i->mnemonic_t = get_mnemonic(trim_whitespcae(instr));
         //Get the operands of the instruction
         for (int i = 0;; i++) {
             instr = strtok(NULL, ",");
@@ -114,6 +114,7 @@ void tokenizer(instr_list_t *i_l) {
             }
             //to deal with operands like [r1, #28]
             if (contains(instr, '[') && !contains(instr, ']')) {
+                // I allocated 100 in the heap but unsure of a good size for these operands
                 token_i->operands[i] = (char *) malloc(100);
                 if (!token_i->operands[i]) {
                     perror("Error allocating memory for operand in tokenized instruction");
