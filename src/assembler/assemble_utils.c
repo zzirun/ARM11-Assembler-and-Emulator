@@ -40,10 +40,10 @@ uint32_t parse_hex(char *hex_str) {
 
 /*  Translates string to shift type  */
 shift_type get_shift_type(char *shift_type_str) {
-  if (!strcmp("lsl", shift_type_str)) return LSL;
-  if (!strcmp("lsr", shift_type_str)) return LSR;
-  if (!strcmp("asr", shift_type_str)) return ASR;
-  if (!strcmp("ror", shift_type_str)) return ROR;
+  if (!strcmp("lsl", shift_type_str)) return LSL_S;
+  if (!strcmp("lsr", shift_type_str)) return LSR_S;
+  if (!strcmp("asr", shift_type_str)) return ASR_S;
+  if (!strcmp("ror", shift_type_str)) return ROR_S;
   
   fprintf(stderr, "Invalid Shift Type");
   exit(EXIT_FAILURE);

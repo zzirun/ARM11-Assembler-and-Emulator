@@ -7,9 +7,18 @@ void assemble_dp(instr_t *instr) {
   tokenized_instr_t *tok_instr = &(instr->tokenised_instr);
 
   mnemonic_t mnemonic = tok_instr->mnemonic;
-  dp.opcode = mnemonic;
+
+  if (mnemonic == ANDEQ) {
+    dp.opcode = AND_OP;
+  } else if (mnemonic == LSL) {
+    dp.opcode = MOV_OP;
+  } else {
+    dp.opcode = mnemonic;
+  }
+
   switch (mnemonic) { 
-    case AND:
+    case AND: 
+    case ANDEQ:
     case EOR:
     case SUB:
     case RSB:
@@ -22,7 +31,26 @@ void assemble_dp(instr_t *instr) {
       dp.rn = GET_REG_FROM_STR(tok_instr->operands[1]);
       get_op_from_str(tok_instr->operands[2], &dp); // sets imm and operand2
       break;
-    case MOV:
+    case LSL:
+      // turn operand 2 from <#expression> to Rd,lsl <#expression>
+      // then fall through to mov
+      char *rd = tok_instr->operands[0];
+      char *expr = tok_instr->operands[1];
+      size_t rd_size = strlen(rd) * sizeof(char);
+      size_t expr_size = strlen(expr) * sizeof(char);
+      // additional 6 characters : ",lsl " and '\0'
+      size_t new_size = rd_size + expr_size + 6 * sizeof(char);
+      char *op2 = calloc(1, new_size);
+      if (!op2) {
+        perror("failed memory allocation for operand");
+        exit(EXIT_FAILURE);
+      }
+      strncpy(op2, rd, rd_size);
+      strncpy(op2 + strlen(rd), ",lsl ", 5 * sizeof(char));
+      strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char)); 
+      tok_instr->operands[1] = op2;
+      free(expr);
+    case MOV: 
       // single operand assignment
       // form: mov Rd, <Operand2>
       dp.set_cc = 0;
@@ -42,10 +70,10 @@ void assemble_dp(instr_t *instr) {
       break;
   } 
 
+
   /* Encode decoded instruction into binary */
-  uint32_t bin = 0;
-  // bit 31 - 28 : condition code (always)
-  bin |= AL;
+  // bit 31 - 28 : condition code (set to AL except if ANDEQ then set to EQ)
+  uint32_t bin = mnemonic == ANDEQ ? EQ : AL;
   // bit 27 - 26 : 00
   // bit 25 : immediate flag
   bin = (bin << 3) | dp.imm;
