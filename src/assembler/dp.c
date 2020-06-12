@@ -1,11 +1,12 @@
 #include "assemble.h"
+#include "assemble_utils.h"
 
-uint32_t assemble_dp(tokenized_instr_t *instr) {
+uint32_t assemble_dp(tokenized_instr_t *instr, symbol_table_t *st) {
 
   /* Translate tokenised form into data processing instruction */
   data_processing_t dp;
   mnemonic_t mnemonic = instr->mnemonic;
-
+  
   if (mnemonic == ANDEQ) {
     dp.opcode = AND_OP;
   } else if (mnemonic == LSL) {
@@ -68,7 +69,6 @@ uint32_t assemble_dp(tokenized_instr_t *instr) {
       break;
   } 
 
-
   /* Encode decoded instruction into binary */
   // bit 31 - 28 : condition code (set to AL except if ANDEQ then set to EQ)
   uint32_t bin = mnemonic == ANDEQ ? EQ : AL;
@@ -88,6 +88,3 @@ uint32_t assemble_dp(tokenized_instr_t *instr) {
   
   return bin;
 }
-
-
-

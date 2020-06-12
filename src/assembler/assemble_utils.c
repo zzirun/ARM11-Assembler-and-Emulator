@@ -1,8 +1,55 @@
 #include "assemble_utils.h"
+#include "assemble.h"
 
-/*  Parses string represention of a numerical constant
- *  of form <#expression> into an integer
- */
+/* From assembly file: Builds label to address map + Loads non-label instruction strings */
+void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
+	char buffer[MAX_LINE_LENGTH] = {0};
+	FILE* assembly_file = fopen(file_path, "r");
+	if (!assembly_file) {
+		perror("Failed to open source code");
+		exit(EXIT_FAILURE);
+	}
+	uint16_t address = 0;
+	while (fgets(&buffer[0], sizeof(buffer), assembly_file)) {
+		bool is_label = false;
+		for (int i = 0; buffer[i]; i++) {
+			if (buffer[i] == ':') {
+				buffer[i] = '\0'; //Removes ':' from the label
+				is_label = true;
+				break;
+			}
+		}
+		if (is_label) {
+			add_mapping(s_t, buffer, address);
+		} else {
+			add_instr(i_l, buffer);
+		}
+		address += 4;
+	}
+	fclose(assembly_file);
+}
+
+/* Writes 32 bits instruction into stream according to little endian format */
+void binary_writer(instr_list_t *instructions, char *file_path) {
+  FILE* binary_file = fopen(file_path, "wb");
+  if (!binary_file) {
+		perror("Failed to open binary file");
+		exit(EXIT_FAILURE);
+	}
+	instr_t *curr = instructions->head->next;
+  uint8_t inst_arr[NUMBER_OF_BYTES_PER_INST];
+  for (; curr; curr = curr->next) { 
+	  uint32_t instr = curr->binary_instr;
+    for (int i = 0; i < NUMBER_OF_BYTES_PER_INST; i++) {
+      inst_arr[i] = instr & GET_LS_8;
+      instr >>= BYTE_SIZE;
+    }
+    fwrite(inst_arr, sizeof(uint8_t), NUMBER_OF_BYTES_PER_INST, binary_file);
+  }
+  fclose(binary_file);
+}
+
+/*  Parses numerical constant <#expression> string into an integer */
 uint32_t parse_numerical_expr(char *num_str) {
   assert(*num_str == '#');
   num_str++; // skip over '#'

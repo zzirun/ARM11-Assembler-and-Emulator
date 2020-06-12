@@ -2,9 +2,15 @@
 #include "../utils.h"
 
 #define HEXADECIMAL_BASE (16)
+#define NUMBER_OF_BYTES_PER_INST (4)
 
 /* Mask to get top 2 bits of a word */
 #define GET_MS_2 (0xC0000000) 
+/* Mask to get bottom 8 bits of a word */
+#define GET_LS_8 (0xFF)
+
+/* Max characters (inc'\0') in a line from assembly file */
+#define MAX_LINE_LENGTH (512) 
 
 /* Max representable in immediate field in a dp instr */
 #define MAX_DP_IMM (0xFF) 
