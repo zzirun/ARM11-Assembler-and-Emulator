@@ -1,6 +1,6 @@
 #include "assembletypes.h"
 
-symbol_table_t *symbol_table_new() {
+symbol_table_t *create_symbol_table(void) {
   symbol_table_t *table = calloc(1, sizeof(symbol_table_t));
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
   if (!table || !elem) {
@@ -49,7 +49,7 @@ void free_symbol_table(symbol_table_t *table) {
   free(table);
 }
 
-instr_list_t *instr_list_new() {
+instr_list_t *create_instr_list(void) {
   instr_list_t *instr_list = calloc(1, sizeof(instr_list_t));
   instr_t *instr = calloc(1, sizeof(instr_t));
   if (!instr_list || !instr) {
