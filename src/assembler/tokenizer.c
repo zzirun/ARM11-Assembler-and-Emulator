@@ -25,144 +25,148 @@ int contains(char *s, char c) {
     }
     return 0;
 }
-mneomonic_t get_mnemonic(char *str) {
-    if (!strcmp(str, "add")) {
-        return ADD;
+
+int num_of_operands(char *str) {
+    int result = 1;
+    bool memory = false;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == ',' && !memory) {
+            result++;
+        }
+        if (str[i] == '[') {
+            memory = true;
+        }
+        if (str[i] == ']') {
+            memory = false;
+        }
     }
-    if (!strcmp(str, "sub")) {
-        return SUB;
-    }
-    if (!strcmp(str, "rsb")) {
-        return RSB;
-    }
-    if (!strcmp(str, "and")) {
-        return AND;
-    }
-    if (!strcmp(str, "eor")) {
-        return EOR;
-    }
-    if (!strcmp(str, "orr")) {
-        return ORR;
-    }
-    if (!strcmp(str, "mov")) {
-        return MOV;
-    }
-    if (!strcmp(str, "tst")) {
-        return TST;
-    }
-    if (!strcmp(str, "teq")) {
-        return TEQ;
-    }
-    if (!strcmp(str, "cmp")) {
-        return CMP;
-    }
-    if (!strcmp(str, "mul")) {
-        return MUL;
-    }
-    if (!strcmp(str, "mla")) {
-        return MLA;
-    }
-    if (!strcmp(str, "ldr")) {
-        return LDR;
-    }
-    if (!strcmp(str, "str")) {
-        return STR;
-    }
-    if (!strcmp(str, "beq")) {
-        return BEQ;
-    }
-    if (!strcmp(str, "bne")) {
-        return BNE;
-    }
-    if (!strcmp(str, "bge")) {
-        return BGE;
-    }
-    if (!strcmp(str, "blt")) {
-        return BLT;
-    }
-    if (!strcmp(str, "ble")) {
-        return BLE;
-    }
-    if (!strcmp(str, "b")) {
-        return B;
-    }
-    if (!strcmp(str, "lsl")) {
-        return LSL;
-    }
-    if (!strcmp(str, "andeq")) {
-        return ANDEQ;
-    }
-    perror("Error in finding mnemonic");
-    exit(EXIT_FAILURE);
+    return result;
 }
-// function which returns a function pointer depending on its type
-uint32_t (*get_func(char *str))(struct tokenized_instr_t *){
-    if (!strcmp(str, "add")) {
-        return assemble_dp;
+/** Function which assigns mnemonic & func in the token_i according to mnemonic and allocates memory
+ * for the 'spine' of the array of strings (operands field) in token_i
+ *
+ * @param mnemonic
+ * @param operand
+ * @param token_i
+ * @return number of operands
+ */
+int set_up_tokenised(char *mnemonic, char *operand, tokenised_instr_t *token_i) {
+    char *str = trim_whitespace(mnemonic);
+    int operands_num = num_of_operands(operand);
+    token_i->operands = (char **) malloc(operands_num * sizeof(char *));
+    if(!token_i->operands){
+        perror("Error allocating memory for operands array");
+        exit(EXIT_FAILURE);
+    }
+    if (!strcmp(str, "add")){
+        token_i->mnemonic_t = ADD;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "sub")) {
-        return assemble_dp;
+        token_i->mnemonic_t = SUB;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "rsb")) {
-        return assemble_dp;
+        token_i->mnemonic_t = RSB;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "and")) {
-        return assemble_dp;
+        token_i->mnemonic_t = AND;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "eor")) {
-        return assemble_dp;
+        token_i->mnemonic_t = EOR;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "orr")) {
-        return assemble_dp;
+        token_i->mnemonic_t = ORR;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "mov")) {
-        return assemble_dp;
+        token_i->mnemonic_t = MOV;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "tst")) {
-        return assemble_dp;
+        token_i->mnemonic_t = TST;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "teq")) {
-        return assemble_dp;
+        token_i->mnemonic_t = TEQ;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "cmp")) {
-        return assemble_dp;
+        token_i->mnemonic_t = CMP;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "mul")) {
-        return mult_assembly;
+        token_i->mnemonic_t = MUL;
+        token_i->func = mult_assembly;
+        return operands_num;
     }
     if (!strcmp(str, "mla")) {
-        return mult_assembly;
+        token_i->mnemonic_t = MLA;
+        token_i->func = mult_assembly;
+        return operands_num;
     }
     if (!strcmp(str, "ldr")) {
-        return assemble_sdt;
+        token_i->mnemonic_t = LDR;
+        token_i->func = assemble_sdt;
+        return operands_num;
     }
     if (!strcmp(str, "str")) {
-        return assemble_sdt;
+        token_i->mnemonic_t = STR;
+        token_i->func = assemble_sdt;
+        return operands_num;
     }
     if (!strcmp(str, "beq")) {
-        return assemble_br;
+        token_i->mnemonic_t = BEQ;
+        token_i->func = assemble_br;
+        return operands_num;
     }
     if (!strcmp(str, "bne")) {
-        return assemble_br;
+        token_i->mnemonic_t = BNE;
+        token_i->func = assemble_br;
+        return operands_num;
     }
     if (!strcmp(str, "bge")) {
-        return assemble_br;
+        token_i->mnemonic_t = BGE;
+        token_i->func = assemble_br;
+        return operands_num;
     }
     if (!strcmp(str, "blt")) {
-        return assemble_br;
+        token_i->mnemonic_t = BLT;
+        token_i->func = assemble_br;
+        return operands_num;
     }
     if (!strcmp(str, "ble")) {
-        return assemble_br;
+        token_i->mnemonic_t = BLE;
+        token_i->func = assemble_br;
+        return operands_num;
     }
     if (!strcmp(str, "b")) {
-        return assemble_br;
+        token_i->mnemonic_t = B;
+        token_i->func = assemble_br;
+        return operands_num;
     }
     if (!strcmp(str, "lsl")) {
-        return assemble_dp;
-        //for now
+        token_i->mnemonic_t = LSL;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     if (!strcmp(str, "andeq")) {
-        return assemble_dp;
+        token_i->mnemonic_t = ANDEQ;
+        token_i->func = assemble_dp;
+        return operands_num;
     }
     perror("Error in finding mnemonic");
     exit(EXIT_FAILURE);
@@ -177,38 +181,35 @@ void tokenizer(instr_list_t *i_l) {
             exit(EXIT_FAILURE);
         }
         // Get the mnemonic
-        char *instr = strtok(curr->instr_str, " ");
-        token_i->mnemonic_t = get_mnemonic(trim_whitespace(instr));
-        token_i->func = get_func(trim_whitespace(instr));
-        // Not quite sure if its right
-        //Get the operands of the instruction
-        for (int i = 0;; i++) {
-            instr = strtok(NULL, ",\n");
-            if (instr == NULL) {
-                break;
-            }
+        char* instr_cpy;
+        strcpy(instr_cpy, curr->instr_str);
+        char *operands = strtok(instrcpy,"\n");
+        char *mnemonic = strtok(curr->instr_str, " ");
+        int num_operands = set_up_tokenized(mnemonic, operands, token_i);
+        for (int i = 0; i < num_operands; i++) {
+            operands = strtok(NULL, ",");
             //to deal with operands like [r1, #28]
             if (contains(instr, '[') && !contains(instr, ']')) {
                 // I allocated 100 in the heap but unsure of a good size for these operands
                 token_i->operands[i] = (char *) malloc(100);
                 if (!token_i->operands[i]) {
-                    perror("Error allocating memory for operand in tokenized instruction");
+                    perror("Error allocating memory for string in operands");
                     exit(EXIT_FAILURE);
                 }
                 do {
-                    strcat(token_i->operands[i], trim_whitespace(instr));
+                    strcat(token_i->operands[i], trim_whitespace(operands));
                     char *comma = ",";
                     strcat(token_i->operands[i], comma);
                     instr = strtok(NULL, ",");
-                } while (!contains(instr, ']'));
-                strcat(token_i->operands[i], trim_whitespace(instr));
+                } while (!contains(operands, ']'));
+                strcat(token_i->operands[i], trim_whitespace(operands));
             } else {
-                operands[i] = (char *) malloc(sizeof(instr));
+                operands[i] = (char *) malloc(sizeof(operands));
                 if (!operands[i]) {
-                    perror("Error allocating memory for operand in tokenized instruction");
+                    perror("Error allocating memory for string in operands");
                     exit(EXIT_FAILURE);
                 }
-                token->operands[i] = trim_whitespace(instr);
+                token->operands[i] = trim_whitespace(operands);
             }
         }
         free(curr->instr_str);
