@@ -2,4 +2,4 @@
 #include "assemble_utils.h"
 
 // TO DO MATCH FUNCTION POINTER TYPES
-void assemble_dp(instr_t *instr); 
+uint32_t assemble_dp(tokenized_instr_t *); 

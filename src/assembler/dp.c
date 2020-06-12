@@ -1,12 +1,10 @@
 #include "assemble.h"
 
-void assemble_dp(instr_t *instr) {
+uint32_t assemble_dp(tokenized_instr_t *instr) {
 
   /* Translate tokenised form into data processing instruction */
   data_processing_t dp;
-  tokenized_instr_t *tok_instr = &(instr->tokenised_instr);
-
-  mnemonic_t mnemonic = tok_instr->mnemonic;
+  mnemonic_t mnemonic = instr->mnemonic;
 
   if (mnemonic == ANDEQ) {
     dp.opcode = AND_OP;
@@ -27,15 +25,15 @@ void assemble_dp(instr_t *instr) {
       // compute results
       // form: <opcode> Rd, Rn, <Operand2>
       dp.set_cc = 0;
-      dp.rd = GET_REG_FROM_STR(tok_instr->operands[0]);
-      dp.rn = GET_REG_FROM_STR(tok_instr->operands[1]);
-      get_op_from_str(tok_instr->operands[2], &dp); // sets imm and operand2
+      dp.rd = GET_REG_FROM_STR(instr->operands[0]);
+      dp.rn = GET_REG_FROM_STR(instr->operands[1]);
+      get_op_from_str(instr->operands[2], &dp); // sets imm and operand2
       break;
     case LSL:
       // turn operand 2 from <#expression> to Rd,lsl <#expression>
       // then fall through to mov
-      char *rd = tok_instr->operands[0];
-      char *expr = tok_instr->operands[1];
+      char *rd = instr->operands[0];
+      char *expr = instr->operands[1];
       size_t rd_size = strlen(rd) * sizeof(char);
       size_t expr_size = strlen(expr) * sizeof(char);
       // additional 6 characters : ",lsl " and '\0'
@@ -48,15 +46,15 @@ void assemble_dp(instr_t *instr) {
       strncpy(op2, rd, rd_size);
       strncpy(op2 + strlen(rd), ",lsl ", 5 * sizeof(char));
       strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char)); 
-      tok_instr->operands[1] = op2;
+      instr->operands[1] = op2;
       free(expr);
     case MOV: 
       // single operand assignment
       // form: mov Rd, <Operand2>
       dp.set_cc = 0;
-      dp.rd = GET_REG_FROM_STR(tok_instr->operands[0]);
+      dp.rd = GET_REG_FROM_STR(instr->operands[0]);
       dp.rn = 0; // don't care (below 4 bits)
-      get_op_from_str(tok_instr->operands[1], &dp); // sets imm and operand2
+      get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
       break;
     case TST:
     case TEQ:
@@ -65,8 +63,8 @@ void assemble_dp(instr_t *instr) {
       // form: <opcode> Rn, <Operand2>
       dp.set_cc = 1;
       dp.rd = 0; // don't care (below 4 bits)
-      dp.rn = GET_REG_FROM_STR(tok_instr->operands[0]);
-      get_op_from_str(tok_instr->operands[1], &dp); // sets imm and operand2
+      dp.rn = GET_REG_FROM_STR(instr->operands[0]);
+      get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
       break;
   } 
 
@@ -88,8 +86,7 @@ void assemble_dp(instr_t *instr) {
   // bit 11 - 0 : operand 2
   bin = (bin << 12) | dp.operand2;
   
-  /* Set binary instruction */
-  instr->binary_instr = bin;
+  return bin;
 }
 
 
