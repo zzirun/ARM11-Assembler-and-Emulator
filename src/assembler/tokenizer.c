@@ -108,7 +108,7 @@ void tokenizer(instr_list_t *i_l) {
         token_i->mnemonic_t = get_mnemonic(trim_whitespcae(instr));
         //Get the operands of the instruction
         for (int i = 0;; i++) {
-            instr = strtok(NULL, ",");
+            instr = strtok(NULL, ",\n");
             if (instr == NULL) {
                 break;
             }

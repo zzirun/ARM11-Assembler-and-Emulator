@@ -9,7 +9,7 @@ symbol_table_t *symbol_table_new() {
   }
   table->head = elem;
   table->tail = elem;
-  return elem;
+  return table;
 }
 
 void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
