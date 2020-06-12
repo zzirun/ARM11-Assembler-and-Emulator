@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <assert.h>
 #include "../types.h"
 
 // instr mnemonic (first word of instr)

@@ -4,6 +4,7 @@
  *  of form <#expression> into an integer
  */
 uint32_t parse_numerical_expr(char *num_str) {
+  assert(*num_str == '#');
   num_str++; // skip over '#'
   uint32_t num = 0;
   // check for prefix "0x"
@@ -19,6 +20,7 @@ uint32_t parse_numerical_expr(char *num_str) {
 
 /* Parses a hexadecimal string into an integer */
 uint32_t parse_hex(char *hex_str) {
+  assert(*hex_str == '0' && *hex_str == 'x');
   hex_str += 2; // skip over "0x"
   uint32_t num = 0;
   for (int i = 0; i < strlen(hex_str); i++) {
