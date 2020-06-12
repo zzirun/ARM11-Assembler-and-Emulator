@@ -36,7 +36,7 @@ typedef enum mnemonic_t {
 
 // instr split into string operands
 typedef struct tokenized_instr_t {
-  void (*assemble)(instr_t *);
+  uint32_t (*func)(struct tokenized_instr_t *);
   mnemonic_t mnemonic;
   char **operands;
 } tokenized_instr_t;
