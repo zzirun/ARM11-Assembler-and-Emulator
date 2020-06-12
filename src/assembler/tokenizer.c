@@ -162,7 +162,7 @@ uint32_t (*get_func(char *str))(struct tokenized_instr_t *){
         //for now
     }
     if (!strcmp(str, "andeq")) {
-        return assemble_halt;
+        return assemble_dp;
     }
     perror("Error in finding mnemonic");
     exit(EXIT_FAILURE);
