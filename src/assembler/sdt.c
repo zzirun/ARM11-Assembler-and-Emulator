@@ -13,7 +13,7 @@
 
 void assemble_sdt(program_t *prog, symbol_table_t *st) {
     instr_str_t *instr = prog->curr->instr_str;
-    single_data_transfer_t sdt; 
+    single_data_transfer_t sdt;
 
     sdt.u = 1;
     sdt.rd = GET_REG_FROM_STR(instr->operands[1]);
@@ -139,13 +139,13 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
             if ([Rn, <#expression>]) {
                 //[Rn, <#expression>]
-                 word_t exp = parse_numerical_expr(instr->operands[4]);
-                 if (exp >> 31) {
-                     sdt.offset = (~exp) + 1;
-                 } else {
-                     sdt.offset = exp;
-                 }
-                 instr.flag_2 = (exp >> 31);
+                word_t exp = parse_numerical_expr(instr->operands[4]);
+                if (exp >> 31) {
+                    sdt.offset = (~exp) + 1;
+                } else {
+                    sdt.offset = exp;
+                }
+                instr.flag_2 = (exp >> 31);
             } else {
                 //[Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
                 sdt.imm = 1;
@@ -177,7 +177,6 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                     }
 
                     free(shift_str);
-                    //offset index register rm
                 }
             }
         }
@@ -208,7 +207,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         bin |= ((word_t) sdt.imm) & 0xFFF;
     }
 
-    bin |= (word_t) 0xE) << 28; //COND is AL
+    bin |= (word_t) 0xE) <<cd  28; //COND is AL
 
     free_tokenized_instr(instr);
     il->curr->binary_instr = bin;
