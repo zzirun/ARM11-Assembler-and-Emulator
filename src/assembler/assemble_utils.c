@@ -23,8 +23,8 @@ void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
 			add_mapping(st, trim(buffer), address);
 		} else {
 			add_instr(prog, trim(buffer), address);
+      address += 4;
 		}
-		address += 4;
 	}
 	fclose(assembly_file);
 	prog->last_instr = prog->tail;
