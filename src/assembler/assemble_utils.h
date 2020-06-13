@@ -17,9 +17,14 @@
 /* Max representable shift amount in a dp instr */
 #define MAX_DP_SHAMT (0xF) 
 
+/* Checks if character is whitespace */
+#define IS_WHITESPACE(c) (c == ' ' || c== '\n')
+
 /* Gets register number from string eg: r9 */
 #define GET_REG_FROM_STR(reg_as_str) (atoi(reg_as_str + 1))
 
+/* Removes leading and ending whitespace */
+char *trim_whitespace(char *str);
 /* Converts <#expression> to integer */
 uint32_t parse_numerical_expr(char *num_str);
 /* Converts a hexadecimal string "0x..." to integer */

@@ -36,7 +36,7 @@ typedef enum mnemonic_t {
 
 // instr split into string operands
 typedef struct tokenized_instr_t {
-  uint32_t (*assemble)(tokenized_instr_t *, symbol_table_t *);
+  void (*assemble)(instr_list_t *, symbol_table_t *);
   mnemonic_t mnemonic;
   int no_of_operands;
   char **operands;
@@ -53,7 +53,7 @@ void free_tokenized_instr(tokenized_instr_t *);
 typedef struct symbol_table_elem_t {
   const char *label;  
   uint16_t address;
-  struct symbol_table_elem_t *next;
+  symbol_table_elem_t *next;
 } symbol_table_elem_t;
 
 typedef struct symbol_table_t {
@@ -84,11 +84,14 @@ typedef struct instr_t {
 
 typedef struct instr_list_t {
   instr_t *head;
+  instr_t *last_instr;
   instr_t *tail;
+  instr_t *curr; // for processing all instructions
 } instr_list_t;
 
 instr_list_t *create_instr_list(void);
 void add_instr(instr_list_t *instr_list, const char *instr_str, uint16_t address);
+uint16_t ldr_add(instr_list_t *, uint32_t); 
 void free_instr_list(instr_list_t *instr_list);
 
 /*************************************************************************/

@@ -10,33 +10,34 @@
 #include "assembletypes.h"
 #include "assemble_utils.h"
 
-word_t sdt_encode(decoded_instr_t instr) {
+word_t sdt_encode(single_data_transfer_t instr) {
     //TODO
+    // cond = AL;
 }
 
-word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
-        int max_instr, int curr_instr, int extra_exp_size) {
-    decoded_instr_t instr = {
-            .type = DATA_TRANS;
-            .cond = AL;
-            .sdt.u = 1;
-            .sdt.rd = parse_numerical_expr(tokenized_instr->operands[1]);
-            .sdt.imm = 0;
-    };
+// word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
+//        int max_instr, int curr_instr, int extra_exp_size) {
+void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
+    tokenized_instr_t *instr = il->curr->tokenized_instr;
+    single_data_transfer_t sdt; 
 
-    if (get_mnemonic(tokenized_instr->operands[0])== LDR) {
+    sdt.u = 1;
+    sdt.rd = GET_REG_FROM_STR(instr->operands[1]);
+    sdt.imm = 0;
+
+    if (get_mnemonic(instr->operands[0])== LDR) {
         //loads from memory to register
         //requires L bit to be set
-        instr.sdt.l = 1;
+        sdt.l = 1;
     } else {
         //str, requires L bit to be clear
-        instr.sdt.l = 0;
+        sdt.l = 0;
     }
 
-    if(tokenized_instr->operands[2][0] == '=') {
+    if(instr->operands[2][0] == '=') {
         //in form <=expression>
 
-        word_t expression = parse_numerical_expr(tokenized_instr->operands[2]);
+        word_t expression = parse_numerical_expr(instr->operands[2]);
         //value of expression
 
         if (expression <= 0xFF) {
@@ -56,8 +57,8 @@ word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
             }
 
             mov_tokens->operands[0] = "mov";
-            mov_tokens->operands[1] = tokenized_instr->operands[1];
-            mov_tokens->operands[2] = tokenized_instr->operands[2];
+            mov_tokens->operands[1] = instr->operands[1];
+            mov_tokens->operands[2] = instr->operands[2];
             mov_tokens->operands[2][0] = '#';
 
             word_t mov_instr = assemble_dp(mov_tokens);
@@ -68,9 +69,12 @@ word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
 
         } else {
             //put value of expression at end of assembled program
-            instr.sdt.p = 1;
-            instr.sdt.rn = 15; //register number of PC
-            instr.sdt.imm = (((max_lines + extra_exp_size) - current_line) << 2) - 8;
+            sdt.p = 1;
+            sdt.rn = 15; //register number of PC
+            uint16_t address = ldr_add(il, expression);
+            sdt.offset = address - il->curr->address - 8;
+            /*
+            sdt.imm = (((max_lines + extra_exp_size) - current_line) << 2) - 8;
             if (extra_exp_size >= sizeof(extra_exp)) {
                 extra_exp_size++;
                 extra_exp = realloc(extra_exp, extra_exp_size * sizeof(word_t));
@@ -80,15 +84,16 @@ word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
                 }
             }
             extra_exp[extra_exp_size] = expression;
+            */
         }
 
     } else {
-        if (tokenized_instr->operands[4][0] == ']') {
+        if (instr->operands[4][0] == ']') {
             //post-indexing addressing specification
-            if(tokenized_instr->operands[5][0] == '#') {
+            if(instr->operands[5][0] == '#') {
                 //[Rn],<#expression>
-                instruction.rn = parse_numerical_expr(tokenized_instr->operands[3]);
-                instruction.sdt.imm = parse_numerical_expr(tokenized_instr->operands[5]);
+                sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
+                sdt.offset = parse_numerical_expr(instr->operands[5]);
             } else {
                 //TODO: [Rn],{+/-}Rm{,<shift>} (OPTIONAL)
             }
@@ -96,24 +101,24 @@ word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
         } else {
             //pre-indexed address specification
             //[Rn]:
-            instr.sdt.p = 1;
-            instr.sdt.rn = parse_numerical_expr(tokenized_instr->operands[3]);
+            sdt.p = 1;
+            sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
             if ([Rn, <#expression>]) {
                 //[Rn, <#expression>]
-                 word_t exp = parse_numerical_expr(tokenized_instr->operands[4]);
+                 word_t exp = parse_numerical_expr(instr->operands[4]);
                  if (exp >> 31) {
-                     instruction.sdt.imm = (~exp) + 1;
+                     sdt.offset = (~exp) + 1;
                  } else {
-                     instruction.sdt.imm = exp;
+                     sdt.offset = exp;
                  }
-                 instruction.flag_2 = (exp >> 31);
+                 instr.flag_2 = (exp >> 31);
             } else {
                 //TODO: [Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
             }
         }
     }
 
-    return sdt_encode(instr);
+    return sdt_encode(sdt);
 }
 
 

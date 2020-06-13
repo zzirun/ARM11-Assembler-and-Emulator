@@ -1,9 +1,10 @@
 #include "assemble.h"
 #include "assemble_utils.h"
 
-uint32_t assemble_dp(tokenized_instr_t *instr, symbol_table_t *st) {
+void assemble_dp(instr_list_t *il, symbol_table_t *st) {
 
   /* Translate tokenised form into data processing instruction */
+  tokenized_instr_t *instr = il->curr->tokenized_instr;
   data_processing_t dp;
   mnemonic_t mnemonic = instr->mnemonic;
   
@@ -85,6 +86,9 @@ uint32_t assemble_dp(tokenized_instr_t *instr, symbol_table_t *st) {
   bin = (bin << 4) | dp.rd;
   // bit 11 - 0 : operand 2
   bin = (bin << 12) | dp.operand2;
-  
-  return bin;
+
+  // Free instruction string
+  free_tokenized_instr(instr);
+  // Set binary instruction
+  il->curr->binary_instr = bin;
 }
