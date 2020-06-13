@@ -20,11 +20,21 @@ int main(int argc, char **argv) {
 		random stuff out to binary works
 
 	FILE* fp;
-	uint32_t inst = 3818917889; //11100011101000000001000000000001
-	uint32_t inst1 = 3800113154; //11100010100000010010000000000010
 	fp = fopen(argv[2], "wb");
-	binary_writer(inst, fp);
-	binary_writer(inst1, fp);
+	//mul r3,r1,r2
+	tokenized_instr_t* test = calloc(1, sizeof(tokenized_instr_t));
+	test->func = &mult_assembly;
+	test->mnemonic = MUL;
+	char* r3 = "r3";
+	char* r1 = "r1";
+	char* r2 = "r2";
+	test->operands = calloc(3, sizeof(char*));
+	test->operands[0] = r3;
+	test->operands[1] = r1;
+	test->operands[2] = r2;
+	binary_writer(test->func(test), fp);
+	free(test->operands);
+	free(test);
 	fclose(fp);
 	*/
 }

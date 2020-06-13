@@ -27,9 +27,9 @@ void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   strcpy(l, label);
   elem->label = l;
   elem->address = address;
-  
+
   table->tail->next = elem;
-  table->tail = elem; 
+  table->tail = elem;
 }
 
 bool map(symbol_table_t *table, const char *label, uint16_t *address) {
@@ -78,7 +78,7 @@ void add_instr(instr_list_t *instr_list, const char *inst, uint16_t address) {
   instr->address = address;
   
   instr_list->tail->next = instr;
-  instr_list->tail = instr; 
+  instr_list->tail = instr;
 }
 
 // adds value to end of assembled program, returns address of value

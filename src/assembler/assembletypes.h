@@ -1,3 +1,6 @@
+#ifndef ARM11_17_ASSEMBLER
+#define ARM11_17_ASSEMBLER
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -51,7 +54,7 @@ void free_tokenized_instr(tokenized_instr_t *);
 // assume as in emulator - 2^16 bytes of memory :
 // addresses can be represented in 16 bits
 typedef struct symbol_table_elem_t {
-  const char *label;  
+  char *label;
   uint16_t address;
   symbol_table_elem_t *next;
 } symbol_table_elem_t;
@@ -95,3 +98,7 @@ uint16_t ldr_add(instr_list_t *, uint32_t);
 void free_instr_list(instr_list_t *instr_list);
 
 /*************************************************************************/
+
+uint32_t mult_assembly(tokenized_instr_t* instr);
+
+#endif

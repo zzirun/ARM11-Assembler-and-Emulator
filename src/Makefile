@@ -7,9 +7,9 @@ FILES = emulate.o utils.o decode.o execute.o
 all: emulate assemble
 
 emulate: $(FILES)
-	$(CC) $(CFLAGS) $(FILES) -o emulate 
+	$(CC) $(CFLAGS) $(FILES) -o emulate
 
-emulate.o: emulate.c emulate.h utils.h 
+emulate.o: emulate.c emulate.h utils.h
 
 utils.o: utils.c utils.h emulate.h
 
@@ -17,13 +17,15 @@ decode.o: decode.c utils.h emulate.h
 
 execute.o: execute.c utils.h emulate.h
 
-assemble: assemble.o
+assemble: assemble.o assembler/listfunctions.o assembler/mult_assembler.o
 
-assemble.o: assemble.c assembler/listfunctions.o
+assemble.o: assemble.c assembler/assembletypes.h
 
-assembler/listfunctions.o: assembler/assembletypes.h assembler/listfunctions.c
+assembler/listfunctions.o: assembler/listfunctions.c assembler/assembletypes.h
+
+assembler/mult_assembler.o: assembler/mult_assembler.c assembler/assembletypes.h
 
 clean:
-	rm -rf *.o instructions/*.o assemble emulate bin/*
+	rm -rf *.o instructions/*.o assembler/*.o assemble emulate
 
 .PHONY: clean all
