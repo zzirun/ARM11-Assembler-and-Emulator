@@ -137,7 +137,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             //[Rn]:
             sdt.p = 1;
             sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
-            if ([Rn, <#expression>]) {
+            if ('#' == instr->operands[4][0]) {
                 //[Rn, <#expression>]
                 word_t exp = parse_numerical_expr(instr->operands[4]);
                 if (exp >> 31) {
