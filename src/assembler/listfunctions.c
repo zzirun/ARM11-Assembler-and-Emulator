@@ -1,5 +1,13 @@
 #include "assembletypes.h"
 
+void free_tokenized_instr(tokenized_instr_t *instr) {
+  for (int i = 0; i < instr->no_of_operands; i++) {
+    free(instr->operands[i]);
+  }
+  free(instr->operands);
+  free(instr);
+}
+
 symbol_table_t *create_symbol_table(void) {
   symbol_table_t *table = calloc(1, sizeof(symbol_table_t));
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
@@ -61,7 +69,7 @@ instr_list_t *create_instr_list(void) {
   return instr_list;
 }
 
-void add_instr(instr_list_t *instr_list, const char *inst) {
+void add_instr(instr_list_t *instr_list, const char *inst, uint16_t address) {
   instr_t *instr = calloc(1, sizeof(instr_t));
   char *i = calloc(1, sizeof(strlen(inst) + 1));
   if (!instr || !i) {
@@ -70,6 +78,7 @@ void add_instr(instr_list_t *instr_list, const char *inst) {
   }
   strcpy(i, inst);
   instr->instr_str = i;
+  instr->address = address;
   
   instr_list->tail->next = instr;
   instr_list->tail = instr; 

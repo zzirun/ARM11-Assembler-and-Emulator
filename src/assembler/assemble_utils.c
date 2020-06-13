@@ -22,7 +22,7 @@ void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
 		if (is_label) {
 			add_mapping(s_t, buffer, address);
 		} else {
-			add_instr(i_l, buffer);
+			add_instr(i_l, buffer, address);
 		}
 		address += 4;
 	}
