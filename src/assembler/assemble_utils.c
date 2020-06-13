@@ -50,11 +50,13 @@ void binary_writer(program_t *program, char *file_path) {
 }
 
 // Removes whitespace ' ', '\n' in the front and back of a string
-char *trim_whitespace(char *str) {
-    while (IS_WHITESPACE(*str)) {str++; }
+char *trim(char *str) {
+  if(str) {
+    while (IS_WHITESPACE(*str) || *str == ',') {str++; }
     char *end = str + strlen(str) - 1;
-    while (end > str && IS_WHITESPACE(*end)) {end--; }
+    while (end > str && (*str == ',' || IS_WHITESPACE(*end))) {end--; }
     end[1] = '\0';
+  }
     return str;
 }
 
@@ -130,7 +132,7 @@ uint8_t parse_shift(char *shift_str) {
 
   // Get shift amount 
   // + move shift amount to correct bit position 
-  shift_field = strtok(NULL, "");
+  shift_field = trim(strtok(NULL, ""));
   bool shift_by_reg;
   uint8_t shift_amount;
   if (*shift_field == '#') {
@@ -192,7 +194,7 @@ void get_op_from_str(char *op_as_str, data_processing_t *dp) {
     char *rm_str = strtok(op_as_str, " ,");
     uint8_t rm = GET_REG_FROM_STR(rm_str);
     // 2 : 
-    char *shift_str = strtok(NULL, "");
+    char *shift_str = trim(strtok(NULL, ""));
     uint8_t shift = parse_shift(shift_str);
     op2 = ((op2 | shift) << 4) | rm;
 
