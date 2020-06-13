@@ -10,13 +10,6 @@
 #include "assembletypes.h"
 #include "assemble_utils.h"
 
-word_t sdt_encode(single_data_transfer_t instr) {
-    //TODO
-    // cond = AL;
-}
-
-// word_t assemble_sdt(tokenized_instr_t *tokenized_instr, word_t *extra_exp,
-//        int max_instr, int curr_instr, int extra_exp_size) {
 void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
     tokenized_instr_t *instr = il->curr->tokenized_instr;
     single_data_transfer_t sdt; 
@@ -24,6 +17,7 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
     sdt.u = 1;
     sdt.rd = GET_REG_FROM_STR(instr->operands[1]);
     sdt.imm = 0;
+    sdt.p = 0;
 
     if (get_mnemonic(instr->operands[0])== LDR) {
         //loads from memory to register
@@ -65,7 +59,7 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
             free(mov_tokens->operands);
             free(mov_tokens);
 
-            return mov_instr;
+            il->curr->binary_instr = mov_instr;
 
         } else {
             //put value of expression at end of assembled program
@@ -95,7 +89,27 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
                 sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
                 sdt.offset = parse_numerical_expr(instr->operands[5]);
             } else {
-                //TODO: [Rn],{+/-}Rm{,<shift>} (OPTIONAL)
+                //[Rn],{+/-}Rm{,<shift>} (OPTIONAL)
+                sdt.rn = string_to_reg_address(instr->operands[3]);
+                sdt.imm = 1;
+                sdt.rm = GET_REG_FROM_STR(instr->operands[5]);
+                if ('-' == sections[5][0]) {
+                    sdt.u = 0;
+                }
+                if (no_of_operands > 6) {
+                    //shift
+                    char *shift_str = malloc(sizeof(char) * sizeof(instr->operands[6]));
+                    if (!shift_str) {
+                        perror("Unable to allocate memory for shift_str in assemble_sdt");
+                        exit(EXIT_FAILURE);
+                    }
+
+                    shift_str = &instr->operands[6];
+                    uint8_t shift_bin = parse_shift(shift_str);
+
+                    free(shift_str);
+                    //offset index register rm
+                }
             }
 
         } else {
@@ -114,11 +128,44 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
                  instr.flag_2 = (exp >> 31);
             } else {
                 //TODO: [Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
+                sdt.imm = 1;
+                sdt.rm = GET_REG_FROM_STR(instr->operands[4]);
+
+                if ('-' == instr->operands[4][0]) {
+                    sdt.u = 0;
+                }
+
+                if (no_of_operands > 6) {
+                    // shift
+                    char *shift_str = malloc(sizeof(char) * sizeof(instr->operands[5]));
+                    if (!shift_str) {
+                        perror("Unable to allocate memory for shift_str in assemble_sdt");
+                        exit(EXIT_FAILURE);
+                    }
+
+                    shift_str = &instr->operands[5];
+                    uint8_t shift_bin = parse_shift(shift_str);
+
+                    free(shift_str);
+                    //offset index register rm
+                }
             }
         }
     }
 
-    return sdt_encode(sdt);
+
+
+    word_t bin = 0x04000000;
+    bin |= ((word_t) sdt.i) << 25;
+    bin |= ((word_t) sdt.p) << 24;
+    bin |= ((word_t) sdt.u) << 23;
+    bin |= ((word_t) sdt.l) << 20;
+    bin |= ((word_t) sdt.rn) << 16;
+    bin |= ((word_t) sdt.rd) << 12;
+    bin |= ((word_t) sdt.imm) & 0xFFF;
+
+    free_tokenized_instr(instr);
+    il->curr->binary_instr = bin;
 }
 
 
