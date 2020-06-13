@@ -10,6 +10,7 @@
 #include "assembletypes.h"
 #include "assemble_utils.h"
 
+
 void assemble_sdt(program_t *prog, symbol_table_t *st) {
     instr_str_t *instr = prog->curr->instr_str;
     single_data_transfer_t sdt; 
@@ -18,6 +19,12 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
     sdt.rd = GET_REG_FROM_STR(instr->operands[1]);
     sdt.imm = 0;
     sdt.p = 0;
+
+    //for optional shift portion
+    reg_add_t rm = -1;
+    reg_add_t rs = -1;
+    byte_t shift_amount = -1;
+    shift_t shift_type;
 
     if (instr->mnemonic == LDR) {
         //loads from memory to register
@@ -96,8 +103,8 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                 //[Rn],{+/-}Rm{,<shift>} (OPTIONAL)
                 sdt.rn = string_to_reg_address(instr->operands[3]);
                 sdt.imm = 1;
-                sdt.rm = GET_REG_FROM_STR(instr->operands[5]);
-                if ('-' == sections[5][0]) {
+                rm = GET_REG_FROM_STR(instr->operands[5]);
+                if (instr->operands[5][0] == '-') {
                     sdt.u = 0;
                 }
                 if (no_of_operands > 6) {
@@ -109,10 +116,19 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                     }
 
                     shift_str = &instr->operands[6];
-                    uint8_t shift_bin = parse_shift(shift_str);
+                    shift_type = string_to_shift(shift_str[0]);
+                    if ('#' == shift_str[1][0]) {
+                        // <#expression>
+                        shift_amount = parse_numerical_expr(&shift_str[1][1]);
+                    } else if ('r' == shift_str[1][0]) {
+                        // register
+                        rs = GET_REG_FROM_STR(tokens->array[1]);
+                    } else {
+                        fprintf(stderr, "Shift not number or register");
+                        exit(EXIT_FAILURE);
+                    }
 
                     free(shift_str);
-                    //offset index register rm
                 }
             }
 
@@ -131,7 +147,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                  }
                  instr.flag_2 = (exp >> 31);
             } else {
-                //TODO: [Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
+                //[Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
                 sdt.imm = 1;
                 sdt.rm = GET_REG_FROM_STR(instr->operands[4]);
 
@@ -148,7 +164,17 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                     }
 
                     shift_str = &instr->operands[5];
-                    uint8_t shift_bin = parse_shift(shift_str);
+                    shift_type = string_to_shift(shift_str[0]);
+                    if ('#' == shift_str[1][0]) {
+                        // <#expression>
+                        shift_amount = parse_numerical_expr(&shift_str[1][1]);
+                    } else if ('r' == shift_str[1][0]) {
+                        // register
+                        rs = GET_REG_FROM_STR(tokens->array[1]);
+                    } else {
+                        fprintf(stderr, "Shift not number or register");
+                        exit(EXIT_FAILURE);
+                    }
 
                     free(shift_str);
                     //offset index register rm
@@ -166,7 +192,23 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
     bin |= ((word_t) sdt.l) << 20;
     bin |= ((word_t) sdt.rn) << 16;
     bin |= ((word_t) sdt.rd) << 12;
-    bin |= ((word_t) sdt.imm) & 0xFFF;
+    if (sdt.i) {
+        if (rm != -1) {
+            bin |= rm;
+        }
+        bin |= ((word_t) shift_type) << 5;
+        if (rs != -1) {
+            // Shift by 1 register
+            bin |= 1L << 4;
+            bin |= ((word_t) rs) << 8;
+        } else {
+            bin |= ((0x1F) & shift_amount) << 7;
+        }
+    } else {
+        bin |= ((word_t) sdt.imm) & 0xFFF;
+    }
+
+    bin |= (word_t) 0xE) << 28; //COND is AL
 
     free_tokenized_instr(instr);
     il->curr->binary_instr = bin;
