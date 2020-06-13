@@ -12,40 +12,30 @@
 // for DP, set to same integer as opcode enum -
 // - for ease of conversion of mnemonic to opcode
 typedef enum mnemonic_t {
-  AND = 0,  
-  EOR = 1,  
-  SUB = 2, 
-  RSB = 3,  
-  ADD = 4,  
-  TST = 8,  
-  TEQ = 9,  
-  CMP = 10, 
-  ORR = 12, 
-  MOV = 13,  
-  MUL, 
-  MLA, 
-  LDR, 
-  STR, 
-  BEQ, 
-  BNE, 
-  BGE, 
-  BLT, 
-  BGT, 
-  BLE, 
-  B, 
-  LSL, 
+  AND = 0,
+  EOR = 1,
+  SUB = 2,
+  RSB = 3,
+  ADD = 4,
+  TST = 8,
+  TEQ = 9,
+  CMP = 10,
+  ORR = 12,
+  MOV = 13,
+  MUL,
+  MLA,
+  LDR,
+  STR,
+  BEQ,
+  BNE,
+  BGE,
+  BLT,
+  BGT,
+  BLE,
+  B,
+  LSL,
   ANDEQ
 } mnemonic_t;
-
-// instr split into string operands
-typedef struct instr_str_t {
-  char *instr_line;
-  mnemonic_t mnemonic;
-  void (*assemble)(program_t *, symbol_table_t *);
-  char **operands;
-} instr_str_t;
-
-void free_instr_str(instr_str_t *);
 
 /************ LINKED LIST DATA STRUCTURES AND FUNCTIONS : ************/
 
@@ -53,10 +43,11 @@ void free_instr_str(instr_str_t *);
 
 // assume as in emulator - 2^16 bytes of memory :
 // addresses can be represented in 16 bits
+
 typedef struct symbol_table_elem_t {
   char *label;
   uint16_t address;
-  symbol_table_elem_t *next;
+  struct symbol_table_elem_t *next;
 } symbol_table_elem_t;
 
 typedef struct symbol_table_t {
@@ -78,10 +69,10 @@ void free_symbol_table(symbol_table_t *table);
 typedef struct prog_elem_t {
   uint16_t address;
   union {
-    instr_str_t *instr_str; 
+    struct instr_str_t *instr_str;
     uint32_t binary;
   };
-  instr_t *next;
+  struct prog_elem_t *next;
 } prog_elem_t, instr_t, data_t;
 
 typedef struct program_t {
@@ -97,5 +88,15 @@ uint16_t add_data(program_t *program, uint32_t binary_value); //for ldr in sdt
 void free_program(program_t *program);
 
 /*************************************************************************/
+
+// instr split into string operands
+typedef struct instr_str_t {
+  char *instr_line;
+  mnemonic_t mnemonic;
+  void (*assemble)(program_t *, symbol_table_t *);
+  char **operands;
+} instr_str_t;
+
+void free_instr_str(instr_str_t *);
 
 #endif
