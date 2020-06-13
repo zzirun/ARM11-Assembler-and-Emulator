@@ -19,9 +19,9 @@ void assemble_br(program_t *prog, symbol_table_t *symbol_table){
         perror("Label does not exist");
         exit(EXIT_FAILURE);
     }
-    uint32_t offset = ((int32_t)label_address - (int32_t)prog->curr->address - 8) >> 2;
+    uint32_t offset = signed_to_twos_complement((int32_t)label_address - (int32_t)prog->curr->address - 8) >> 2;
     // off by 8 bytes due to ARM pipeline
-    offset = signed_to_twos_complement(offset) & 0xFFFFFF;
+    offset &= 0xFFFFFF;
     // mask with 0xFFFFFF to get lower 24 bits
     bin_instr |= offset;
 

@@ -4,11 +4,10 @@
 #include "assemble.h"
 #include "assemble_utils.h"
 
-/** Function which assigns mnemonic & func in the instr according to mnemonic and allocates memory
- * for the 'spine' of the array of strings (operands field) in instr and returns the number of operands
+/** Function which assigns mnemonic & assemble in the instr_str according to mnemonic and
+ * returns the number of operands
  *
  * @param mnemonic
- * @param operand
  * @param instr
  * @return number of operands
  */
