@@ -1,5 +1,10 @@
 #include "assembletypes.h"
 
+void free_tokenized_instr(tokenized_instr_t *instr) {
+  free(instr->operands); // points to allocated string during first pass
+  free(instr);
+}
+
 symbol_table_t *create_symbol_table(void) {
   symbol_table_t *table = calloc(1, sizeof(symbol_table_t));
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
@@ -61,7 +66,7 @@ instr_list_t *create_instr_list(void) {
   return instr_list;
 }
 
-void add_instr(instr_list_t *instr_list, const char *inst) {
+void add_instr(instr_list_t *instr_list, const char *inst, uint16_t address) {
   instr_t *instr = calloc(1, sizeof(instr_t));
   char *i = calloc(1, sizeof(strlen(inst) + 1));
   if (!instr || !i) {
@@ -70,9 +75,26 @@ void add_instr(instr_list_t *instr_list, const char *inst) {
   }
   strcpy(i, inst);
   instr->instr_str = i;
+  instr->address = address;
   
   instr_list->tail->next = instr;
   instr_list->tail = instr; 
+}
+
+// adds value to end of assembled program, returns address of value
+uint16_t ldr_add(instr_list_t *instr_list, uint32_t value) {
+  instr_t *data = calloc(1, sizeof(instr_t));
+  if (!data) {
+      perror("Failed Memory Allocation for Extra Value");
+      exit(EXIT_FAILURE);
+  }
+  data->binary_instr = value;
+  data->address = instr_list->tail->address + 4;
+
+  instr_list->tail->next = data;
+  instr_list->tail = data; 
+
+  return data->address;
 }
 
 // freed after binary file writing

@@ -10,7 +10,7 @@ void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
 		exit(EXIT_FAILURE);
 	}
 	uint16_t address = 0;
-	while (fgets(&buffer[0], sizeof(buffer), assembly_file)) {
+	while (fgets(buffer, MAX_LINE_LENGTH, assembly_file)) {
 		bool is_label = false;
 		for (int i = 0; buffer[i]; i++) {
 			if (buffer[i] == ':') {
@@ -20,9 +20,9 @@ void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
 			}
 		}
 		if (is_label) {
-			add_mapping(s_t, buffer, address);
+			add_mapping(s_t, trim_whitespace(buffer), address);
 		} else {
-			add_instr(i_l, buffer);
+			add_instr(i_l, trim_whitespace(buffer), address);
 		}
 		address += 4;
 	}
@@ -49,9 +49,18 @@ void binary_writer(instr_list_t *instructions, char *file_path) {
   fclose(binary_file);
 }
 
+// Removes whitespace ' ', '\n' in the front and back of a string
+char *trim_whitespace(char *str) {
+    while (IS_WHITESPACE(*str)) {str++; }
+    char *end = str + strlen(str) - 1;
+    while (end > str && IS_WHITESPACE(*end)) {end--; }
+    end[1] = '\0';
+    return str;
+}
+
 /*  Parses numerical constant <#expression> string into an integer */
 uint32_t parse_numerical_expr(char *num_str) {
-  assert(*num_str == '#');
+  assert(*num_str == '#' || *num_str == '=');
   num_str++; // skip over '#'
   uint32_t num = 0;
   // check for prefix "0x"
