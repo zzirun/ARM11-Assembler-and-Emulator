@@ -17,13 +17,6 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
     dp.opcode = mnemonic;
   }
 
-	char *rd;
-	char *expr;
-	size_t rd_size;
-	size_t expr_size;
-	size_t new_size;
-	char *op2;
-
   switch (mnemonic) {
     case AND:
     case ANDEQ:
@@ -43,10 +36,10 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
     {
       // turn operand 2 from lsl Rd, <#expression> to mov Rd, Rd, lsl <#expression>
       // then fall through to mov
-      rd = instr->operands[0];
-      expr = instr->operands[1];
-      rd_size = strlen(rd) * sizeof(char);
-      expr_size = strlen(expr) * sizeof(char);
+      char *rd = instr->operands[0];
+      char *expr = instr->operands[1];
+      size_t rd_size = strlen(rd) * sizeof(char);
+      size_t expr_size = strlen(expr) * sizeof(char);
       // additional 6 characters : ",lsl " and '\0'
       size_t new_size = rd_size + expr_size + 6 * sizeof(char);
       char op2[new_size];

@@ -20,9 +20,9 @@ void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
 			}
 		}
 		if (is_label) {
-			add_mapping(st, trim_whitespace(buffer), address);
+			add_mapping(st, trim(buffer), address);
 		} else {
-			add_instr(prog, trim_whitespace(buffer), address);
+			add_instr(prog, trim(buffer), address);
 		}
 		address += 4;
 	}
