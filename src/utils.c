@@ -86,7 +86,7 @@ word_t shifter(shift_type shift_t, word_t op, byte_t shift, bool *carry) {
     return op;
   }
   // carry always last discarded/rotated bit
-  if (shift_t == LSL) {
+  if (shift_t == LSL_S) {
     // logical shift left
     *carry = ((op >> (32 - shift)) & 0x1); 
     return op << shift;
@@ -94,16 +94,16 @@ word_t shifter(shift_type shift_t, word_t op, byte_t shift, bool *carry) {
   *carry = ((op >> (shift - 1)) & 0x1); 
   word_t mask = 0;
   switch (shift_t) {
-    case LSR:
+    case LSR_S:
       // logical shift right
       return op >> shift;
-    case ASR:
+    case ASR_S:
       // arithmetic shift right
       if ((op >> 31) & 0x1) { 
         mask = ((1 << shift) - 1) << (32 - shift); 
       }
       return (op >> shift) | mask;
-    case ROR:
+    case ROR_S:
       // rotate right
       mask = (op & ((1 << (shift - 1)) - 1)) << (32 - shift); 
       return (op >> shift) | mask;
@@ -124,7 +124,7 @@ word_t shifter(shift_type shift_t, word_t op, byte_t shift, bool *carry) {
 word_t imm_extract(uint16_t op, bool *carry) {
     byte_t imm = op;
     byte_t rotate = 2 * ((op >> 8) & 0xF);
-    return shifter(ROR, imm, rotate, carry);
+    return shifter(ROR_S, imm, rotate, carry);
 }
 
 /* As a shifted register
