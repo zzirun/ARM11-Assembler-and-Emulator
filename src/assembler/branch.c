@@ -8,14 +8,14 @@ uint32_t signed_to_twos_complement(int32_t value) {
     return result;
 }
 
-void assemble_br(instr_list_t il, symbol_table_t * symbolTable){
+void assemble_br(instr_list_t *il, symbol_table_t *symbol_table){
     tokenized_instr_t *token_i = il->curr->tokenized_instr;
     // bits 24-27 is always 1010
     uint32_t bin_instr = 10 << 24;
 
     uint16_t label_address;
     char *label = token_i->operands[0];
-    if(!map(symbolTable, label, label_address)){
+    if(!map(symbol_table, label, &label_address)){
         perror("Label does not exist");
         exit(EXIT_FAILURE);
     }
@@ -30,22 +30,22 @@ void assemble_br(instr_list_t il, symbol_table_t * symbolTable){
         case BEQ:
             break; // cc : 0000
         case BNE:
-            bin_instr |= 1 << 28; // cc : 0001
+            bin_instr |= NE << 28; // cc : 0001
             break;
         case BGE:
-            bin_instr |= 10 << 28; // cc : 1010
+            bin_instr |= GE << 28; // cc : 1010
             break;
         case BLT:
-            bin_instr |= 11 << 28; // cc : 1011
+            bin_instr |= LT << 28; // cc : 1011
             break;
         case BGT:
-            bin_instr |= 12 << 28; // cc : 1100
+            bin_instr |= GT << 28; // cc : 1100
             break;
         case BLE:
-            bin_instr |= 13 << 28; // cc : 1101
+            bin_instr |= LE << 28; // cc : 1101
             break;
         case B:
-            bin_instr |= 14 << 28; // cc : 1110
+            bin_instr |= AL << 28; // cc : 1110
             break;
         default:
             assert(false);

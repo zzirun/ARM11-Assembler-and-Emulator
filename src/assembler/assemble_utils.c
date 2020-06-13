@@ -58,6 +58,16 @@ char *trim_whitespace(char *str) {
     return str;
 }
 
+// Checks if a character is in a string
+int contains(char *s, char c) {
+    for (; *s; s++) {
+        if (c == *s) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 /*  Parses numerical constant <#expression> string into an integer */
 uint32_t parse_numerical_expr(char *num_str) {
   assert(*num_str == '#' || *num_str == '=');

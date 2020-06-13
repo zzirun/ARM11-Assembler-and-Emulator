@@ -25,6 +25,8 @@
 
 /* Removes leading and ending whitespace */
 char *trim_whitespace(char *str);
+/* Checks if character in string */
+int contains(char *s, char c);
 /* Converts <#expression> to integer */
 uint32_t parse_numerical_expr(char *num_str);
 /* Converts a hexadecimal string "0x..." to integer */
