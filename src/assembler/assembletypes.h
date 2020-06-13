@@ -37,16 +37,6 @@ typedef enum mnemonic_t {
   ANDEQ
 } mnemonic_t;
 
-// instr split into string operands
-typedef struct instr_str_t {
-  char *instr_line;
-  mnemonic_t mnemonic;
-  void (*assemble)(program_t *, symbol_table_t *);
-  char **operands;
-} instr_str_t;
-
-void free_instr_str(instr_str_t *);
-
 /************ LINKED LIST DATA STRUCTURES AND FUNCTIONS : ************/
 
 /************ LABEL TO ADDRESS MAPPING ************/
@@ -56,7 +46,7 @@ void free_instr_str(instr_str_t *);
 typedef struct symbol_table_elem_t {
   char *label;
   uint16_t address;
-  symbol_table_elem_t *next;
+  struct symbol_table_elem_t *next;
 } symbol_table_elem_t;
 
 typedef struct symbol_table_t {
@@ -78,10 +68,10 @@ void free_symbol_table(symbol_table_t *table);
 typedef struct prog_elem_t {
   uint16_t address;
   union {
-    instr_str_t *instr_str; 
+    struct instr_str_t *instr_str; 
     uint32_t binary;
   };
-  instr_t *next;
+  struct prog_elem_t *next;
 } prog_elem_t, instr_t, data_t;
 
 typedef struct program_t {
@@ -90,6 +80,16 @@ typedef struct program_t {
   prog_elem_t *last_instr;
   prog_elem_t *curr; // for looping over elements
 } program_t;
+
+// instr split into string operands
+typedef struct instr_str_t {
+  char *instr_line;
+  mnemonic_t mnemonic;
+  void (*assemble)(program_t *, symbol_table_t *);
+  char **operands;
+} instr_str_t;
+
+void free_instr_str(instr_str_t *);
 
 program_t *create_program(void);
 void add_instr(program_t *program, const char *instr_line, uint16_t address);

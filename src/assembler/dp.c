@@ -32,7 +32,7 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       dp.rn = GET_REG_FROM_STR(instr->operands[1]);
       get_op_from_str(instr->operands[2], &dp); // sets imm and operand2
       break;
-    case LSL:
+    case LSL: {
       // turn operand 2 from <#expression> to Rd,lsl <#expression>
       // then fall through to mov
       char *rd = instr->operands[0];
@@ -41,23 +41,22 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       size_t expr_size = strlen(expr) * sizeof(char);
       // additional 6 characters : ",lsl " and '\0'
       size_t new_size = rd_size + expr_size + 6 * sizeof(char);
-      char *op2 = calloc(1, new_size);
-      if (!op2) {
-        perror("failed memory allocation for operand");
-        exit(EXIT_FAILURE);
-      }
+      char op2[new_size];
       strncpy(op2, rd, rd_size);
       strncpy(op2 + strlen(rd), ",lsl ", 5 * sizeof(char));
       strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char)); 
       instr->operands[1] = op2;
-      free(expr);
+      get_op_from_str(instr->operands[1], &dp);
+    }
     case MOV: 
       // single operand assignment
       // form: mov Rd, <Operand2>
       dp.set_cc = 0;
       dp.rd = GET_REG_FROM_STR(instr->operands[0]);
       dp.rn = 0; // don't care (below 4 bits)
-      get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
+      if (mnemonic == MOV) {
+        get_op_from_str(instr->operands[1], &dp); 
+      } // sets imm and operand2
       break;
     case TST:
     case TEQ:
