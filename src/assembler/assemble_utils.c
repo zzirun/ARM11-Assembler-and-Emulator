@@ -96,6 +96,8 @@ uint32_t parse_hex(char *hex_str) {
     char c = hex_str[i];
     if (c >= 'A' && c <= 'F') {
       num += c - 'A' + 10;
+    } else if (c >= 'a' && c <= 'f') {
+      num += c - 'a' + 10;
     } else if (c >= '0' && c <= '9') {
       num += c - '0';
     } else {
