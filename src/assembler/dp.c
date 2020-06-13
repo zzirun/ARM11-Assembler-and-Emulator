@@ -8,7 +8,7 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
   data_processing_t dp;
 
   mnemonic_t mnemonic = instr->mnemonic;
-  
+
   if (mnemonic == ANDEQ) {
     dp.opcode = AND_OP;
   } else if (mnemonic == LSL) {
@@ -17,8 +17,15 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
     dp.opcode = mnemonic;
   }
 
-  switch (mnemonic) { 
-    case AND: 
+	char *rd;
+	char *expr;
+	size_t rd_size;
+	size_t expr_size;
+	size_t new_size;
+	char *op2;
+
+  switch (mnemonic) {
+    case AND:
     case ANDEQ:
     case EOR:
     case SUB:
@@ -36,16 +43,16 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
     {
       // turn operand 2 from lsl Rd, <#expression> to mov Rd, Rd, lsl <#expression>
       // then fall through to mov
-      char *rd = instr->operands[0];
-      char *expr = instr->operands[1];
-      size_t rd_size = strlen(rd) * sizeof(char);
-      size_t expr_size = strlen(expr) * sizeof(char);
+      rd = instr->operands[0];
+      expr = instr->operands[1];
+      rd_size = strlen(rd) * sizeof(char);
+      expr_size = strlen(expr) * sizeof(char);
       // additional 6 characters : ",lsl " and '\0'
       size_t new_size = rd_size + expr_size + 6 * sizeof(char);
       char op2[new_size];
       strncpy(op2, rd, rd_size);
       strncpy(op2 + strlen(rd), ",lsl ", 5 * sizeof(char));
-      strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char)); 
+      strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char));
       instr->operands[1] = op2;
     }
     case MOV: 
@@ -66,7 +73,9 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       dp.rn = GET_REG_FROM_STR(instr->operands[0]);
       get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
       break;
-  } 
+		default:
+			break;
+  }
 
   /* Encode decoded instruction into binary */
   // bit 31 - 28 : condition code (set to AL except if ANDEQ then set to EQ)
