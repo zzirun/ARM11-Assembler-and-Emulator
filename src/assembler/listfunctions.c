@@ -1,7 +1,8 @@
 #include "assembletypes.h"
 
-void free_tokenized_instr(tokenized_instr_t *instr) {
-  free(instr->operands); // points to allocated string during first pass
+void free_instr_str(instr_str_t *instr) {
+  free(instr->instr_line);
+  free(instr->operands); 
   free(instr);
 }
 
@@ -27,9 +28,9 @@ void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   strcpy(l, label);
   elem->label = l;
   elem->address = address;
-
+  
   table->tail->next = elem;
-  table->tail = elem;
+  table->tail = elem; 
 }
 
 bool map(symbol_table_t *table, const char *label, uint16_t *address) {
@@ -54,57 +55,57 @@ void free_symbol_table(symbol_table_t *table) {
   free(table);
 }
 
-instr_list_t *create_instr_list(void) {
-  instr_list_t *instr_list = calloc(1, sizeof(instr_list_t));
-  instr_t *instr = calloc(1, sizeof(instr_t));
-  if (!instr_list || !instr) {
-    perror("Failed Memory Allocation for Instructions List");
+program_t *create_program(void) {
+  program_t *program = calloc(1, sizeof(program_t));
+  prog_elem_t *prog_elem = calloc(1, sizeof(prog_elem_t));
+  if (!program || !prog_elem) {
+    perror("Failed Memory Allocation for Program");
     exit(EXIT_FAILURE);
   }
-  instr_list->head = instr;
-  instr_list->tail = instr;
-  return instr_list;
+  program->head = prog_elem;
+  program->tail = prog_elem;
+  return program;
 }
 
-void add_instr(instr_list_t *instr_list, const char *inst, uint16_t address) {
+void add_instr(program_t *program, const char *instr_line, uint16_t address) {
   instr_t *instr = calloc(1, sizeof(instr_t));
-  char *i = calloc(1, sizeof(strlen(inst) + 1));
-  if (!instr || !i) {
+  instr_str_t *instr_str = calloc(1, sizeof(instr_str_t));
+  char *i = calloc(1, sizeof(strlen(instr_line) + 1));
+  if (!instr || !instr_str || !i) {
       perror("Failed Memory Allocation for Instruction");
       exit(EXIT_FAILURE);
   }
-  strcpy(i, inst);
-  instr->instr_str = i;
+  strcpy(i, instr_line);
+  instr_str->instr_line = i;
+  instr->instr_str = instr_str;
   instr->address = address;
   
-  instr_list->tail->next = instr;
-  instr_list->tail = instr;
+  program->tail->next = instr;
+  program->tail = instr; 
 }
 
 // adds value to end of assembled program, returns address of value
-uint16_t ldr_add(instr_list_t *instr_list, uint32_t value) {
-  instr_t *data = calloc(1, sizeof(instr_t));
+uint16_t add_data(program_t *program, uint32_t value) {
+  data_t *data = calloc(1, sizeof(data_t));
   if (!data) {
-      perror("Failed Memory Allocation for Extra Value");
-      exit(EXIT_FAILURE);
+    perror("Failed Memory Allocation for Extra Value");
+    exit(EXIT_FAILURE);
   }
-  data->binary_instr = value;
-  data->address = instr_list->tail->address + 4;
+  data->binary = value;
+  data->address = program->tail->address + 4;
 
-  instr_list->tail->next = data;
-  instr_list->tail = data; 
+  program->tail->next = data;
+  program->tail = data; 
 
   return data->address;
 }
 
-// freed after binary file writing
-// string field should have already been freed
-void free_instr_list(instr_list_t *instr_list) {
-  instr_t *curr = instr_list->head;
+void free_program(program_t *program) {
+  prog_elem_t *curr = program->head;
   while (curr) {
-    instr_t *next  = curr->next;
+    prog_elem_t *next  = curr->next;
     free(curr);
     curr = next;
   }
-  free(instr_list);
+  free(program);
 }

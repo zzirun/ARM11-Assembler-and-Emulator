@@ -10,8 +10,8 @@
 #include "assembletypes.h"
 #include "assemble_utils.h"
 
-void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
-    tokenized_instr_t *instr = il->curr->tokenized_instr;
+void assemble_sdt(program_t *prog, symbol_table_t *st) {
+    instr_str_t *instr = prog->curr->instr_str;
     single_data_transfer_t sdt; 
 
     sdt.u = 1;
@@ -19,7 +19,7 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
     sdt.imm = 0;
     sdt.p = 0;
 
-    if (get_mnemonic(instr->operands[0])== LDR) {
+    if (instr->mnemonic == LDR) {
         //loads from memory to register
         //requires L bit to be set
         sdt.l = 1;
@@ -37,7 +37,9 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
         if (expression <= 0xFF) {
             //value of exp fits into argument of mov
             //compile instr as a mov instead of an ldr
-
+            instr->mnemonic = MOV;
+            instr->operands[1][0] = '#';
+            /*
             tokenized_instr_t *mov_tokens = malloc(sizeof(tokenized_instr_t));
             if (!mov_tokens) {
                 perror("Unable to allocate memory for mov_tokens in assemble_sdt");
@@ -58,15 +60,17 @@ void assemble_sdt(instr_list_t *il, symbol_table_t *st) {
             word_t mov_instr = assemble_dp(mov_tokens);
             free(mov_tokens->operands);
             free(mov_tokens);
-
-            il->curr->binary_instr = mov_instr;
+            */
+            assemble_dp(prog, st);
+            return;
+            // il->curr->binary_instr = mov_instr;
 
         } else {
             //put value of expression at end of assembled program
             sdt.p = 1;
             sdt.rn = 15; //register number of PC
-            uint16_t address = ldr_add(il, expression);
-            sdt.offset = address - il->curr->address - 8;
+            uint16_t address = add_data(prog, expression);
+            sdt.offset = address - prog->curr->address - 8;
             /*
             sdt.imm = (((max_lines + extra_exp_size) - current_line) << 2) - 8;
             if (extra_exp_size >= sizeof(extra_exp)) {

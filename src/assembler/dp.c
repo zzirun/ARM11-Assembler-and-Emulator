@@ -1,11 +1,12 @@
 #include "assemble.h"
 #include "assemble_utils.h"
 
-void assemble_dp(instr_list_t *il, symbol_table_t *st) {
+void assemble_dp(program_t *prog, symbol_table_t *st) {
 
   /* Translate tokenised form into data processing instruction */
-  tokenized_instr_t *instr = il->curr->tokenized_instr;
+  instr_str_t *instr = prog->curr->instr_str;
   data_processing_t dp;
+
   mnemonic_t mnemonic = instr->mnemonic;
   
   if (mnemonic == ANDEQ) {
@@ -88,7 +89,7 @@ void assemble_dp(instr_list_t *il, symbol_table_t *st) {
   bin = (bin << 12) | dp.operand2;
 
   // Free instruction string
-  free_tokenized_instr(instr);
+  free_instr_str(instr);
   // Set binary instruction
-  il->curr->binary_instr = bin;
+  prog->curr->binary = bin;
 }

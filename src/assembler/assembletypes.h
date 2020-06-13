@@ -38,14 +38,14 @@ typedef enum mnemonic_t {
 } mnemonic_t;
 
 // instr split into string operands
-typedef struct tokenized_instr_t {
-  void (*assemble)(instr_list_t *, symbol_table_t *);
+typedef struct instr_str_t {
+  char *instr_line;
   mnemonic_t mnemonic;
-  int no_of_operands;
+  void (*assemble)(program_t *, symbol_table_t *);
   char **operands;
-} tokenized_instr_t;
+} instr_str_t;
 
-void free_tokenized_instr(tokenized_instr_t *);
+void free_instr_str(instr_str_t *);
 
 /************ LINKED LIST DATA STRUCTURES AND FUNCTIONS : ************/
 
@@ -75,30 +75,27 @@ void free_symbol_table(symbol_table_t *table);
 
 // stores a single instr (as different formats) and address to next instr
 // data in union replaced at each stage of assembly
-typedef struct instr_t {
+typedef struct prog_elem_t {
   uint16_t address;
   union {
-    char *instr_str; // RMB to free during tokenisation 
-    tokenized_instr_t *tokenized_instr; // RMB to free during assemble
-    uint32_t binary_instr;
+    instr_str_t *instr_str; 
+    uint32_t binary;
   };
   instr_t *next;
-} instr_t;
+} prog_elem_t, instr_t, data_t;
 
-typedef struct instr_list_t {
-  instr_t *head;
-  instr_t *last_instr;
-  instr_t *tail;
-  instr_t *curr; // for processing all instructions
-} instr_list_t;
+typedef struct program_t {
+  prog_elem_t *head;
+  prog_elem_t *tail;
+  prog_elem_t *last_instr;
+  prog_elem_t *curr; // for looping over elements
+} program_t;
 
-instr_list_t *create_instr_list(void);
-void add_instr(instr_list_t *instr_list, const char *instr_str, uint16_t address);
-uint16_t ldr_add(instr_list_t *, uint32_t); 
-void free_instr_list(instr_list_t *instr_list);
+program_t *create_program(void);
+void add_instr(program_t *program, const char *instr_line, uint16_t address);
+uint16_t add_data(program_t *program, uint32_t binary_value); //for ldr in sdt
+void free_program(program_t *program);
 
 /*************************************************************************/
-
-uint32_t mult_assembly(tokenized_instr_t* instr);
 
 #endif

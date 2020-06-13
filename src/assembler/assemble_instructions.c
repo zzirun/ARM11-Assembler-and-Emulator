@@ -1,10 +1,10 @@
 #include "assemble.h"
 #include "assemble_utils.h"
 
-void assemble_instructions(instr_list_t * il, symbol_table_t *st) {
-  il->curr = il->head->next;
-  for (; il->curr; il->curr = il->curr->next) { 
-	  il->curr->tokenized_instr->assemble(il, st);
+void assemble_instructions(program_t *prog, symbol_table_t *st) {
+  prog->curr = prog->head->next;
+  for (; prog->curr != prog->last_instr->next; prog->curr = prog->curr->next) { 
+	  prog->curr->instr_str->assemble(prog, st);
   }
 }
 

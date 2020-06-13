@@ -2,7 +2,7 @@
 #include "assemble.h"
 
 /* From assembly file: Builds label to address map + Loads non-label instruction strings */
-void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
+void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
 	char buffer[MAX_LINE_LENGTH] = {0};
 	FILE* assembly_file = fopen(file_path, "r");
 	if (!assembly_file) {
@@ -20,9 +20,9 @@ void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
 			}
 		}
 		if (is_label) {
-			add_mapping(s_t, trim_whitespace(buffer), address);
+			add_mapping(st, trim_whitespace(buffer), address);
 		} else {
-			add_instr(i_l, trim_whitespace(buffer), address);
+			add_instr(prog, trim_whitespace(buffer), address);
 		}
 		address += 4;
 	}
@@ -30,16 +30,16 @@ void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
 }
 
 /* Writes 32 bits instruction into stream according to little endian format */
-void binary_writer(instr_list_t *instructions, char *file_path) {
+void binary_writer(program_t *program, char *file_path) {
   FILE* binary_file = fopen(file_path, "wb");
   if (!binary_file) {
 		perror("Failed to open binary file");
 		exit(EXIT_FAILURE);
 	}
-	instr_t *curr = instructions->head->next;
+	instr_t *curr = program->head->next;
   uint8_t inst_arr[NUMBER_OF_BYTES_PER_INST];
   for (; curr; curr = curr->next) { 
-	  uint32_t instr = curr->binary_instr;
+	  uint32_t instr = curr->binary;
     for (int i = 0; i < NUMBER_OF_BYTES_PER_INST; i++) {
       inst_arr[i] = instr & GET_LS_8;
       instr >>= BYTE_SIZE;

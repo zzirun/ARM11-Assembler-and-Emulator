@@ -4,15 +4,15 @@
 int main(int argc, char **argv) {
 
   symbol_table_t *label_to_address = create_symbol_table();
-  instr_list_t *instructions = create_instr_list();
+  program_t *program = create_program();
 
-  first_pass(argv[1], label_to_address, instructions);
-  tokenizer(instructions);
-  assemble_instructions(instructions, label_to_address);
-  binary_writer(instructions, argv[2]);
+  first_pass(argv[1], label_to_address, program);
+  tokenizer(program);
+  assemble_instructions(program, label_to_address);
+  binary_writer(program, argv[2]);
 
   free_symbol_table(label_to_address);
-  free_instr_list(instructions);
+  free_instr_list(program);
 
 
 	/*

@@ -8,25 +8,25 @@ uint32_t signed_to_twos_complement(int32_t value) {
     return result;
 }
 
-void assemble_br(instr_list_t *il, symbol_table_t *symbol_table){
-    tokenized_instr_t *token_i = il->curr->tokenized_instr;
+void assemble_br(program_t *prog, symbol_table_t *symbol_table){
+    instr_str_t *instr = prog->curr->instr_str;
     // bits 24-27 is always 1010
     uint32_t bin_instr = 10 << 24;
 
     uint16_t label_address;
-    char *label = token_i->operands[0];
+    char *label = instr->operands[0];
     if(!map(symbol_table, label, &label_address)){
         perror("Label does not exist");
         exit(EXIT_FAILURE);
     }
-    uint32_t offset = ((int32_t)label_address - (int32_t)il->curr->address - 8) >> 2;
+    uint32_t offset = ((int32_t)label_address - (int32_t)prog->curr->address - 8) >> 2;
     // off by 8 bytes due to ARM pipeline
     offset = signed_to_twos_complement(offset) & 0xFFFFFF;
     // mask with 0xFFFFFF to get lower 24 bits
     bin_instr |= offset;
 
     // set the condition codes (cc)
-    switch(token_i->mnemonic){
+    switch(instr->mnemonic){
         case BEQ:
             break; // cc : 0000
         case BNE:
@@ -50,7 +50,8 @@ void assemble_br(instr_list_t *il, symbol_table_t *symbol_table){
         default:
             assert(false);
     }
-    il->curr->binary_instr = bin_instr;
+    free_instr_str(instr);
+    prog->curr->binary = bin_instr;
 }
 
 
