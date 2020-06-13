@@ -27,6 +27,7 @@ void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
 		address += 4;
 	}
 	fclose(assembly_file);
+	prog->last_instr = prog->tail;
 }
 
 /* Writes 32 bits instruction into stream according to little endian format */
@@ -134,7 +135,7 @@ uint8_t parse_shift(char *shift_str) {
 
   // Get shift amount 
   // + move shift amount to correct bit position 
-  shift_field = trim(strtok(NULL, ""))s;
+  shift_field = trim(strtok(NULL, ""));
   bool shift_by_reg;
   uint8_t shift_amount;
   if (*shift_field == '#') {

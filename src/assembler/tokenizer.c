@@ -83,6 +83,7 @@ int set_up_tokenized(char *mnemonic, instr_str_t *instr) {
         instr->assemble = assemble_mult;
         return 4;
     }
+    /*
     if (!strcmp(mnemonic, "ldr")) {
         instr->mnemonic = LDR;
         instr->assemble = assemble_sdt;
@@ -93,6 +94,7 @@ int set_up_tokenized(char *mnemonic, instr_str_t *instr) {
         instr->assemble = assemble_sdt;
         return 2;
     }
+    */
     if (mnemonic[0] == 'b') {
         if (!strcmp(mnemonic, "beq")) {
             instr->mnemonic = BEQ;
@@ -137,6 +139,6 @@ void tokenizer(program_t *prog) {
         }
         instr->operands[num_operands - 1] = trim(strtok(NULL, ""));
         curr = curr->next;
-    }  
+    }
 }
     
