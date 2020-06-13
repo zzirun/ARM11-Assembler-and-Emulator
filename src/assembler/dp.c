@@ -32,7 +32,8 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       dp.rn = GET_REG_FROM_STR(instr->operands[1]);
       get_op_from_str(instr->operands[2], &dp); // sets imm and operand2
       break;
-    case LSL: {
+    case LSL:
+      {
       // turn operand 2 from <#expression> to Rd,lsl <#expression>
       // then fall through to mov
       char *rd = instr->operands[0];
@@ -46,17 +47,14 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       strncpy(op2 + strlen(rd), ",lsl ", 5 * sizeof(char));
       strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char));
       instr->operands[1] = op2;
-      get_op_from_str(instr->operands[1], &dp);
-    }
+      }
     case MOV: 
       // single operand assignment
       // form: mov Rd, <Operand2>
       dp.set_cc = 0;
       dp.rd = GET_REG_FROM_STR(instr->operands[0]);
       dp.rn = 0; // don't care (below 4 bits)
-      if (mnemonic == MOV) {
-        get_op_from_str(instr->operands[1], &dp); 
-      } // sets imm and operand2
+      get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
       break;
     case TST:
     case TEQ:
