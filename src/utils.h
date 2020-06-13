@@ -24,10 +24,10 @@ void store_word(uint32_t address, machine_state *ms, uint32_t word);
 
 // shifter type 
 typedef enum shift_type {
-  LSL, // logical L
-  LSR, // logical R
-  ASR, // arithmetic R
-  ROR  // rotate R
+  LSL_S, // logical L
+  LSR_S, // logical R
+  ASR_S, // arithmetic R
+  ROR_S  // rotate R
 } shift_type;
 // shifter - returns shifted operand and updates carry
 // param: shiftT(ype), op(erand), shift(amount), *carry

@@ -2,18 +2,29 @@
 #include "../utils.h"
 
 #define HEXADECIMAL_BASE (16)
+#define NUMBER_OF_BYTES_PER_INST (4)
 
 /* Mask to get top 2 bits of a word */
 #define GET_MS_2 (0xC0000000) 
+/* Mask to get bottom 8 bits of a word */
+#define GET_LS_8 (0xFF)
+
+/* Max characters (inc'\0') in a line from assembly file */
+#define MAX_LINE_LENGTH (512) 
 
 /* Max representable in immediate field in a dp instr */
 #define MAX_DP_IMM (0xFF) 
 /* Max representable shift amount in a dp instr */
 #define MAX_DP_SHAMT (0xF) 
 
+/* Checks if character is whitespace */
+#define IS_WHITESPACE(c) (c == ' ' || c== '\n')
+
 /* Gets register number from string eg: r9 */
 #define GET_REG_FROM_STR(reg_as_str) (atoi(reg_as_str + 1))
 
+/* Removes leading and ending whitespace */
+char *trim_whitespace(char *str);
 /* Converts <#expression> to integer */
 uint32_t parse_numerical_expr(char *num_str);
 /* Converts a hexadecimal string "0x..." to integer */

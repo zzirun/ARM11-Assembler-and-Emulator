@@ -1,10 +1,66 @@
 #include "assemble_utils.h"
+#include "assemble.h"
 
-/*  Parses string represention of a numerical constant
- *  of form <#expression> into an integer
- */
+/* From assembly file: Builds label to address map + Loads non-label instruction strings */
+void first_pass(char *file_path, symbol_table_t *s_t, instr_list_t *i_l) {
+	char buffer[MAX_LINE_LENGTH] = {0};
+	FILE* assembly_file = fopen(file_path, "r");
+	if (!assembly_file) {
+		perror("Failed to open source code");
+		exit(EXIT_FAILURE);
+	}
+	uint16_t address = 0;
+	while (fgets(buffer, MAX_LINE_LENGTH, assembly_file)) {
+		bool is_label = false;
+		for (int i = 0; buffer[i]; i++) {
+			if (buffer[i] == ':') {
+				buffer[i] = '\0'; //Removes ':' from the label
+				is_label = true;
+				break;
+			}
+		}
+		if (is_label) {
+			add_mapping(s_t, trim_whitespace(buffer), address);
+		} else {
+			add_instr(i_l, trim_whitespace(buffer), address);
+		}
+		address += 4;
+	}
+	fclose(assembly_file);
+}
+
+/* Writes 32 bits instruction into stream according to little endian format */
+void binary_writer(instr_list_t *instructions, char *file_path) {
+  FILE* binary_file = fopen(file_path, "wb");
+  if (!binary_file) {
+		perror("Failed to open binary file");
+		exit(EXIT_FAILURE);
+	}
+	instr_t *curr = instructions->head->next;
+  uint8_t inst_arr[NUMBER_OF_BYTES_PER_INST];
+  for (; curr; curr = curr->next) { 
+	  uint32_t instr = curr->binary_instr;
+    for (int i = 0; i < NUMBER_OF_BYTES_PER_INST; i++) {
+      inst_arr[i] = instr & GET_LS_8;
+      instr >>= BYTE_SIZE;
+    }
+    fwrite(inst_arr, sizeof(uint8_t), NUMBER_OF_BYTES_PER_INST, binary_file);
+  }
+  fclose(binary_file);
+}
+
+// Removes whitespace ' ', '\n' in the front and back of a string
+char *trim_whitespace(char *str) {
+    while (IS_WHITESPACE(*str)) {str++; }
+    char *end = str + strlen(str) - 1;
+    while (end > str && IS_WHITESPACE(*end)) {end--; }
+    end[1] = '\0';
+    return str;
+}
+
+/*  Parses numerical constant <#expression> string into an integer */
 uint32_t parse_numerical_expr(char *num_str) {
-  assert(*num_str == '#');
+  assert(*num_str == '#' || *num_str == '=');
   num_str++; // skip over '#'
   uint32_t num = 0;
   // check for prefix "0x"
@@ -40,10 +96,10 @@ uint32_t parse_hex(char *hex_str) {
 
 /*  Translates string to shift type  */
 shift_type get_shift_type(char *shift_type_str) {
-  if (!strcmp("lsl", shift_type_str)) return LSL;
-  if (!strcmp("lsr", shift_type_str)) return LSR;
-  if (!strcmp("asr", shift_type_str)) return ASR;
-  if (!strcmp("ror", shift_type_str)) return ROR;
+  if (!strcmp("lsl", shift_type_str)) return LSL_S;
+  if (!strcmp("lsr", shift_type_str)) return LSR_S;
+  if (!strcmp("asr", shift_type_str)) return ASR_S;
+  if (!strcmp("ror", shift_type_str)) return ROR_S;
   
   fprintf(stderr, "Invalid Shift Type");
   exit(EXIT_FAILURE);
