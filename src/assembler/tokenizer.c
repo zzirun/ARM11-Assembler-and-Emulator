@@ -1,7 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include "assemble.h"
+#include "assemble_utils.h"
 
 /** Function which assigns mnemonic & func in the instr according to mnemonic and allocates memory
  * for the 'spine' of the array of strings (operands field) in instr and returns the number of operands
@@ -134,7 +132,7 @@ void tokenizer(program_t *prog) {
         for (int i = 0; i < num_operands - 1; i++) {
             instr->operands[i] = strtok(NULL, " ,");
         }
-        instr->operands[num_operands - 1] = strtok(NULL, "");
+        instr->operands[num_operands - 1] = trim(strtok(NULL, ""));
         curr = curr->next;
     }  
 }

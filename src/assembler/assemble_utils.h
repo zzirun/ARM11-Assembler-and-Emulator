@@ -23,8 +23,8 @@
 /* Gets register number from string eg: r9 */
 #define GET_REG_FROM_STR(reg_as_str) (atoi(reg_as_str + 1))
 
-/* Removes leading and ending whitespace */
-char *trim_whitespace(char *str);
+/* Removes leading and ending whitespace */ // Change
+char *trim(char *str);
 /* Checks if character in string */
 int contains(char *s, char c);
 /* Converts <#expression> to integer */
