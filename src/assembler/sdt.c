@@ -35,7 +35,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         sdt.l = 0;
     }
 
-    if(instr->operands[2][0] == '=') {
+    if(instr->operands[1][0] == '=') {
         //in form <=expression>
 
         word_t expression = parse_numerical_expr(instr->operands[2]);
@@ -45,7 +45,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             //value of exp fits into argument of mov
             //compile instr as a mov instead of an ldr
             instr->mnemonic = MOV;
-            instr->operands[1][0] = '#';
+            instr->operands[0][0] = '#';
             /*
             tokenized_instr_t *mov_tokens = malloc(sizeof(tokenized_instr_t));
             if (!mov_tokens) {
@@ -93,9 +93,9 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         }
 
     } else {
-        if (instr->operands[4][0] == ']') {
+        if (instr->operands[3][0] == ']') {
             //post-indexing addressing specification
-            if(instr->operands[5][0] == '#') {
+            if(instr->operands[4][0] == '#') {
                 //[Rn],<#expression>
                 sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
                 sdt.offset = parse_numerical_expr(instr->operands[5]);
@@ -104,7 +104,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                 sdt.rn = string_to_reg_address(instr->operands[3]);
                 sdt.imm = 1;
                 rm = GET_REG_FROM_STR(instr->operands[5]);
-                if (instr->operands[5][0] == '-') {
+                if (instr->operands[4][0] == '-') {
                     sdt.u = 0;
                 }
                 if (no_of_operands > 6) {
@@ -115,7 +115,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                         exit(EXIT_FAILURE);
                     }
 
-                    shift_str = &instr->operands[6];
+                    shift_str = &instr->operands[5];
                     shift_type = string_to_shift(shift_str[0]);
                     if ('#' == shift_str[1][0]) {
                         // <#expression>
@@ -136,10 +136,10 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             //pre-indexed address specification
             //[Rn]:
             sdt.p = 1;
-            sdt.rn = GET_REG_FROM_STR(instr->operands[3]);
-            if ('#' == instr->operands[4][0]) {
+            sdt.rn = GET_REG_FROM_STR(instr->operands[2]);
+            if ('#' == instr->operands[3][0]) {
                 //[Rn, <#expression>]
-                word_t exp = parse_numerical_expr(instr->operands[4]);
+                word_t exp = parse_numerical_expr(instr->operands[3]);
                 if (exp >> 31) {
                     sdt.offset = (~exp) + 1;
                 } else {
@@ -149,21 +149,21 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             } else {
                 //[Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
                 sdt.imm = 1;
-                sdt.rm = GET_REG_FROM_STR(instr->operands[4]);
+                sdt.rm = GET_REG_FROM_STR(instr->operands[3]);
 
-                if ('-' == instr->operands[4][0]) {
+                if ('-' == instr->operands[3][0]) {
                     sdt.u = 0;
                 }
 
                 if (no_of_operands > 6) {
                     // shift
-                    char *shift_str = malloc(sizeof(char) * sizeof(instr->operands[5]));
+                    char *shift_str = malloc(sizeof(char) * sizeof(instr->operands[4]));
                     if (!shift_str) {
                         perror("Unable to allocate memory for shift_str in assemble_sdt");
                         exit(EXIT_FAILURE);
                     }
 
-                    shift_str = &instr->operands[5];
+                    shift_str = &instr->operands[4];
                     shift_type = string_to_shift(shift_str[0]);
                     if ('#' == shift_str[1][0]) {
                         // <#expression>
