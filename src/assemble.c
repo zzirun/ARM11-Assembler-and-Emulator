@@ -12,6 +12,29 @@ int main(int argc, char **argv) {
   binary_writer(program, argv[2]);
 
   free_symbol_table(label_to_address);
-  free_program(program);
+  free_instr_list(program);
 
+
+	/*
+		Just trying to see if writing
+		random stuff out to binary works
+
+	FILE* fp;
+	fp = fopen(argv[2], "wb");
+	//mul r3,r1,r2
+	tokenized_instr_t* test = calloc(1, sizeof(tokenized_instr_t));
+	test->func = &mult_assembly;
+	test->mnemonic = MUL;
+	char* r3 = "r3";
+	char* r1 = "r1";
+	char* r2 = "r2";
+	test->operands = calloc(3, sizeof(char*));
+	test->operands[0] = r3;
+	test->operands[1] = r1;
+	test->operands[2] = r2;
+	binary_writer(test->func(test), fp);
+	free(test->operands);
+	free(test);
+	fclose(fp);
+	*/
 }

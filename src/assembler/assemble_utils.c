@@ -20,11 +20,11 @@ void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
 			}
 		}
 		if (is_label) {
-			add_mapping(st, trim(buffer), address);
+			add_mapping(st, trim_whitespace(buffer), address);
 		} else {
-			add_instr(prog, trim(buffer), address);
-            address += 4;
+			add_instr(prog, trim_whitespace(buffer), address);
 		}
+		address += 4;
 	}
 	fclose(assembly_file);
 }
@@ -38,7 +38,7 @@ void binary_writer(program_t *program, char *file_path) {
 	}
 	instr_t *curr = program->head->next;
   uint8_t inst_arr[NUMBER_OF_BYTES_PER_INST];
-  for (; curr; curr = curr->next) {
+  for (; curr; curr = curr->next) { 
 	  uint32_t instr = curr->binary;
     for (int i = 0; i < NUMBER_OF_BYTES_PER_INST; i++) {
       inst_arr[i] = instr & GET_LS_8;
@@ -50,13 +50,11 @@ void binary_writer(program_t *program, char *file_path) {
 }
 
 // Removes whitespace ' ', '\n' in the front and back of a string
-char *trim(char *str) {
-  if(str) {
-    while (IS_WHITESPACE(*str) || *str == ',') {str++; }
+char *trim_whitespace(char *str) {
+    while (IS_WHITESPACE(*str)) {str++; }
     char *end = str + strlen(str) - 1;
-    while (end > str && (*str == ',' || IS_WHITESPACE(*end))) {end--; }
+    while (end > str && IS_WHITESPACE(*end)) {end--; }
     end[1] = '\0';
-  }
     return str;
 }
 
@@ -88,7 +86,7 @@ uint32_t parse_numerical_expr(char *num_str) {
 
 /* Parses a hexadecimal string into an integer */
 uint32_t parse_hex(char *hex_str) {
-  assert(hex_str[0] == '0' && hex_str[1] == 'x');
+  assert(*hex_str == '0' && *hex_str == 'x');
   hex_str += 2; // skip over "0x"
   uint32_t num = 0;
   for (int i = 0; i < strlen(hex_str); i++) {
@@ -114,12 +112,12 @@ shift_type get_shift_type(char *shift_type_str) {
   if (!strcmp("lsr", shift_type_str)) return LSR_S;
   if (!strcmp("asr", shift_type_str)) return ASR_S;
   if (!strcmp("ror", shift_type_str)) return ROR_S;
-
+  
   fprintf(stderr, "Invalid Shift Type");
   exit(EXIT_FAILURE);
 }
 
-/*  Parses a (possibly null) shift from string to
+/*  Parses a (possibly null) shift from string to 
  *  binary for bit 11 - 4 of DP instructions
  *  where operand2 is a shifted register
  */
@@ -134,7 +132,7 @@ uint8_t parse_shift(char *shift_str) {
 
   // Get shift amount 
   // + move shift amount to correct bit position 
-  shift_field = trim(strtok(NULL, ""));
+  shift_field = strtok(NULL, "");
   bool shift_by_reg;
   uint8_t shift_amount;
   if (*shift_field == '#') {
@@ -154,7 +152,7 @@ uint8_t parse_shift(char *shift_str) {
     exit(EXIT_FAILURE);
   }
 
-  // Build binary representation of shift
+  // Build binary representation of shift 
   return shift_amount | (shift_t << 1) | shift_by_reg;
 }
 
@@ -168,12 +166,12 @@ void get_op_from_str(char *op_as_str, data_processing_t *dp) {
     dp->imm = 1;
     /*  Operand2 as <#expression>
      *  1. get number to represent
-     *  2. convert to representation if possible:
-     *     8-bit unsigned immediate + 4-bit ROR shift amount
+     *  2. convert to representation if possible: 
+     *     8-bit unsigned immediate + 4-bit ROR shift amount 
      *     max imm = 0xFF = 255 , max shamt = 0xF X 2 = 30
      */
     // 1 :
-    uint32_t num = parse_numerical_expr(op_as_str);
+    uint32_t num = parse_numerical_expr(op_as_str); 
     // 2 : reverse ROR until fit into 8-bit or exceed max shamt
     uint8_t shift = 0;
     while (num > MAX_DP_IMM) {
@@ -182,23 +180,23 @@ void get_op_from_str(char *op_as_str, data_processing_t *dp) {
         exit(EXIT_FAILURE);
       }
       uint8_t ms_two = (num & GET_MS_2) >> (WORD_SIZE - 2);
-      num = (num << 2) | ms_two;
+      num = (num << 2) | ms_two; 
     }
     op2 = ((op2 | shift) << 8) | num;
-
+    
   } else if (*op_as_str == 'r') {
     dp->imm = 0;
     /*  Operand2 as Rm{, <shift>}
      *  1. get Rm (reg to be shifted)
      *  2. process shift
-     */
-    // 1 :
-    char *rm_str = strtok(op_as_str, " ,");
+     */  
+    // 1 : 
+    char *rm_str = strtok(op_as_str, " ,"); 
     uint8_t rm = GET_REG_FROM_STR(rm_str);
     // 2 : 
-    char *shift_str = trim(strtok(NULL, ""));
+    char *shift_str = strtok(NULL, "");
     uint8_t shift = parse_shift(shift_str);
-    op2 = ((op2 | shift) << 4) | rm;
+    op2 = ((op2 | shift) << 4) | rm;  
 
   } else {
     fprintf(stderr, "Invalid Operand");

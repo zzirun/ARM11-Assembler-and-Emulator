@@ -2,12 +2,12 @@
 #include <string.h>
 #include <stdio.h>
 #include "assemble.h"
-#include "assemble_utils.h"
 
-/** Function which assigns mnemonic & assemble in the instr_str according to mnemonic and
- * returns the number of operands
+/** Function which assigns mnemonic & func in the instr according to mnemonic and allocates memory
+ * for the 'spine' of the array of strings (operands field) in instr and returns the number of operands
  *
  * @param mnemonic
+ * @param operand
  * @param instr
  * @return number of operands
  */
@@ -82,7 +82,6 @@ int set_up_tokenized(char *mnemonic, instr_str_t *instr) {
         instr->assemble = assemble_mult;
         return 4;
     }
-		/*
     if (!strcmp(mnemonic, "ldr")) {
         instr->mnemonic = LDR;
         instr->assemble = assemble_sdt;
@@ -93,7 +92,6 @@ int set_up_tokenized(char *mnemonic, instr_str_t *instr) {
         instr->assemble = assemble_sdt;
         return 2;
     }
-		*/
     if (mnemonic[0] == 'b') {
         if (!strcmp(mnemonic, "beq")) {
             instr->mnemonic = BEQ;
@@ -132,11 +130,12 @@ void tokenizer(program_t *prog) {
         if (!instr->operands) {
             perror("Error allocating memory for operands array");
             exit(EXIT_FAILURE);
-        }
+        } 
         for (int i = 0; i < num_operands - 1; i++) {
             instr->operands[i] = strtok(NULL, " ,");
         }
-        instr->operands[num_operands - 1] = trim(strtok(NULL, ""));
+        instr->operands[num_operands - 1] = strtok(NULL, "");
         curr = curr->next;
-    }
+    }  
 }
+    
