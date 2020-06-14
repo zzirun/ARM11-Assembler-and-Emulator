@@ -45,7 +45,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/Users/zirun/Documents/arm11_17/src"/>
-					<Add directory="/Users/zirun/Documents/arm11_17/src/instructions"/>
+					<Add directory="/Users/zirun/Documents/arm11_17/src/assembler"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
@@ -67,7 +67,7 @@
 				<Option compiler="gcc"/>
 				<Compiler>
 					<Add directory="/Users/zirun/Documents/arm11_17/src"/>
-					<Add directory="/Users/zirun/Documents/arm11_17/src/instructions"/>
+					<Add directory="/Users/zirun/Documents/arm11_17/src/assembler"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.0/include"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
@@ -82,7 +82,43 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/zirun/Documents/arm11_17/Extension/login.c">
+			<Option target="arm11_17"/>
+		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/assemble.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/assemble.h">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/assemble_instructions.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/assemble_utils.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/assemble_utils.h">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/assembletypes.h">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/branch.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/dp.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/listfunctions.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/mult_assembler.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/sdt.c">
+			<Option target="arm11_17"/>
+		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/assembler/tokenizer.c">
 			<Option target="arm11_17"/>
 		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/decode.c">
@@ -91,13 +127,10 @@
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/emulate.c">
 			<Option target="arm11_17"/>
 		</Unit>
+		<Unit filename="/Users/zirun/Documents/arm11_17/src/emulate.h">
+			<Option target="arm11_17"/>
+		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/execute.c">
-			<Option target="arm11_17"/>
-		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/data_functions.c">
-			<Option target="arm11_17"/>
-		</Unit>
-		<Unit filename="/Users/zirun/Documents/arm11_17/src/instructions/data_functions.h">
 			<Option target="arm11_17"/>
 		</Unit>
 		<Unit filename="/Users/zirun/Documents/arm11_17/src/types.h">

@@ -123,6 +123,33 @@ arm11_17/fast:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/build
 .PHONY : arm11_17/fast
 
+Extension/login.o: Extension/login.c.o
+
+.PHONY : Extension/login.o
+
+# target to build an object file
+Extension/login.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/Extension/login.c.o
+.PHONY : Extension/login.c.o
+
+Extension/login.i: Extension/login.c.i
+
+.PHONY : Extension/login.i
+
+# target to preprocess a source file
+Extension/login.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/Extension/login.c.i
+.PHONY : Extension/login.c.i
+
+Extension/login.s: Extension/login.c.s
+
+.PHONY : Extension/login.s
+
+# target to generate assembly for a file
+Extension/login.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/Extension/login.c.s
+.PHONY : Extension/login.c.s
+
 src/assemble.o: src/assemble.c.o
 
 .PHONY : src/assemble.o
@@ -149,6 +176,222 @@ src/assemble.s: src/assemble.c.s
 src/assemble.c.s:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assemble.c.s
 .PHONY : src/assemble.c.s
+
+src/assembler/assemble_instructions.o: src/assembler/assemble_instructions.c.o
+
+.PHONY : src/assembler/assemble_instructions.o
+
+# target to build an object file
+src/assembler/assemble_instructions.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/assemble_instructions.c.o
+.PHONY : src/assembler/assemble_instructions.c.o
+
+src/assembler/assemble_instructions.i: src/assembler/assemble_instructions.c.i
+
+.PHONY : src/assembler/assemble_instructions.i
+
+# target to preprocess a source file
+src/assembler/assemble_instructions.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/assemble_instructions.c.i
+.PHONY : src/assembler/assemble_instructions.c.i
+
+src/assembler/assemble_instructions.s: src/assembler/assemble_instructions.c.s
+
+.PHONY : src/assembler/assemble_instructions.s
+
+# target to generate assembly for a file
+src/assembler/assemble_instructions.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/assemble_instructions.c.s
+.PHONY : src/assembler/assemble_instructions.c.s
+
+src/assembler/assemble_utils.o: src/assembler/assemble_utils.c.o
+
+.PHONY : src/assembler/assemble_utils.o
+
+# target to build an object file
+src/assembler/assemble_utils.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/assemble_utils.c.o
+.PHONY : src/assembler/assemble_utils.c.o
+
+src/assembler/assemble_utils.i: src/assembler/assemble_utils.c.i
+
+.PHONY : src/assembler/assemble_utils.i
+
+# target to preprocess a source file
+src/assembler/assemble_utils.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/assemble_utils.c.i
+.PHONY : src/assembler/assemble_utils.c.i
+
+src/assembler/assemble_utils.s: src/assembler/assemble_utils.c.s
+
+.PHONY : src/assembler/assemble_utils.s
+
+# target to generate assembly for a file
+src/assembler/assemble_utils.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/assemble_utils.c.s
+.PHONY : src/assembler/assemble_utils.c.s
+
+src/assembler/branch.o: src/assembler/branch.c.o
+
+.PHONY : src/assembler/branch.o
+
+# target to build an object file
+src/assembler/branch.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/branch.c.o
+.PHONY : src/assembler/branch.c.o
+
+src/assembler/branch.i: src/assembler/branch.c.i
+
+.PHONY : src/assembler/branch.i
+
+# target to preprocess a source file
+src/assembler/branch.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/branch.c.i
+.PHONY : src/assembler/branch.c.i
+
+src/assembler/branch.s: src/assembler/branch.c.s
+
+.PHONY : src/assembler/branch.s
+
+# target to generate assembly for a file
+src/assembler/branch.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/branch.c.s
+.PHONY : src/assembler/branch.c.s
+
+src/assembler/dp.o: src/assembler/dp.c.o
+
+.PHONY : src/assembler/dp.o
+
+# target to build an object file
+src/assembler/dp.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/dp.c.o
+.PHONY : src/assembler/dp.c.o
+
+src/assembler/dp.i: src/assembler/dp.c.i
+
+.PHONY : src/assembler/dp.i
+
+# target to preprocess a source file
+src/assembler/dp.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/dp.c.i
+.PHONY : src/assembler/dp.c.i
+
+src/assembler/dp.s: src/assembler/dp.c.s
+
+.PHONY : src/assembler/dp.s
+
+# target to generate assembly for a file
+src/assembler/dp.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/dp.c.s
+.PHONY : src/assembler/dp.c.s
+
+src/assembler/listfunctions.o: src/assembler/listfunctions.c.o
+
+.PHONY : src/assembler/listfunctions.o
+
+# target to build an object file
+src/assembler/listfunctions.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/listfunctions.c.o
+.PHONY : src/assembler/listfunctions.c.o
+
+src/assembler/listfunctions.i: src/assembler/listfunctions.c.i
+
+.PHONY : src/assembler/listfunctions.i
+
+# target to preprocess a source file
+src/assembler/listfunctions.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/listfunctions.c.i
+.PHONY : src/assembler/listfunctions.c.i
+
+src/assembler/listfunctions.s: src/assembler/listfunctions.c.s
+
+.PHONY : src/assembler/listfunctions.s
+
+# target to generate assembly for a file
+src/assembler/listfunctions.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/listfunctions.c.s
+.PHONY : src/assembler/listfunctions.c.s
+
+src/assembler/mult_assembler.o: src/assembler/mult_assembler.c.o
+
+.PHONY : src/assembler/mult_assembler.o
+
+# target to build an object file
+src/assembler/mult_assembler.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/mult_assembler.c.o
+.PHONY : src/assembler/mult_assembler.c.o
+
+src/assembler/mult_assembler.i: src/assembler/mult_assembler.c.i
+
+.PHONY : src/assembler/mult_assembler.i
+
+# target to preprocess a source file
+src/assembler/mult_assembler.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/mult_assembler.c.i
+.PHONY : src/assembler/mult_assembler.c.i
+
+src/assembler/mult_assembler.s: src/assembler/mult_assembler.c.s
+
+.PHONY : src/assembler/mult_assembler.s
+
+# target to generate assembly for a file
+src/assembler/mult_assembler.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/mult_assembler.c.s
+.PHONY : src/assembler/mult_assembler.c.s
+
+src/assembler/sdt.o: src/assembler/sdt.c.o
+
+.PHONY : src/assembler/sdt.o
+
+# target to build an object file
+src/assembler/sdt.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/sdt.c.o
+.PHONY : src/assembler/sdt.c.o
+
+src/assembler/sdt.i: src/assembler/sdt.c.i
+
+.PHONY : src/assembler/sdt.i
+
+# target to preprocess a source file
+src/assembler/sdt.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/sdt.c.i
+.PHONY : src/assembler/sdt.c.i
+
+src/assembler/sdt.s: src/assembler/sdt.c.s
+
+.PHONY : src/assembler/sdt.s
+
+# target to generate assembly for a file
+src/assembler/sdt.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/sdt.c.s
+.PHONY : src/assembler/sdt.c.s
+
+src/assembler/tokenizer.o: src/assembler/tokenizer.c.o
+
+.PHONY : src/assembler/tokenizer.o
+
+# target to build an object file
+src/assembler/tokenizer.c.o:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/tokenizer.c.o
+.PHONY : src/assembler/tokenizer.c.o
+
+src/assembler/tokenizer.i: src/assembler/tokenizer.c.i
+
+.PHONY : src/assembler/tokenizer.i
+
+# target to preprocess a source file
+src/assembler/tokenizer.c.i:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/tokenizer.c.i
+.PHONY : src/assembler/tokenizer.c.i
+
+src/assembler/tokenizer.s: src/assembler/tokenizer.c.s
+
+.PHONY : src/assembler/tokenizer.s
+
+# target to generate assembly for a file
+src/assembler/tokenizer.c.s:
+	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/assembler/tokenizer.c.s
+.PHONY : src/assembler/tokenizer.c.s
 
 src/decode.o: src/decode.c.o
 
@@ -231,33 +474,6 @@ src/execute.c.s:
 	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/execute.c.s
 .PHONY : src/execute.c.s
 
-src/instructions/data_functions.o: src/instructions/data_functions.c.o
-
-.PHONY : src/instructions/data_functions.o
-
-# target to build an object file
-src/instructions/data_functions.c.o:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.o
-.PHONY : src/instructions/data_functions.c.o
-
-src/instructions/data_functions.i: src/instructions/data_functions.c.i
-
-.PHONY : src/instructions/data_functions.i
-
-# target to preprocess a source file
-src/instructions/data_functions.c.i:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.i
-.PHONY : src/instructions/data_functions.c.i
-
-src/instructions/data_functions.s: src/instructions/data_functions.c.s
-
-.PHONY : src/instructions/data_functions.s
-
-# target to generate assembly for a file
-src/instructions/data_functions.c.s:
-	$(MAKE) -f CMakeFiles/arm11_17.dir/build.make CMakeFiles/arm11_17.dir/src/instructions/data_functions.c.s
-.PHONY : src/instructions/data_functions.c.s
-
 src/utils.o: src/utils.c.o
 
 .PHONY : src/utils.o
@@ -294,9 +510,36 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... arm11_17"
+	@echo "... Extension/login.o"
+	@echo "... Extension/login.i"
+	@echo "... Extension/login.s"
 	@echo "... src/assemble.o"
 	@echo "... src/assemble.i"
 	@echo "... src/assemble.s"
+	@echo "... src/assembler/assemble_instructions.o"
+	@echo "... src/assembler/assemble_instructions.i"
+	@echo "... src/assembler/assemble_instructions.s"
+	@echo "... src/assembler/assemble_utils.o"
+	@echo "... src/assembler/assemble_utils.i"
+	@echo "... src/assembler/assemble_utils.s"
+	@echo "... src/assembler/branch.o"
+	@echo "... src/assembler/branch.i"
+	@echo "... src/assembler/branch.s"
+	@echo "... src/assembler/dp.o"
+	@echo "... src/assembler/dp.i"
+	@echo "... src/assembler/dp.s"
+	@echo "... src/assembler/listfunctions.o"
+	@echo "... src/assembler/listfunctions.i"
+	@echo "... src/assembler/listfunctions.s"
+	@echo "... src/assembler/mult_assembler.o"
+	@echo "... src/assembler/mult_assembler.i"
+	@echo "... src/assembler/mult_assembler.s"
+	@echo "... src/assembler/sdt.o"
+	@echo "... src/assembler/sdt.i"
+	@echo "... src/assembler/sdt.s"
+	@echo "... src/assembler/tokenizer.o"
+	@echo "... src/assembler/tokenizer.i"
+	@echo "... src/assembler/tokenizer.s"
 	@echo "... src/decode.o"
 	@echo "... src/decode.i"
 	@echo "... src/decode.s"
@@ -306,9 +549,6 @@ help:
 	@echo "... src/execute.o"
 	@echo "... src/execute.i"
 	@echo "... src/execute.s"
-	@echo "... src/instructions/data_functions.o"
-	@echo "... src/instructions/data_functions.i"
-	@echo "... src/instructions/data_functions.s"
 	@echo "... src/utils.o"
 	@echo "... src/utils.i"
 	@echo "... src/utils.s"

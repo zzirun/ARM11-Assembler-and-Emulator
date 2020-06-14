@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include "../types.h"
 #include "assemble.h"
 #include "assemble_utils.h"
@@ -47,8 +46,8 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         if (expression <= 0xFF) {
             //value of exp fits into argument of mov
             //compile instr as a mov instead of an ldr
-	  printf("Hi");
-	  instr->mnemonic = MOV;
+            printf("Hi");
+            instr->mnemonic = MOV;
             instr->operands[1][0] = '#';
             /*
             tokenized_instr_t *mov_tokens = malloc(sizeof(tokenized_instr_t));
@@ -73,7 +72,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             free(mov_tokens);
             */
             assemble_dp(prog, st);
-	    return;
+            return;
             // il->curr->binary_instr = mov_instr;
 
         } else {
