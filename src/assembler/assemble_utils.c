@@ -237,3 +237,14 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
     // Set Operand
     *operand = op;
 }
+// count number of operands in sdt [...]
+int num_of_operands(char *str) {
+    int result = 1;
+    bool memory = false;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == ',' && !memory) {
+            result++;
+        }
+    }
+    return result;
+}

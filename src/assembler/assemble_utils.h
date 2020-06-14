@@ -38,3 +38,4 @@ uint8_t parse_shift(char *shift_str);
 
 /* Assigns immediate field and operand2 of a dp instr from a string */
 void get_op_from_str(char *op_as_str, decoded_instr_t *instr);
+int num_of_operands(char *str);

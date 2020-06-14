@@ -106,21 +106,26 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
       }
       else {
         // pre indexing
+        int operands_num = num_of_operands(op);
         sdt->p = 1;
         op = strtok(op, " ,");
         sdt->rn = GET_REG_FROM_STR(op);
         sdt->offset = 0;
         //op = trim(strtok(NULL, ""));
         //get_op_from_str(op, &dec);
-        if ('#' == instr->operands[1][0]) {
-            //[Rn, <#expression>]
-            word_t exp = parse_numerical_expr(instr->operands[1]);
-            if (exp >> 31) {
-                sdt->offset = (~exp) + 1;
-            } else {
-                sdt->offset = exp;
+        if(operands_num > 1) {
+            char * expr = strtok(NULL, "");
+            if (expr[0] == '#') {
+                //[Rn, <#expression>]
+                word_t exp = parse_numerical_expr(expr);
+                if (exp >> 31) {
+                    sdt->offset = (~exp) + 1;
+                } else {
+                    sdt->offset = exp;
+                }
+                sdt->u = !(exp >> 31);
+                // u bit is set if it is positive as we want to ADD to base reg
             }
-                sdt->u = (exp >> 31);
         }
 
       }
