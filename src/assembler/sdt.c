@@ -21,7 +21,6 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
     sdt->rd = GET_REG_FROM_STR(instr->operands[0]);
     sdt->imm = 0;
     sdt->p = 0;
-    printf("x");
     //for optional shift portion
     reg_add_t rm = -1;
     reg_add_t rs = -1;
@@ -46,7 +45,6 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         if (expression <= 0xFF) {
             //value of exp fits into argument of mov
             //compile instr as a mov instead of an ldr
-            printf("Hi");
             instr->mnemonic = MOV;
             instr->operands[1][0] = '#';
             /*
@@ -116,7 +114,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         //get_op_from_str(op, &dec);
         if ('#' == instr->operands[1][0]) {
             //[Rn, <#expression>]
-            word_t exp = parse_numerical_expr(instr->operands[3]);
+            word_t exp = parse_numerical_expr(instr->operands[1]);
             if (exp >> 31) {
                 sdt->offset = (~exp) + 1;
             } else {
