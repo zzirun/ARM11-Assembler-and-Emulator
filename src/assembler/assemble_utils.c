@@ -163,33 +163,58 @@ uint8_t parse_shift(char *shift_str) {
 /*  Assigns immediate field and operand2 for data processing instructions
  *  using the string form of operand2
  */
-void get_op_from_str(char *op_as_str, data_processing_t *dp) {
-  uint16_t op2 = 0;
+void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
+  assert(instr->type == DATA_PROC || instr->type == DATA_TRANS);
+  // Set immediate and operand2/offset to modify
+  bool *imm = instr->type == DATA_PROC ? &instr->dp.imm : &instr->sdt.imm;
+  uint16_t *operand = instr->type == DATA_PROC ? &instr->dp.operand2 : &instr->sdt.offset;
+  
+  uint16_t op = 0;
   if (*op_as_str == '#') {
-    dp->imm = 1;
-    /*  Operand2 as <#expression>
+    *imm = 1;
+    /*  Operand as <#expression>
      *  1. get number to represent
-     *  2. convert to representation if possible: 
-     *     8-bit unsigned immediate + 4-bit ROR shift amount 
-     *     max imm = 0xFF = 255 , max shamt = 0xF X 2 = 30
+     *  if dp : 
+     *    2. convert to representation if possible: 
+     *       8-bit unsigned immediate + 4-bit ROR shift amount 
+     *       max imm = 0xFF = 255 , max shamt = 0xF X 2 = 30
+     *  else sdt :
+     *    2. operand as number
      */
     // 1 :
     uint32_t num = parse_numerical_expr(op_as_str); 
-    // 2 : reverse ROR until fit into 8-bit or exceed max shamt
-    uint8_t shift = 0;
-    while (num > MAX_DP_IMM) {
-      if (++shift > MAX_DP_SHAMT) {
-        fprintf(stderr, "Operand Cannot Be Represented");
-        exit(EXIT_FAILURE);
+
+    if (instr->type == DATA_PROC) {
+      // 2 : reverse ROR until fit into 8-bit or exceed max shamt 
+      uint8_t shift = 0;
+      while (num > MAX_DP_IMM) {
+        if (++shift > MAX_DP_SHAMT) {
+          fprintf(stderr, "Operand Cannot Be Represented");
+          exit(EXIT_FAILURE);
+        }
+        uint8_t ms_two = (num & GET_MS_2) >> (WORD_SIZE - 2);
+        num = (num << 2) | ms_two; 
       }
-      uint8_t ms_two = (num & GET_MS_2) >> (WORD_SIZE - 2);
-      num = (num << 2) | ms_two; 
+      op = ((op | shift) << 8) | num;
+
+    } else {
+      // 2 : offset = num
+      op = num;
     }
-    op2 = ((op2 | shift) << 8) | num;
     
-  } else if (*op_as_str == 'r') {
-    dp->imm = 0;
-    /*  Operand2 as Rm{, <shift>}
+  } else if (*op_as_str == 'r' || *op_as_str == '-' || *op_as_str == '+') {
+    // check only register type for DP
+    if (instr->type == DATA_PROC && *op_as_str != 'r') {
+      fprintf(stderr, "Invalid Operand");
+      exit(EXIT_FAILURE);
+    }
+    *imm = 0;
+    // only for SDT : check to set U flag
+    if (instr->type = DATA_TRANS && *op_as_str != 'r') {
+      instr->sdt.u = *op_as_str == '-';
+      op_as_str = strtok(op_as_str, "+-");
+    }
+    /*  Operand as Rm{, <shift>}
      *  1. get Rm (reg to be shifted)
      *  2. process shift
      */  
@@ -199,13 +224,13 @@ void get_op_from_str(char *op_as_str, data_processing_t *dp) {
     // 2 : 
     char *shift_str = trim(strtok(NULL, ""));
     uint8_t shift = parse_shift(shift_str);
-    op2 = ((op2 | shift) << 4) | rm;  
+    op = ((op | shift) << 4) | rm;  
 
   } else {
     fprintf(stderr, "Invalid Operand");
     exit(EXIT_FAILURE);
   }
 
-  // Set Operand2
-  dp->operand2 = op2;
+  // Set Operand
+  *operand = op;
 }

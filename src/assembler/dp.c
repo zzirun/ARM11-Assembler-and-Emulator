@@ -4,17 +4,20 @@
 void assemble_dp(program_t *prog, symbol_table_t *st) {
 
   /* Translate tokenised form into data processing instruction */
+  decoded_instr_t dec;
+  dec.type = DATA_PROC;
+  dec.cond = AL;
+  data_processing_t *dp = &dec.dp;
   instr_str_t *instr = prog->curr->instr_str;
-  data_processing_t dp;
 
   mnemonic_t mnemonic = instr->mnemonic;
   
   if (mnemonic == ANDEQ) {
-    dp.opcode = AND_OP;
+    dp->opcode = AND_OP;
   } else if (mnemonic == LSL) {
-    dp.opcode = MOV_OP;
+    dp->opcode = MOV_OP;
   } else {
-    dp.opcode = mnemonic;
+    dp->opcode = mnemonic;
   }
 
   switch (mnemonic) { 
@@ -27,9 +30,9 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
     case ORR:
       // compute results
       // form: <opcode> Rd, Rn, <Operand2>
-      dp.set_cc = 0;
-      dp.rd = GET_REG_FROM_STR(instr->operands[0]);
-      dp.rn = GET_REG_FROM_STR(instr->operands[1]);
+      dp->set_cc = 0;
+      dp->rd = GET_REG_FROM_STR(instr->operands[0]);
+      dp->rn = GET_REG_FROM_STR(instr->operands[1]);
       get_op_from_str(instr->operands[2], &dp); // sets imm and operand2
       break;
     case LSL: {
@@ -46,14 +49,14 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       strncpy(op2 + strlen(rd), ",lsl ", 5 * sizeof(char));
       strncpy(op2 + strlen(rd) + 5, expr, expr_size + sizeof(char)); 
       instr->operands[1] = op2;
-      get_op_from_str(instr->operands[1], &dp);
+      get_op_from_str(instr->operands[1], &dec);
     }
     case MOV: 
       // single operand assignment
       // form: mov Rd, <Operand2>
-      dp.set_cc = 0;
-      dp.rd = GET_REG_FROM_STR(instr->operands[0]);
-      dp.rn = 0; // don't care (below 4 bits)
+      dp->set_cc = 0;
+      dp->rd = GET_REG_FROM_STR(instr->operands[0]);
+      dp->rn = 0; // don't care (below 4 bits)
       if (mnemonic == MOV) {
         get_op_from_str(instr->operands[1], &dp); 
       } // sets imm and operand2
@@ -63,9 +66,9 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
     case CMP:
       // testing instrs: set CPSR flags, don't compute results
       // form: <opcode> Rn, <Operand2>
-      dp.set_cc = 1;
-      dp.rd = 0; // don't care (below 4 bits)
-      dp.rn = GET_REG_FROM_STR(instr->operands[0]);
+      dp->set_cc = 1;
+      dp->rd = 0; // don't care (below 4 bits)
+      dp->rn = GET_REG_FROM_STR(instr->operands[0]);
       get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
       break;
   } 
@@ -75,17 +78,17 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
   uint32_t bin = mnemonic == ANDEQ ? EQ : AL;
   // bit 27 - 26 : 00
   // bit 25 : immediate flag
-  bin = (bin << 3) | dp.imm;
+  bin = (bin << 3) | dp->imm;
   // bit 24 - 21 : opcode
-  bin = (bin << 4) | dp.opcode;
+  bin = (bin << 4) | dp->opcode;
   // bit 20 : set condition codes flag
-  bin = (bin << 1) | dp.set_cc;
+  bin = (bin << 1) | dp->set_cc;
   // bit 19 - 16 : Rn
-  bin = (bin << 4) | dp.rn;
+  bin = (bin << 4) | dp->rn;
   // bit 15 - 12 : Rd
-  bin = (bin << 4) | dp.rd;
+  bin = (bin << 4) | dp->rd;
   // bit 11 - 0 : operand 2
-  bin = (bin << 12) | dp.operand2;
+  bin = (bin << 12) | dp->operand2;
 
   // Free instruction string
   free_instr_str(instr);
