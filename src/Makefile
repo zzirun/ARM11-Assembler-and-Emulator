@@ -17,7 +17,7 @@ decode.o: decode.c utils.h emulate.h
 
 execute.o: execute.c utils.h emulate.h
 
-assemble: assemble.o assembler/listfunctions.o assembler/mult_assembler.o assembler/assemble_instructions.o assembler/assemble_utils.o assembler/branch.o assembler/dp.o assembler/tokenizer.o #assembler/sdt.o
+assemble: assemble.o assembler/listfunctions.o assembler/mult_assembler.o assembler/assemble_instructions.o assembler/assemble_utils.o assembler/branch.o assembler/dp.o assembler/tokenizer.o assembler/sdt.o
 
 assemble.o: assemble.c assembler/assemble.h assembler/assemble_utils.h
 
@@ -35,7 +35,7 @@ assembler/dp.o: assembler/dp.c assembler/assemble_utils.h assembler/assemble.h
 
 assembler/tokenizer.o: assembler/tokenizer.c assembler/assemble.h assembler/assemble_utils.h
 
-#assembler/sdt.o: assembler/sdt.c types.h assembler/assembletypes.h assembler/assemble_utils.h
+assembler/sdt.o: assembler/sdt.c types.h assembler/assembletypes.h assembler/assemble_utils.h
 
 
 clean:

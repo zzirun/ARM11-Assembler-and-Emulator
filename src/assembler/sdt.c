@@ -12,17 +12,17 @@
 
 
 void assemble_sdt(program_t *prog, symbol_table_t *st) {
-    instr_str_t *instr = prog->curr->instr_str;
+  instr_str_t *instr = prog->curr->instr_str;
     decoded_instr_t dec;
     dec.type = DATA_TRANS;
     dec.cond = AL;
     single_data_transfer_t *sdt = &dec.sdt;
 
     sdt->u = 1;
-    sdt->rd = GET_REG_FROM_STR(instr->operands[1]);
+    sdt->rd = GET_REG_FROM_STR(instr->operands[0]);
     sdt->imm = 0;
     sdt->p = 0;
-
+    printf("x");
     //for optional shift portion
     reg_add_t rm = -1;
     reg_add_t rs = -1;
@@ -47,7 +47,8 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         if (expression <= 0xFF) {
             //value of exp fits into argument of mov
             //compile instr as a mov instead of an ldr
-            instr->mnemonic = MOV;
+	  printf("Hi");
+	  instr->mnemonic = MOV;
             instr->operands[1][0] = '#';
             /*
             tokenized_instr_t *mov_tokens = malloc(sizeof(tokenized_instr_t));
@@ -72,7 +73,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
             free(mov_tokens);
             */
             assemble_dp(prog, st);
-            return;
+	    return;
             // il->curr->binary_instr = mov_instr;
 
         } else {
@@ -233,8 +234,8 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
 
     //bin |= (word_t) 0xE) <<cd  28; //COND is AL
 
-    free_tokenized_instr(instr);
-    prog->curr->binary_instr = bin;
+    free_instr_str(instr);
+    prog->curr->binary = bin;
 }
 
 

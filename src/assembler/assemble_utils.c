@@ -210,7 +210,7 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
     }
     *imm = 0;
     // only for SDT : check to set U flag
-    if (instr->type = DATA_TRANS && *op_as_str != 'r') {
+    if (instr->type == DATA_TRANS && *op_as_str != 'r') {
       instr->sdt.u = *op_as_str == '-';
       op_as_str = strtok(op_as_str, "+-");
     }

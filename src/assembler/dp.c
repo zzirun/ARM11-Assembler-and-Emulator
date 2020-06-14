@@ -33,7 +33,7 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       dp->set_cc = 0;
       dp->rd = GET_REG_FROM_STR(instr->operands[0]);
       dp->rn = GET_REG_FROM_STR(instr->operands[1]);
-      get_op_from_str(instr->operands[2], &dp); // sets imm and operand2
+      get_op_from_str(instr->operands[2], &dec); // sets imm and operand2
       break;
     case LSL: {
       // turn operand 2 from <#expression> to Rd,lsl <#expression>
@@ -58,7 +58,7 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       dp->rd = GET_REG_FROM_STR(instr->operands[0]);
       dp->rn = 0; // don't care (below 4 bits)
       if (mnemonic == MOV) {
-        get_op_from_str(instr->operands[1], &dp); 
+        get_op_from_str(instr->operands[1], &dec); 
       } // sets imm and operand2
       break;
     case TST:
@@ -69,7 +69,9 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
       dp->set_cc = 1;
       dp->rd = 0; // don't care (below 4 bits)
       dp->rn = GET_REG_FROM_STR(instr->operands[0]);
-      get_op_from_str(instr->operands[1], &dp); // sets imm and operand2
+      get_op_from_str(instr->operands[1], &dec); // sets imm and operand2
+      break;
+    default:
       break;
   } 
 
