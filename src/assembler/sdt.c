@@ -103,7 +103,8 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         // post indexing
         sdt->p = 0;
         sdt->rn = GET_REG_FROM_STR(op);
-        get_op_from_str(op, &dec);
+        //get_op_from_str(op, &dec);
+        sdt->offset = parse_numerical_expr(instr->operands[5]);
       }
       else {
         // pre indexing
@@ -111,8 +112,19 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         op = strtok(op, " ,");
         sdt->rn = GET_REG_FROM_STR(op);
         sdt->offset = 0;
-        op = trim(strtok(NULL, ""));
-        get_op_from_str(op, &dec);
+        //op = trim(strtok(NULL, ""));
+        //get_op_from_str(op, &dec);
+        if ('#' == instr->operands[1][0]) {
+            //[Rn, <#expression>]
+            word_t exp = parse_numerical_expr(instr->operands[3]);
+            if (exp >> 31) {
+                sdt->offset = (~exp) + 1;
+            } else {
+                sdt->offset = exp;
+            }
+                sdt->u = (exp >> 31);
+        }
+
       }
     }
 
@@ -170,7 +182,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                 } else {
                     sdt->offset = exp;
                 }
-                instr.flag_2 = (exp >> 31);
+                instr.u = (exp >> 31);
             } else {
                 //[Rn,{+/-}Rm{,<shift>}] (OPTIONAL)
                 sdt->imm = 1;
