@@ -1,3 +1,3 @@
-/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir
+/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir

@@ -4,20 +4,20 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/zirun/Documents/arm11_17/Extension/login.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/Extension/login.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assemble.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assemble.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/assemble_instructions.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/assemble_instructions.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/assemble_utils.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/assemble_utils.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/branch.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/branch.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/dp.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/dp.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/listfunctions.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/listfunctions.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/mult_assembler.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/mult_assembler.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/sdt.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/sdt.c.o"
-  "/Users/zirun/Documents/arm11_17/src/assembler/tokenizer.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/tokenizer.c.o"
-  "/Users/zirun/Documents/arm11_17/src/decode.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/decode.c.o"
-  "/Users/zirun/Documents/arm11_17/src/emulate.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/emulate.c.o"
-  "/Users/zirun/Documents/arm11_17/src/execute.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/execute.c.o"
-  "/Users/zirun/Documents/arm11_17/src/utils.c" "/Users/zirun/Documents/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/utils.c.o"
+  "/Users/ivytam/arm11_17/Extension/login.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/Extension/login.c.o"
+  "/Users/ivytam/arm11_17/src/assemble.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assemble.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/assemble_instructions.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/assemble_instructions.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/assemble_utils.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/assemble_utils.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/branch.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/branch.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/dp.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/dp.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/listfunctions.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/listfunctions.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/mult_assembler.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/mult_assembler.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/sdt.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/sdt.c.o"
+  "/Users/ivytam/arm11_17/src/assembler/tokenizer.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/assembler/tokenizer.c.o"
+  "/Users/ivytam/arm11_17/src/decode.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/decode.c.o"
+  "/Users/ivytam/arm11_17/src/emulate.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/emulate.c.o"
+  "/Users/ivytam/arm11_17/src/execute.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/execute.c.o"
+  "/Users/ivytam/arm11_17/src/utils.c" "/Users/ivytam/arm11_17/cmake-build-debug/CMakeFiles/arm11_17.dir/src/utils.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")
 
