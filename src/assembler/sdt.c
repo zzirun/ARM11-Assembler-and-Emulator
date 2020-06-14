@@ -12,7 +12,6 @@
 
 void assemble_sdt(program_t *prog, symbol_table_t *st) {
   instr_str_t *instr = prog->curr->instr_str;
-  printf("%s\n", instr->operands[1]);
   decoded_instr_t dec;
     dec.type = DATA_TRANS;
     dec.cond = AL;

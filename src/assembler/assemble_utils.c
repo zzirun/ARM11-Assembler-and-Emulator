@@ -150,9 +150,7 @@ uint8_t parse_shift(char *shift_str) {
   /* Has shift */
   // Get shift type
   char *shift_field = strtok(shift_str, " ");
-  printf("%s\n", shift_field);
   uint8_t shift_t = get_shift_type(shift_field);
-  printf("%d\n", shift_t);
   // Get shift amount
   // + move shift amount to correct bit position
   shift_field = trim(strtok(NULL, ""));
@@ -160,13 +158,9 @@ uint8_t parse_shift(char *shift_str) {
   uint8_t shift_amount;
   if (*shift_field == '#') {
     // shift by constant amount: <#expression>
-    printf("1, %d\n", shift_t);
     shift_by_reg = 0;
-    printf("2, %d\n", shift_t);
     shift_amount = parse_numerical_expr(shift_field, NULL);
-    printf("3, %d\n", shift_t);
     shift_amount <<= 3;
-    printf("4, %d\n", shift_t);
   }
   else if (*shift_field == 'r') {
     // shift by bottom byte of register: <register>
@@ -178,7 +172,6 @@ uint8_t parse_shift(char *shift_str) {
     fprintf(stderr, "Invalid Shift Operand");
     exit(EXIT_FAILURE);
   }
-  printf("shift%d\n", shift_t);
   // Build binary representation of shift
   return shift_amount | (shift_t << 1) | shift_by_reg;
 }
