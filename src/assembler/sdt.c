@@ -110,11 +110,11 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
         op = strtok(op, " ,");
         sdt->rn = GET_REG_FROM_STR(op);
         sdt->offset = 0;
-        //op = trim(strtok(NULL, ""));
+        op = trim(strtok(NULL, ""));
         //get_op_from_str(op, &dec);
-        if ('#' == instr->operands[1][0]) {
+        if ('#' == *op) {
             //[Rn, <#expression>]
-            word_t exp = parse_numerical_expr(instr->operands[1]);
+            word_t exp = parse_numerical_expr(op);
             if (exp >> 31) {
                 sdt->offset = (~exp) + 1;
             } else {

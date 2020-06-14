@@ -20,7 +20,7 @@ symbol_table_t *create_symbol_table(void) {
 
 void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
-  char *l = calloc(1, sizeof(strlen(label) + 1));
+  char *l = calloc(1, sizeof(char) * (strlen(label) + 1));
   if (!elem || !l) {
       perror("Failed Memory Allocation for Symbol Table Element");
       exit(EXIT_FAILURE);
@@ -70,7 +70,7 @@ program_t *create_program(void) {
 void add_instr(program_t *program, const char *instr_line, uint16_t address) {
   instr_t *instr = calloc(1, sizeof(instr_t));
   instr_str_t *instr_str = calloc(1, sizeof(instr_str_t));
-  char *i = calloc(1, sizeof(strlen(instr_line) + 1));
+  char *i = calloc(1, sizeof(char) * (strlen(instr_line) + 1));
   if (!instr || !instr_str || !i) {
       perror("Failed Memory Allocation for Instruction");
       exit(EXIT_FAILURE);

@@ -46,7 +46,7 @@ int set_up_tokenized(char *mnemonic, instr_str_t *instr) {
     if (!strcmp(mnemonic, "andeq")) {
         instr->mnemonic = ANDEQ;
         instr->assemble = assemble_dp;
-        return 2;
+        return 3;
     }
     if (!strcmp(mnemonic, "mov")) {
         instr->mnemonic = MOV;
