@@ -28,7 +28,7 @@ char *trim(char *str);
 /* Checks if character in string */
 int contains(char *s, char c);
 /* Converts <#expression> to integer */
-bool parse_numerical_expr(char *num_str, uint32_t *num);
+uint32_t parse_numerical_expr(char *num_str, bool *sign);
 /* Converts a hexadecimal string "0x..." to integer */
 uint32_t parse_hex(char *hex_str);
 /* Converts string to shift type */

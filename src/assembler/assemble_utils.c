@@ -79,25 +79,27 @@ int contains(char *s, char c) {
 }
 
 /*  Parses numerical constant <#/=expression> string into an integer */
-bool parse_numerical_expr(char *num_str, uint32_t *num) {
+uint32_t parse_numerical_expr(char *num_str, bool *sign) {
   // Q : check if need to take into account spaces
   assert(*num_str == '#' || *num_str == '=');
   num_str++; // skip over '#'/'='
-  bool sign = 1; // (+, 1), (-, 0), + by default
+  bool s = 1; // (+, 1), (-, 0), + by default
+  uint32_t num = 0;
   if (*num_str == '+' || *num_str == '-') {
-    num_str++;
-    if (*num_str == '-') sign = 0; 
+    if (*num_str == '-') {s = 0;}
+    num_str++; 
   }
   // check for prefix "0x"
   if (num_str[0] == '0' && num_str[1] == 'x') {
     // hexadecimal
-    *num = parse_hex(num_str);
+    num = parse_hex(num_str);
   }
   else {
     // decimal
-    *num = atoi(num_str);
+    num = atoi(num_str);
   }
-  return sign;
+  if (sign) {*sign = s;}
+  return num;
 }
 
 /* Parses a hexadecimal string into an integer */
@@ -125,13 +127,13 @@ uint32_t parse_hex(char *hex_str) {
 /*  Translates string to shift type  */
 shift_type get_shift_type(char *shift_type_str) {
   if (!strcmp("lsl", shift_type_str))
-    return LSL_S;
+    {return LSL_S;}
   if (!strcmp("lsr", shift_type_str))
-    return LSR_S;
+    {return LSR_S;}
   if (!strcmp("asr", shift_type_str))
-    return ASR_S;
+    {return ASR_S;}
   if (!strcmp("ror", shift_type_str))
-    return ROR_S;
+    {return ROR_S;}
 
   fprintf(stderr, "Invalid Shift Type");
   exit(EXIT_FAILURE);
@@ -143,13 +145,14 @@ shift_type get_shift_type(char *shift_type_str) {
  */
 uint8_t parse_shift(char *shift_str) {
   /* No shift */
-  if (!shift_str) return 0;
+  if (!shift_str) {return 0;}
 
   /* Has shift */
   // Get shift type
   char *shift_field = strtok(shift_str, " ");
+  printf("%s\n", shift_field);
   uint8_t shift_t = get_shift_type(shift_field);
-
+  printf("%d\n", shift_t);
   // Get shift amount
   // + move shift amount to correct bit position
   shift_field = trim(strtok(NULL, ""));
@@ -157,9 +160,13 @@ uint8_t parse_shift(char *shift_str) {
   uint8_t shift_amount;
   if (*shift_field == '#') {
     // shift by constant amount: <#expression>
+    printf("1, %d\n", shift_t);
     shift_by_reg = 0;
-    parse_numerical_expr(shift_field, &shift_amount);
+    printf("2, %d\n", shift_t);
+    shift_amount = parse_numerical_expr(shift_field, NULL);
+    printf("3, %d\n", shift_t);
     shift_amount <<= 3;
+    printf("4, %d\n", shift_t);
   }
   else if (*shift_field == 'r') {
     // shift by bottom byte of register: <register>
@@ -171,7 +178,7 @@ uint8_t parse_shift(char *shift_str) {
     fprintf(stderr, "Invalid Shift Operand");
     exit(EXIT_FAILURE);
   }
-
+  printf("shift%d\n", shift_t);
   // Build binary representation of shift
   return shift_amount | (shift_t << 1) | shift_by_reg;
 }
@@ -202,8 +209,7 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
     if (instr->type == DATA_PROC) {
       *imm = 1;
       // 1 : 
-      uint32_t num;
-      parse_numerical_expr(op_as_str, &num);
+      uint32_t num = parse_numerical_expr(op_as_str, NULL);
       // 2 : reverse ROR until fit into 8-bit or exceed max shamt
       uint8_t shift = 0;
       while (num > MAX_DP_IMM) {
@@ -220,7 +226,7 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
     if (instr->type == DATA_TRANS) {
       *imm = 0;
       // 1, 2 :
-      instr->sdt.u = parse_numerical_expr(op_as_str, &op);
+      op =  parse_numerical_expr(op_as_str, &instr->sdt.u);
     }
   } else if (*op_as_str == 'r' || *op_as_str == '-' || *op_as_str == '+') {
     // set conditions unique to data proc and data trans
@@ -250,6 +256,7 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
     // 2 :
     char *shift_str = trim(strtok(NULL, ""));
     uint8_t shift = parse_shift(shift_str);
+    printf("%d\n", shift);
     op = ((op | shift) << 4) | rm;
     
   }
