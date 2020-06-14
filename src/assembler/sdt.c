@@ -15,17 +15,12 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
     decoded_instr_t dec;
     dec.type = DATA_TRANS;
     dec.cond = AL;
-    single_data_transfer_t *sdt = &dec.sdt;
 
-    sdt->u = 1;
+    single_data_transfer_t *sdt = &dec.sdt;
+    sdt->u = 1; // assume by default set (+)
     sdt->rd = GET_REG_FROM_STR(instr->operands[0]);
     sdt->imm = 0;
     sdt->p = 0;
-    //for optional shift portion
-    reg_add_t rm = -1;
-    reg_add_t rs = -1;
-    byte_t shift_amount = -1;
-    shift_type shift_type;
 
     if (instr->mnemonic == LDR) {
         //loads from memory to register
@@ -38,8 +33,8 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
 
     if(instr->operands[1][0] == '=') {
         //in form <=expression>
-
-        word_t expression = parse_numerical_expr(instr->operands[1]);
+        word_t expression;
+        sdt->u = parse_numerical_expr(instr->operands[1], &expression);
         //value of expression
 
         if (expression <= 0xFF) {
@@ -96,23 +91,24 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
     } else {
       // pre or post indexed
       char *op = trim(strtok(instr->operands[1], "[]"));
-      char *rem = strtok(NULL, "");
+      char *rem = trim(strtok(NULL, ""));
       if (rem) {
         // post indexing
         sdt->p = 0;
         sdt->rn = GET_REG_FROM_STR(op);
-        //get_op_from_str(op, &dec);
-        sdt->offset = parse_numerical_expr(instr->operands[5]);
+        get_op_from_str(rem, &dec);
+        // sdt->offset = parse_numerical_expr(instr->operands[5]);
       }
       else {
         // pre indexing
-        int operands_num = num_of_operands(op);
+        // int operands_num = num_of_operands(op);
         sdt->p = 1;
         op = strtok(op, " ,");
         sdt->rn = GET_REG_FROM_STR(op);
         sdt->offset = 0;
-        //op = trim(strtok(NULL, ""));
-        //get_op_from_str(op, &dec);
+        op = trim(strtok(NULL, ""));
+        get_op_from_str(op, &dec);
+        /*
         if(operands_num > 1) {
             char * expr = strtok(NULL, "");
             if (expr[0] == '#') {
@@ -127,6 +123,7 @@ void assemble_sdt(program_t *prog, symbol_table_t *st) {
                 // u bit is set if it is positive as we want to ADD to base reg
             }
         }
+        */
 
       }
     }
