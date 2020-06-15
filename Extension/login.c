@@ -69,7 +69,7 @@ DIR* register_new(FILE* fp, char* id, char* path_name, login_t login_type) {
 	char pw[50] = {0};
 	scanf("%s", pw);
 	if (!mkdir(path_name, PERMISSION_BITS)) {
-		if (login_type == USERS) {
+		if (login_type == CUSTOMER) {
 			printf("The User ID, %s has been successfully registered!\n", id);
 		} else {
 			printf("Thank you for joining us as a merchant! Please drag and drop your menu.txt into Merchants/%s\n" ,id);

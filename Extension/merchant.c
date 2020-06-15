@@ -1,5 +1,4 @@
-#include "types.h"
-#include "utils.c"
+#include "merchant.h"
 
 /*
 
@@ -16,78 +15,19 @@
 
 */
 
-/*  Returns true on success, false on failure*/
-
-#define MAX_MENU_ITEM_LENGTH (80)
-
-bool parse_menu(char* path_to_menu, menu_t* menu) {
-	FILE* menu_f = fopen(path_to_menu, "r");
-	if (!menu_f) {
-		return false;
-	}
-	char item[MAX_MENU_ITEM_LENGTH];
-	while(fgets(item, MAX_MENU_ITEM_LENGTH, menu_f)) {
-    if (!add_menu_item(item, menu)) {
-      FREE_MENU(menu);
-      return false;
-    }
-	}
-	fclose(menu_f);
-	return true;
-}
-
-#define INVALID_ID(item_id, orders) (item_id > orders->tail->id || item_id < orders->head->next->id)
-
-void edit_order(order_list_t *order_list) {
-	printf("\n\t Your current order is :");
-	if (order_list->head == order_list->tail) {
-		printf("\n\t Empty! \n");
-		return;
-	}
-	PRINT_ORDER_LIST(order_list);
-	printf("Which item do you want to change? > ");
-	int id;
-	scanf("%d", &id);
-	while (INVALID_ID(id, order_list)) {
-		printf("Invalid item ID! > ");
-		scanf("%d", &id);
-		printf("\n");
-	}
-	order_t *prev = order_list->head;
-	order_t *curr = order_list->head->next;
-	while (curr->id < id) {
-		prev = curr;
-		curr = curr->next;
-	}
-	printf("Please input new quantity. To delete order, set input to 0. > ");
-	int new_quantity;
-	scanf("%d", &new_quantity);
-	if (new_quantity > 0) {
-		curr->quantity = new_quantity;
-	} else {
-		if (curr == order_list->tail) {
-			prev->next = 0;
-			order_list->tail = prev;
-		} else {
-			prev->next = curr->next;
-		}
-		FREE_ORDER(curr);
-	}
-}
-
-#define FINALIZE_ORDER(input) (!strcmp(input, "end") || !strcmp(input, "END"))
-#define EDIT_ORDER(input) (!strcmp(first_input, "e") || !strcmp(first_input, "E"))
-
 receipt_t *take_order(menu_t *menu, order_list_t *order_list) {
 	char first_input[4];
-	float total_amount = 0;
   printf("\n//////////////////////////////////////////////////////////////////\n");
 	PRINT_MENU(menu);
 	while (1) {
 		printf("Please input item ID or type \"end\" to finalize. To edit order, type E > ");
-		scanf("%s", first_input);
+		fgets(first_input, 4, stdin);
+    if (!first_input) {
+      printf("No input processed, please try again.\n");
+      continue;
+    }
 		if (FINALIZE_ORDER(first_input)) {
-			if (total_amount == 0) {
+			if (!order_list->head->next) {
 				printf("\n\t Order is empty!\n");
 				continue;
 			}
@@ -97,21 +37,22 @@ receipt_t *take_order(menu_t *menu, order_list_t *order_list) {
 			continue;
 		} else {
       int item_id = atoi(first_input);
-      if (INVALID_ID(item_id, menu)) {
+      if (INVALID_ITEM_ID(item_id, menu)) {
         printf("Invalid item!\n");
         continue;
       }
       char second_input[3];
       printf("Please input quantity > ");
-      scanf(" %s", second_input);
+      fgets(second_input, 3, stdin);
+      if (!second_input) {
+        printf("No input processed, please try again.\n");
+        continue;
+      }
       int quantity = atoi(second_input);
-      order_t *order = order_item(menu, item_id);
-      order->quantity = quantity;
-      add_order(order, order_list);
-      total_amount += order->price * quantity;
-    }
+      add_order(item_id, quantity, menu, order_list);
+    } 
   }
-  receipt_t *receipt = make_receipt(order_list, total_amount);
+  receipt_t *receipt = make_receipt(order_list);
 	print_receipt(receipt);
 	payment_t payment_type;
 	do {
@@ -121,8 +62,6 @@ receipt_t *take_order(menu_t *menu, order_list_t *order_list) {
 	receipt->payment_type = payment_type;
 	return receipt;
 }
-
-#define MAX_USER_ID_LENGTH (50)
 
 void store_receipt(char *receipt_name, receipt_t *receipt) {
 	char user_id[MAX_USER_ID_LENGTH] = {0};

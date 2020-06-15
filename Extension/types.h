@@ -10,10 +10,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-typedef enum login_t {
-	USERS,
-	MERCHANTS
-} login_t;
+#define NUM_OF_PAYMENT_TYPES (2)
 
 char *login_data_t[2] = {"userID.txt", "merchantID.txt"};
 
@@ -21,6 +18,20 @@ char *login_folder_t[2] = {"Users/", "Merchants/"};
 
 char *payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
 
+/* Payment types */
+typedef enum payment_t {
+  CASH = 0,
+  CARD = 1,
+  E_WALLET = 2
+} payment_t;
+
+/* Login as customers or merchants */
+typedef enum login_t {
+	CUSTOMER,
+	MERCHANTS
+} login_t;
+
+/* Linked list element type - represents menu items or orders */
 typedef struct list_elem_t {
 	struct list_elem_t *next;
 	char *name;
@@ -34,56 +45,42 @@ typedef struct list_elem_t {
 	int quantity;
 } list_elem_t, menu_item_t, order_t;
 
+/* Linked list type - represents a menu or a list of orders */
 typedef struct list_t {
 	list_elem_t *head;
 	list_elem_t *tail;
 } list_t, menu_t, order_list_t;
 
-
-typedef enum payment_t {
-  CASH = 0,
-  CARD = 1,
-  E_WALLET = 2
-} payment_t;
-
-#define NUM_OF_PAYMENT_TYPES (2)
-#define INVALID_PAYMENT(type) (type < 0 || type > NUM_OF_PAYMENT_TYPES)
-
+/* Receipt with a customer's orders, total price, and payment type */
 typedef struct receipt_t {
 	order_list_t *order_list;
 	float total_amount;
 	payment_t payment_type;
 } receipt_t;
 
+/* Creates new list element */
 list_elem_t *list_elem_new(void);
 #define MENU_ITEM_NEW() list_elem_new()
 #define ORDER_NEW() list_elem_new()
 
+/* Creates new list */
 list_t *list_new(void);
 #define MENU_NEW() list_new()
 #define ORDER_LIST_NEW() list_new()
 
-bool add_menu_item(char* item_str, menu_t* menu);
-
+/* Frees a list element */
 void free_list_elem(list_elem_t* item);
 #define FREE_MENU_ITEM(menu_item) free_list_elem(menu_item)
 #define FREE_ORDER(order) free_list_elem(order)
 
+/* Fress a list */
 void free_list(list_t *list);
 #define FREE_MENU(menu) free_list(menu)
 #define FREE_ORDER_LIST(order_list) free_list(order_list)
 
-order_t *order_item(menu_t *menu, int id);
-
-void add_order(order_t *order, order_list_t *order_list);
-
-void print_list(list_t *list, int mode);
-#define PRINT_MENU(menu) print_list(menu, 0)
-#define PRINT_ORDER_LIST(order_list) print_list(order_list, 1)
-
-void list_all_files(DIR *path);
-
-receipt_t *make_receipt(order_list_t *order_list, float total);
-void print_receipt(receipt_t *receipt);
+/* Adds item to end of a list */
+void add_to_list(list_elem_t *elem, list_t *list);
+#define ADD_MENU_ITEM(menu_item, menu) add_to_list(menu_item, menu)
+#define ADD_ORDER(order, order_list) add_to_list(order, order_list)
 
 #endif //EXTENSION_TYPES
