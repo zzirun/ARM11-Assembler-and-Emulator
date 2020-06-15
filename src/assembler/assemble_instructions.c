@@ -1,5 +1,4 @@
 #include "assemble.h"
-#include "assemble_utils.h"
 
 void assemble_instructions(program_t *prog, symbol_table_t *st) {
   prog->curr = prog->head->next;

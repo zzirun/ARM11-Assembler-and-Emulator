@@ -10,12 +10,11 @@ add_executable(arm11_17
         Extension/login.c
         src/assembler/assemble.h
         src/assembler/assemble_instructions.c
-        src/assembler/assemble_utils.c
-        src/assembler/assemble_utils.h
-        src/assembler/assembletypes.h
+        src/assembler/instruction_utils.c
+        src/assembler/instruction_utils.h
+        src/assembler/assemble_types.h
         src/assembler/branch.c
         src/assembler/dp.c
-        src/assembler/listfunctions.c
         src/assembler/mult_assembler.c
         src/assembler/sdt.c
         src/assembler/tokenizer.c
@@ -26,4 +25,4 @@ add_executable(arm11_17
         src/execute.c
         src/types.h
         src/utils.c
-        src/utils.h)
+        src/utils.h src/assembler/assemble_utils.c src/assembler/symbol_table_utils.c src/assembler/program_utils.c)

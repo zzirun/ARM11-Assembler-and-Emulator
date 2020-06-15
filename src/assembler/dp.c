@@ -1,5 +1,5 @@
 #include "assemble.h"
-#include "assemble_utils.h"
+#include "instruction_utils.h"
 
 void assemble_dp(program_t *prog, symbol_table_t *st) {
 

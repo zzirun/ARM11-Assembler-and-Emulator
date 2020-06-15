@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include "../types.h"
 #include "assemble.h"
-#include "assemble_utils.h"
+#include "instruction_utils.h"
 
 
 void assemble_sdt(program_t *prog, symbol_table_t *st) {

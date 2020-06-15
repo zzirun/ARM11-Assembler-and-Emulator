@@ -1,5 +1,4 @@
 #include "assembler/assemble.h"
-#include "assembler/assemble_utils.h"
 
 int main(int argc, char **argv) {
   symbol_table_t *label_to_address = create_symbol_table();
