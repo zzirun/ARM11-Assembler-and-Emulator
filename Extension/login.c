@@ -7,6 +7,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+#include "types.h"
+
 #define PERMISSION_BITS (0777)
 
 /* Appends a random ASCII character between 33 ('!') and 122 ('z'),
@@ -49,9 +51,9 @@ bool check_password(char* pw, long hash_pw) {
 
 /* If user_id is in fp, we update password with
 the hash value stored in fp and return true */
-bool check_user_id(FILE* fp, char* user_id, long* password) {
+bool check_id(FILE* fp, char* id, long* password) {
 	printf("Please enter you user ID to login > ");
-	scanf("%s", user_id);
+	scanf("%s", id);
 	char str[20] = {0};
 	bool registered = false;
 	const char delim[2] = " "; //Split at space
@@ -61,7 +63,7 @@ bool check_user_id(FILE* fp, char* user_id, long* password) {
 		if (!token) { //Check for empty string
 			break;
 		}
-		if (!strcmp(token, user_id)) {
+		if (!strcmp(token, id)) {
 			registered = true;
 			token = strtok(NULL, delim);
 			*password = atol(token); //Sets password to hash stored with associated userID in fp
@@ -71,16 +73,23 @@ bool check_user_id(FILE* fp, char* user_id, long* password) {
 	return registered;
 }
 
-DIR* register_user(FILE* fp, char* user_id, char* path_name) {
+DIR* register_new(FILE* fp, char* id, char* path_name, login_type_t type) {
 	printf("Please enter a password > ");
 	char pw[50] = {0};
 	scanf("%s", pw);
-	char* pw_pepper = pepper(pw); //Adds pepper to pw
-	fprintf(fp, "%s", user_id);
-	fprintf(fp, " "); //Adds space between user ID and password
-	fprintf(fp, "%ld\n", hash(pw_pepper));
 	if (!mkdir(path_name, PERMISSION_BITS)) {
-		printf("The user ID, %s has been successfully registered!\n", user_id);
+		if (type == USERS) {
+			printf("The User ID, %s has been successfully registered!\n", id);
+		} else {
+			printf("Thank you for joining us as a merchant! Please drag and drop your menu.txt into Merchants/%s\n" ,id);
+			printf("Press any key when you have done so to continue > ");
+			getchar(); //To skip the \n from previous input
+			getchar();
+		}
+		char* pw_pepper = pepper(pw); //Adds pepper to pw
+		fprintf(fp, "%s", id);
+		fprintf(fp, " "); //Adds space between user ID and password
+		fprintf(fp, "%ld\n", hash(pw_pepper));
 		free(pw_pepper);
 		return opendir(path_name);
 	} else {
@@ -89,15 +98,16 @@ DIR* register_user(FILE* fp, char* user_id, char* path_name) {
 	}
 }
 
-DIR* login(void) {
+DIR* login(login_type_t type) {
 	DIR* result;
-	FILE* fp = fopen("userID.txt", "r+"); //Open for reading and possibly writing
-	char user_id[25] = {0};
+	FILE* fp = fopen(login_data_t[type], "r+"); //Open for reading and possibly writing
+	char id[25] = {0};
 	long password = 0;
-	bool registered = check_user_id(fp, user_id, &password);
-	char path_name[6 + strlen(user_id)];
-	strcpy(path_name, "Users/");
-	strcpy(&path_name[6], user_id); //Builds the path name Users/<user_id> where we store the receipts
+	bool registered = check_id(fp, id, &password);
+	char path_name[6 + strlen(id)];
+	char* base_path = login_folder_t[type];
+	strcpy(path_name, base_path);
+	strcpy(&path_name[strlen(base_path)], id); //Builds the path name Users/<user_id> where we store the receipts
 	if (registered) {
 		printf("Please enter your password > ");
 		char pw1[50] = {0};
@@ -109,22 +119,15 @@ DIR* login(void) {
 		printf("successfully logged in! \n");
 		result = opendir(path_name);
 	} else {
-		printf("No account with the associated user ID was found. Would you like to register? [y/n] > ");
+		printf("No account with the associated ID was found. Would you like to register? [y/n] > ");
 		char to_register;
 		scanf(" %c", &to_register);
 		if (to_register == 'y' || to_register == 'Y') {
-			result = register_user(fp, user_id, path_name);
+			result = register_new(fp, id, path_name, type);
 		} else {
-			result = login();
+			result = login(type);
 		}
 	}
 	fclose(fp);
 	return result;
-}
-
-//Included a main for testing
-int main(void) {
-	DIR* dir = login();
-	closedir(dir);
-	return EXIT_SUCCESS;
 }
