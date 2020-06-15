@@ -1,12 +1,6 @@
 #include "assemble.h"
+#include "assemble_instruction_utils.h"
 
-uint32_t signed_to_twos_complement(int32_t value) {
-    uint32_t result = abs(value);
-    if (value < 0) {
-        result = ~result + 1;
-    }
-    return result;
-}
 
 void assemble_br(program_t *prog, symbol_table_t *symbol_table){
     instr_str_t *instr = prog->curr->instr_str;

@@ -38,6 +38,16 @@ int num_of_operands(char *str) {
  *  * Modifies output parameter sign if needed 
  *    (+, 1), (-, 0), default : +
  */
+/**
+ * Parses numerical constant string('num_str'): <#/=expression> (in base 10/16) & converts it into an integer.
+ * It also modifies the contents of the boolean pointed by the parameter 'sign' to be false if the integer is
+ * negative and true otherwise.
+ *
+ * @param num_str
+ * @param sign
+ * @return num_str as an unsigned 32-bit integer
+ */
+
 uint32_t parse_numerical_expr(char *num_str, bool *sign) {
   assert(*num_str == '#' || *num_str == '=');
   // Skip over leading character '#'/'='
@@ -104,6 +114,14 @@ shift_t get_shift_type(char *shift_type_str) {
  *  * form: <shiftname> <#expression>/<register>
  *  Returns encoding of shift as in DP/SDT
  */
+/**
+ * Parses a shift string in the form : <shiftname> <#expression>/<register>
+ * and returns the binary representation of the shift.
+ *
+ * @param shift_str
+ * @return encoding of shift_str
+ */
+
 uint8_t parse_shift(char *shift_str) {
   /* No shift */
   if (!shift_str) {
@@ -221,3 +239,10 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
   *operand = op;
 }
 
+uint32_t signed_to_twos_complement(int32_t value) {
+    uint32_t result = abs(value);
+    if (value < 0) {
+        result = ~result + 1;
+    }
+    return result;
+}

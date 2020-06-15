@@ -43,3 +43,5 @@ uint8_t parse_shift(char *shift_str);
 
 /* Assigns immediate flag, operand2/offset of a DP/SDT instr from a string */
 void get_op_from_str(char *op_as_str, decoded_instr_t *instr);
+/* Converts a signed integer to its twos complement form */
+uint32_t signed_to_twos_complement(int32_t value);
