@@ -1,16 +1,24 @@
 #ifndef EXTENSION_TYPES
 #define EXTENSION_TYPES
 
-typedef enum login_type {
-	USERS,
-	MERCHANTS
-} login_type_t;
+#define PERMISSION_BITS (0777)
+#define MAX_ID_LENGTH (20)
+#define MAX_EMAIL_LENGTH (30)
+#define MAX_FOLDER_PATH_LENGTH (30) //strlen("Merchants/") + strlen(user_id)
+#define MAX_MENU_PATH_LENGTH (35) //strlen(folder_path) + strlen("menu.txt")
+#define MAX_SUBJECT_LENGTH (50)
+#define MAX_PASSWORD_LENGTH (50)
+#define MAX_RECEIPT_PATH_LENGTH (75)
 
-char* login_data_t[2] = {"userID.txt", "merchantID.txt"};
+char* id_data = "merchantID.txt";
 
-char* login_folder_t[2] = {"Users/", "Merchants/"};
+char* base_login_folder = "Merchants/";
+
+char* menu_name = "menu.txt";
 
 char* payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
+
+char* receipt_base = "Receipt_from_";
 
 typedef struct list_elem {
 	struct list_elem* next;
@@ -29,12 +37,6 @@ typedef struct list {
 	list_elem_t* head;
 	list_elem_t* tail;
 } list_t;
-
-typedef struct receipt {
-	list_t* order_list;
-	float total_amount;
-	int payment_type;
-} receipt_t;
 
 list_elem_t* list_elem_new(void);
 list_t* list_new(void);
