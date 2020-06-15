@@ -12,11 +12,16 @@
 
 #define NUM_OF_PAYMENT_TYPES (2)
 
-char *login_data_t[2] = {"userID.txt", "merchantID.txt"};
+char* id_data = "merchantID.txt";
 
-char *login_folder_t[2] = {"Users/", "Merchants/"};
+char* base_login_folder = "Merchants/";
 
-char *payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
+char* menu_name = "menu.txt";
+
+char* payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
+
+char* receipt_base = "Receipt_from_";
+
 
 /* Payment types */
 typedef enum payment_t {

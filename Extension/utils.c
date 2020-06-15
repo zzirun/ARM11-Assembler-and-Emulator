@@ -156,15 +156,15 @@ void edit_order(order_list_t *order_list) {
  * Mode 0 : print menu; Mode 1 : print order_list 
  * Prints each item's id, name, price, + quantity if order_list
  */
-void print_list(list_t *list, int mode) {
+void print_list(list_t *list, int mode, FILE *dest) {
 	list_elem_t *curr = list->head->next;
-	printf("\n");
+	fprintf(dest, "\n");
 	while (curr) {
-		printf("\t %-3d %-30s %8.2f ", curr->id, curr->name, curr->price);
+		fprintf(dest, "\t %-3d %-30s %8.2f ", curr->id, curr->name, curr->price);
 		if (mode) {
-			printf("%5d", curr->quantity);
+			fprintf(dest, "%5d", curr->quantity);
 		}
-		printf("\n");
+		fprintf(dest, "\n");
 		curr = curr->next;
 	}
 }
@@ -187,10 +187,11 @@ receipt_t *make_receipt(order_list_t *order_list) {
   return receipt;
 }
 
-void print_receipt(receipt_t *receipt) {
-  printf("\n\t Your receipt : ");
-  PRINT_ORDER_LIST(receipt->order_list);
+void print_receipt(receipt_t *receipt, FILE* dest) {
+  fprintf(dest, "\n\t Your receipt : ");
+  PRINT_ORDER_LIST(receipt->order_list, dest);
   char *final_output = "Your total amount due is      :";
-	printf("\t %-34s %8.2f\n\n", final_output, receipt->total_amount);
+	fprintf(dest, "\t %-34s %8.2f\n\n", final_output, receipt->total_amount);
+  fprintf(dest, "\nYou paid by : %s\n", payment_string[receipt->payment_type]);
 }
 

@@ -12,8 +12,8 @@
 #define EDIT_ORDER(input) \
 (!strcmp(first_input, "e") || !strcmp(first_input, "E"))
 
-receipt_t *take_order(menu_t *menu, order_list_t *order_list);
+void *take_order(menu_t *menu, order_list_t *order_list);
 
 void edit_order(order_list_t *order_list);
 
-void store_receipt(char *receipt_name, receipt_t *receipt);
+char* store_receipt(char* base_path_name, receipt_t *receipt, payment_t payment_type);

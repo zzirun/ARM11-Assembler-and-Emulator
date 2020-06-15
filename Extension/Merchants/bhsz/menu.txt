@@ -1,8 +1,0 @@
-1 chicken_rice 7.99
-2 nasi_lemak 9.99
-3 mee_goreng 8.99
-4 pork_soup 5.99
-5 kuih_lapis 0.99
-6 kopi_o 1.99
-7 teh_tarik 1.99
-8 kaya_bread 2.99
