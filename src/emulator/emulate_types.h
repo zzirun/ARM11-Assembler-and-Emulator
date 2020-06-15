@@ -1,22 +1,16 @@
-#ifndef ARM11_17_TYPES_H
-#define ARM11_17_TYPES_H
+#ifndef ARM11_17_EMULATE_TYPES_H
+#define ARM11_17_EMULATE_TYPES_H
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#define ADDRESS_COUNT 65536
-#define REGISTER_COUNT 13
-#define WORD_SIZE 32
-#define BYTE_SIZE 8
-//Masks to get the first N bits in GET_N_MASK when used with bitwise &.
-#define GET_1_MASK 0x1
-#define GET_4_MASK 0xF
-#define GET_12_MASK 0xFFF
-#define GET_24_MASK 0xFFFFFF
-#define GET_29_MASK 0x1FFFFFFF
-#define GET_30_MASK 0x3FFFFFFF
-//Mask which sign extends a negative 26 bit number when used with bitwise |;
-#define NEG_SIGN_EXT_MASK 0xFC000000
+#define WORD_SIZE (32)
+#define BYTE_SIZE (8)
+
+#define ADDRESS_COUNT (65536)
+#define REGISTER_COUNT (13)
 
 typedef uint8_t byte_t;
 typedef uint32_t word_t;
@@ -64,7 +58,7 @@ typedef enum cc {
 } cc;
 
 // DP instr opcode representations
-typedef enum opcode {
+typedef enum opcode_t {
   AND_OP = 0,  // 0000 : a & b
   EOR_OP = 1,  // 0001 : a ^ b
   SUB_OP = 2,  // 0010 : a - b
@@ -75,14 +69,14 @@ typedef enum opcode {
   CMP_OP = 10, // 1010 : SUB, no write
   ORR_OP = 12, // 1100 : a | b
   MOV_OP = 13  // 1101 : b
-} opcode;
+} opcode_t;
 
 // Data Processing Instr Fields
 typedef struct data_processing_t {
   // indicate immediate or shifted register for operand2
   bool imm;
   // opcode
-  opcode opcode;
+  opcode_t opcode;
   // if to update CPSR flags
   bool set_cc;
   // registers

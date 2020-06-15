@@ -1,8 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include "assemble.h"
-#include "instruction_utils.h"
+#include "assemble_instruction_utils.h"
 
 /** Function which assigns mnemonic & func in the instr according to mnemonic and allocates memory
  * for the 'spine' of the array of strings (operands field) in instr and returns the number of operands

@@ -1,11 +1,10 @@
 #include "assemble_types.h"
-#include "../utils.h"
+#include "../emulator/emulate_instruction_utils.h"
 
 #define NUMBER_OF_BYTES_PER_INST (4)
 #define HEXADECIMAL_BASE (16)
 /* Decimal value of hex character 'A' */
 #define A_AS_DECIMAL (10)
-
 
 /* Mask to get bottom 8 bits of a word */
 #define GET_LS_8 (0xFF)

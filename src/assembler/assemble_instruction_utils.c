@@ -1,4 +1,4 @@
-#include "instruction_utils.h"
+#include "assemble_instruction_utils.h"
 
 char *trim(char *str) {
   if (str) {

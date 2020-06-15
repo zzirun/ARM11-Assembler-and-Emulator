@@ -1,8 +1,4 @@
-//
-// Created by Zhai Zirun on 15/6/20.
-//
-
-#include "instruction_utils.h"
+#include "assemble_instruction_utils.h"
 
 /* From assembly file: Builds label to address map + Loads non-label instruction strings */
 void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {

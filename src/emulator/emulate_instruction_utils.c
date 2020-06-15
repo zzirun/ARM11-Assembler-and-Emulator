@@ -1,33 +1,17 @@
-#include "utils.h"
-#include "emulate.h"
+#include "emulate_instruction_utils.h"
 
 void terminate(machine_state* ms){
     free(ms);
     exit(EXIT_FAILURE);
 }
 
+// Helper for output function in emulator
 word_t build_nonzero_value(byte_t *ptr) {
   word_t result = 0;
   for (int i = 0; i < 4; i++) {
     result += *(ptr + i) << (BYTE_SIZE * (3 - i));
   }
   return result;
-}
-
-void output(machine_state *ms) {
-  printf("Registers:\n");
-  for (int i = 0; i < 13; i++) {
-    printf("$%-3d: %10d (0x%08x)\n", i, *(ms->regs.gpr + i), *(ms->regs.gpr + i));
-  }
-  printf("PC  : %10d (0x%08x)\n", ms->regs.pc, ms->regs.pc);
-  printf("CPSR: %10d (0x%08x)\n", ms->regs.cpsr, ms->regs.cpsr);
-  printf("Non-zero memory:\n");
-  for (int i = 0; i < ADDRESS_COUNT; i += 4) {
-    word_t x = build_nonzero_value(ms->mem + i);
-    if (x > 0) {
-      printf("0x%08x: 0x%08x\n", i, x);
-    }
-  }
 }
 
 void print_bits(word_t x) {
@@ -41,20 +25,6 @@ void print_bits(word_t x) {
     x <<= 1;
   }
   printf("\n");
-}
-
-void bin_load(char *f, machine_state *ms) {
-  // Opens file
-  FILE *fp;
-  if (!(fp = fopen(f, "rb"))) {
-      perror("Cannot Open File");
-      terminate(ms);
-  }
-  byte_t *ptr = ms->mem; //Helper pointer to store instructions into array
-  while (fread(ptr, 1, 1, fp) == 1) {
-      ptr++;
-  }
-  fclose(fp);
 }
 
 word_t load_word(word_t address, machine_state *ms) {
@@ -81,19 +51,19 @@ void store_word(word_t address, machine_state *ms, word_t word) {
     }
 }
 
-word_t shifter(shift_type shift_t, word_t op, byte_t shift, bool *carry) {
+word_t shifter(shift_t shift_type, word_t op, byte_t shift, bool *carry) {
   if (shift == 0) {
     return op;
   }
   // carry always last discarded/rotated bit
-  if (shift_t == LSL_S) {
+  if (shift_type == LSL_S) {
     // logical shift left
     *carry = ((op >> (32 - shift)) & 0x1); 
     return op << shift;
   }
   *carry = ((op >> (shift - 1)) & 0x1); 
   word_t mask = 0;
-  switch (shift_t) {
+  switch (shift_type) {
     case LSR_S:
       // logical shift right
       return op >> shift;

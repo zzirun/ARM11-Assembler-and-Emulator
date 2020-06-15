@@ -1,5 +1,5 @@
 #include "assemble.h"
-#include "instruction_utils.h"
+#include "assemble_instruction_utils.h"
 
 void assemble_mult(program_t *prog, symbol_table_t *st) {
 

@@ -1,12 +1,13 @@
-#ifndef ARM11_17_ASSEMBLER
-#define ARM11_17_ASSEMBLER
+#ifndef ARM11_17_ASSEMBLE_TYPES_H
+#define ARM11_17_ASSEMBLE_TYPES_H
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <assert.h>
-#include "../types.h"
+#include "../emulator/emulate_types.h"
 
 // instr mnemonic (first word of instr)
 // for DP, set to same integer as opcode enum -

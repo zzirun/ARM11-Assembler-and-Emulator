@@ -1,6 +1,3 @@
-//
-// Created by Zhai Zirun on 15/6/20.
-//
 #include "assemble_types.h"
 
 program_t *create_program(void) {

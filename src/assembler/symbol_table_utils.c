@@ -1,8 +1,4 @@
-//
-// Created by Zhai Zirun on 15/6/20.
-//
 #include "assemble_types.h"
-
 
 symbol_table_t *create_symbol_table(void) {
     symbol_table_t *table = calloc(1, sizeof(symbol_table_t));

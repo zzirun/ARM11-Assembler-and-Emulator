@@ -1,11 +1,9 @@
 #ifndef ARM11_17_EMULATE
 #define ARM11_17_EMULATE
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "types.h"
+#include "emulate_types.h"
 
-// Binary loader (binary file to array) - in utils.c
+/* Binary loader (binary file to array) */
 void bin_load(char *f, machine_state* ms);
 
 /* Decodes instruction into instr type and operands */
@@ -24,7 +22,7 @@ void multiply(machine_state *ms);
 void single_data_transfer(machine_state *ms);
 void branch(machine_state *ms);
 
-/* Output at HALT - prints regs and non-zero memory - in utils.c */ 
+/* Output at HALT - prints regs and non-zero memory */ 
 void output(machine_state* ms);
 
 #endif
