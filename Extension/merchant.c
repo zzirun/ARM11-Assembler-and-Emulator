@@ -1,4 +1,6 @@
 #include "merchant.h"
+#include "utils.c"
+#include "login.c"
 
 /*
 1) Login (If successful, return merchant dir path_name, else ask for registration which involves setting a password and providing a menu.txt)
@@ -53,13 +55,6 @@ void *take_order(menu_t *menu, order_list_t *order_list) {
   }
   receipt_t *receipt = make_receipt(order_list);
 	print_receipt(receipt, stdout);
-	payment_t payment_type;
-	do {
-		printf("How do you want to pay? [0]Cash [1]Card [2]e-Wallet > ");
-		scanf("%d", &payment_type);
-	} while (INVALID_PAYMENT(payment_type));
-	receipt->payment_type = payment_type;
-	return receipt;
 }
 
 char* current_time(void) {
@@ -118,9 +113,11 @@ int main(void) {
 		parse_menu(path_to_menu, menu);
 		take_order(menu, order_list);
 
+    payment_t payment_type;
+    do {
 		printf("How do you want to pay? [0]Cash [1]Card [2]e-Wallet > ");
-		int payment_type;
 		scanf("%d", &payment_type);
+	} while (INVALID_PAYMENT(payment_type));		
 
 		char* path_to_receipt = store_receipt(folder_path, order_list, payment_type);
 

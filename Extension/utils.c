@@ -121,7 +121,7 @@ void edit_order(order_list_t *order_list) {
 		printf("\n\t Empty! \n");
 		return;
 	}
-	PRINT_ORDER_LIST(order_list);
+  PRINT_ORDER_LIST(order_list, stdout);
 	printf("Which item do you want to change? > ");
 	int id;
 	scanf("%d", &id);
