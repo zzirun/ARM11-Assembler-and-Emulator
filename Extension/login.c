@@ -1,12 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <stdbool.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <dirent.h>
-
 #include "types.h"
 
 #define PERMISSION_BITS (0777)
@@ -73,12 +64,12 @@ bool check_id(FILE* fp, char* id, long* password) {
 	return registered;
 }
 
-DIR* register_new(FILE* fp, char* id, char* path_name, login_type_t type) {
+DIR* register_new(FILE* fp, char* id, char* path_name, login_t login_type) {
 	printf("Please enter a password > ");
 	char pw[50] = {0};
 	scanf("%s", pw);
 	if (!mkdir(path_name, PERMISSION_BITS)) {
-		if (type == USERS) {
+		if (login_type == USERS) {
 			printf("The User ID, %s has been successfully registered!\n", id);
 		} else {
 			printf("Thank you for joining us as a merchant! Please drag and drop your menu.txt into Merchants/%s\n" ,id);
@@ -98,14 +89,14 @@ DIR* register_new(FILE* fp, char* id, char* path_name, login_type_t type) {
 	}
 }
 
-DIR* login(login_type_t type) {
+DIR* login(login_t login_type) {
 	DIR* result;
-	FILE* fp = fopen(login_data_t[type], "r+"); //Open for reading and possibly writing
+	FILE* fp = fopen(login_data_t[login_type], "r+"); //Open for reading and possibly writing
 	char id[25] = {0};
 	long password = 0;
 	bool registered = check_id(fp, id, &password);
 	char path_name[6 + strlen(id)];
-	char* base_path = login_folder_t[type];
+	char* base_path = login_folder_t[login_type];
 	strcpy(path_name, base_path);
 	strcpy(&path_name[strlen(base_path)], id); //Builds the path name Users/<user_id> where we store the receipts
 	if (registered) {
@@ -123,9 +114,9 @@ DIR* login(login_type_t type) {
 		char to_register;
 		scanf(" %c", &to_register);
 		if (to_register == 'y' || to_register == 'Y') {
-			result = register_new(fp, id, path_name, type);
+			result = register_new(fp, id, path_name, login_type);
 		} else {
-			result = login(type);
+			result = login(login_type);
 		}
 	}
 	fclose(fp);
