@@ -5,13 +5,30 @@
 //
 // Created by Zhai Zirun on 16/6/20.
 //
+#include <stdbool.h>
 #include "login.c"
+
+bool txt_compare(char* output_file; char* expected_file) {
+    file out = fopen(output_file, 'r');
+    file expected = fopen(expected_file, 'r');
+    while (!feof(expected)) {
+        int next_out = fgetc(out);
+        int next_expected = fgetc(expected);
+        if (next_out == EOF) {
+            return false;
+        } else if (next_out != next_expected) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void test_login(void) {
     //1. Tests a registered account with the wrong password
     printf("1. Testing a registered account with the wrong password...\n");
     login("login01.txt", "out.txt"); // TODO: MAKE THE FILE and MODIFY LOGIN FUNCTION
-    assert("out.txt" == "expected_login01.txt"); //TODO: find a function that compares txt files
+    assert(txt_compare("out.txt" == "expected_login01.txt")); //TODO: find a function that compares txt files
     printf("Test passed!\n");
 
     //2. Tests a non-registered account
