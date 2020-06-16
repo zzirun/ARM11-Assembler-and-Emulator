@@ -115,7 +115,7 @@ bool parse_menu_item(char *item_str, menu_t *menu) {
  */
 bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
   // Find position to add item in list (ascending order of id)
-  order_t *prev;
+  order_t *prev = order_list->head;
 	order_t *curr = order_list->head->next;
 	while (curr && (curr->id < id)) {
 		prev = curr;
