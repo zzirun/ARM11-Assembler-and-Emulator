@@ -22,13 +22,19 @@ void list_all_files(DIR *path) {
  */
 
 bool parse_menu(char* path_to_menu, menu_t* menu) {
+  if (!menu) {
+    fprintf(stderr, "Cannot parse menu");
+    return false;
+  }
 	FILE* menu_f = fopen(path_to_menu, "r");
 	if (!menu_f) {
+    fprintf(stderr, "Cannot open menu text file");
 		return false;
 	}
 	char item[MAX_MENU_ITEM_LENGTH];
 	while(fgets(item, MAX_MENU_ITEM_LENGTH, menu_f)) {
     if (!parse_menu_item(item, menu)) {
+      fprintf(stderr, "Cannot parse menu item");
       FREE_MENU(menu);
       return false;
     }

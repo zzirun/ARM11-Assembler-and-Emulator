@@ -1,27 +1,31 @@
-import smtplib, ssl;
+import smtplib
+import ssl
 from sys import argv
-from email.message import EmailMessage;
+from email.message import EmailMessage
 
-def send_receipt(sender, password, receiver, subject, path_to_receipt) :
-	receipt = open(path_to_receipt);
-	message = EmailMessage();
-	message.set_content(receipt.read());
-	receipt.close();
 
-	message['Subject'] = subject;
-	message['From'] = sender;
-	message['To'] = receiver;
+def send_receipt(sender, password, receiver, subject, path_to_receipt):
+  receipt = open(path_to_receipt)
+  message = EmailMessage()
+  message.set_content(receipt.read())
+  receipt.close()
 
-	port = 465; #Outgoing SMTP server port number over SSL (specified by gmail)
-	smtp_server = "smtp.gmail.com";
+  message['Subject'] = subject
+  message['From'] = sender
+  message['To'] = receiver
 
-	#Load default SSL context before handshake for better security
-	context = ssl.create_default_context();
-	#Attempts handshake
-	server = smtplib.SMTP_SSL(smtp_server, port, context=context);
+  # Outgoing SMTP server port number over SSL (specified by gmail)
+  port = 465
+  smtp_server = "smtp.gmail.com"
 
-	server.login(sender, password);
-	server.send_message(message);
-	server.quit();
+  # Load default SSL context before handshake for better security
+  context = ssl.create_default_context()
+  # Attempts handshake
+  server = smtplib.SMTP_SSL(smtp_server, port, context=context)
 
-send_receipt(argv[1], argv[2], argv[3], argv[4], argv[5]);
+  server.login(sender, password)
+  server.send_message(message)
+  server.quit()
+
+
+send_receipt(argv[1], argv[2], argv[3], argv[4], argv[5])

@@ -2,21 +2,10 @@
 #include "utils.c"
 #include "login.c"
 
-/*
-1) Login (If successful, return merchant dir path_name, else ask for registration which involves setting a password and providing a menu.txt)
-2) Ask for email login authentication
-3) Parse menu into linked list defined in types.h and print the menu (id, name, price)
-4) Take order by specifying id and quantity (Use linked list sorted by id as well so we can change the quantity/delete item from order)
-(Also keep track of total amount)
-5) When the operator inputs a keyword ("END"/"end" maybe?), we print total amount, ask for payment method
-(If not registered, ie not in userID.txt, then the user has to register first)
-6) Ask for customer email address
-(Format of receip probably some headers with shop name, date, items, total amount and payment method)
-8) Print success, go back to 3)
-*/
 
 
-void *take_order(menu_t *menu, order_list_t *order_list) {
+
+receipt_t *take_order(menu_t *menu, order_list_t *order_list) {
 	char first_input[4];
 	while (1) {
     printf("\n//////////////////////////////////////////////////////////////////\n");
@@ -55,6 +44,7 @@ void *take_order(menu_t *menu, order_list_t *order_list) {
   }
   receipt_t *receipt = make_receipt(order_list);
 	print_receipt(receipt, stdout);
+  return receipt;
 }
 
 char* current_time(void) {
@@ -67,12 +57,16 @@ char* current_time(void) {
 }
 
 
-char* store_receipt(char* base_path_name, receipt_t *receipt, payment_t payment_type) {
-	receipt->payment_type = payment_type;
+char* store_receipt(char* base_path_name, receipt_t *receipt) {
   char* path_to_receipt = calloc(MAX_RECEIPT_PATH_LENGTH, sizeof(char));
+  if (!path_to_receipt) {
+    fprintf(stderr, "Cannot store receipt");
+  }
 	char* curr_time = current_time();
+  // Enter receipt path identifier: merchant's (folder) name and current time of storing the receipt
 	snprintf(path_to_receipt, MAX_RECEIPT_PATH_LENGTH, "%s%s", base_path_name, curr_time);
 	free(curr_time);
+  // Enter receipt data (order list, total, payment method)
 	FILE* dest = fopen(path_to_receipt, "w");
   print_receipt(receipt, dest);
 	fclose(dest);
@@ -86,64 +80,4 @@ void send_receipt(char* sender, char* password, char* receiver, char* subject, c
 	system(arguments);
 }
 
-int main(void) {
 
-	char termination;
-	char* folder_path = login();
-
-	printf("To allow us to send email receipts to customers,\n");
-	printf("Please enter your email address > "); //Currently only support gmail accounts that allow access to less secure apps
-	char email[MAX_EMAIL_LENGTH] = {0};
-	scanf("%s", email);
-	printf("Please enter you password > ");
-	char password[MAX_PASSWORD_LENGTH] = {0};
-	scanf(" %s", password);
-
-	menu_t* menu = MENU_NEW(); 
-  if (!menu) {
-    perror("Cannot allocate menu");
-    return EXIT_FAILURE;
-  }
-
-	do {
-
-		order_list_t* order_list = ORDER_LIST_NEW();
-		char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
-		snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", folder_path, menu_name);
-		parse_menu(path_to_menu, menu);
-		take_order(menu, order_list);
-
-    payment_t payment_type;
-    do {
-		printf("How do you want to pay? [0]Cash [1]Card [2]e-Wallet > ");
-		scanf("%d", &payment_type);
-	} while (INVALID_PAYMENT(payment_type));		
-
-		char* path_to_receipt = store_receipt(folder_path, order_list, payment_type);
-
-		printf("Please enter customer email address to receive receipt > ");
-		char receiver[MAX_EMAIL_LENGTH] = {0};
-		scanf(" %s", receiver);
-
-		printf("Please input name of issuer > ");
-		char issuer[MAX_ID_LENGTH];
-		scanf(" %s", issuer);
-		char subject[MAX_SUBJECT_LENGTH] = {0};
-		snprintf(subject, MAX_SUBJECT_LENGTH, "%s%s", receipt_base, issuer);
-		printf("Sending your receipt... \n");
-		send_receipt(email, password, receiver, subject, path_to_receipt);
-		printf("DONE!\n");
-
-		FREE_ORDER_LIST(order_list);
-		free(path_to_receipt);
-
-		printf("Do you want to continue? [y/n] > ");
-		scanf(" %c", &termination);
-	} while (termination == 'y' || termination == 'Y');
-
-	FREE_MENU(menu);
-	free(folder_path);
-	printf("Thank you for using our service! :D \n");
-
-	return EXIT_SUCCESS;
-}

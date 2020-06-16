@@ -41,7 +41,7 @@ assembler/dp.o: assembler/dp.c assembler/assemble_instruction_utils.h assembler/
 
 assembler/tokenizer.o: assembler/tokenizer.c assembler/assemble.h assembler/assemble_instruction_utils.h
 
-assembler/sdt.o: assembler/sdt.c types.h assembler/assemble_types.h assembler/assemble_instruction_utils.h
+assembler/sdt.o: assembler/sdt.c assembler/assemble.h assembler/assemble_instruction_utils.h
 
 
 clean:

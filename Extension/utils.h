@@ -2,6 +2,7 @@
 
 #define PERMISSION_BITS (0777)
 #define MAX_ID_LENGTH (20)
+/* Max length of email for the sender and receiver of a receipt */
 #define MAX_EMAIL_LENGTH (30)
 #define MAX_FOLDER_PATH_LENGTH (30) //strlen("Merchants/") + strlen(user_id)
 #define MAX_MENU_PATH_LENGTH (35) //strlen(folder_path) + strlen("menu.txt")
