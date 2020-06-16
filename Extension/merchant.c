@@ -119,6 +119,9 @@ void pay(merchant_t *merchant, order_list_t *ol) {
   if (!ol) {
     remove_unpaid_order(merchant, unpaid);
   }
+  //else {
+  //FREE_ORDER_LIST(order_list);
+  //}
   free(path_to_receipt);
 }
 
