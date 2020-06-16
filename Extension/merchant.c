@@ -106,8 +106,8 @@ void pay(merchant_t *merchant, order_list_t *ol) {
   print_receipt(receipt, merchant->output);
   int payment_type;
   do {
-    fprintf(merchant->output, merchant->output, "How do you want to pay? [1]Cash [2]Card [3]e-Wallet > ");
-  } while (!fscanf(merchant->input, merchant->input, "%d", &payment_type) 
+    fprintf(merchant->output, "How do you want to pay? [1]Cash [2]Card [3]e-Wallet > ");
+  } while (!fscanf(merchant->input,"%d", &payment_type) 
             || INVALID_PAYMENT(payment_type));	
   receipt->payment_type = payment_type;
   /* Store receipt in merchant's folder */

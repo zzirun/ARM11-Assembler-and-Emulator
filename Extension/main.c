@@ -19,17 +19,8 @@
  *    b) Input N/n upon asking for program continuation corresponds to program termination 
  */ 
 
-char *id_data = "merchantID.txt";
-
-char *base_login_folder = "Merchants/";
-
-char *menu_name = "menu.txt";
-
-char *payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
-
-char *receipt_base = "Receipt_from_";
-
 int main(void) {
+  init();
 
   merchant_t *merchant = login_and_init();
 

@@ -16,6 +16,8 @@
 
 #define INVALID_PAYMENT(type) (type < 0 || type > NUM_OF_PAYMENT_TYPES)
 
+void init(void);
+
 /* Lists all files in the directory specified by path */
 void list_all_files(DIR *path);
 

@@ -1,5 +1,24 @@
 #include "utils.h"
 
+char *id_data;
+char *base_login_folder;
+char *menu_name;
+char *payment_string[3];
+char *receipt_base;
+
+void init(void) {
+  id_data = "merchantID.txt";
+
+  base_login_folder = "Merchants/";
+
+  menu_name = "menu.txt";
+
+  payment_string = {"Cash","Credit/Debit Card", "e-Wallet"};
+
+  receipt_base = "Receipt_from_";
+
+}
+
 /*Lists all files in the directory specified by path, printed with indent */
 void list_all_files(DIR *path) {
 	struct dirent *dir;
