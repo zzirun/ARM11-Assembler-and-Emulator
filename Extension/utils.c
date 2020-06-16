@@ -3,6 +3,9 @@
 char *id_data;
 char *base_login_folder;
 char *menu_name;
+char *pay_str1;
+char *pay_str2;
+char *pay_str3;
 char *payment_string[3];
 char *receipt_base;
 
@@ -13,7 +16,13 @@ void init(void) {
 
   menu_name = "menu.txt";
 
-  payment_string = {"Cash","Credit/Debit Card", "e-Wallet"};
+  pay_str1 = "Cash";
+  pay_str2 = "Credit/Debit Card";
+  pay_str3 = "e-Wallet";
+
+  payment_string[0] = pay_str1;
+  payment_string[1] = pay_str2;
+  payment_string[2] = pay_str3;
 
   receipt_base = "Receipt_from_";
 

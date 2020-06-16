@@ -82,7 +82,7 @@ void edit_order(merchant_t *merchant) {
   // Check order not empty
   assert(order_list->head != order_list->tail);
   // Print current order
-  fprintf(merchant->output, merchant->output, "\nYour current order is :\n");
+  fprintf(merchant->output, "\nYour current order is :\n");
   PRINT_ORDER_LIST(order_list, merchant->output);
   // Edit order
   take_order(merchant, order_list);
