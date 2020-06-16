@@ -3,7 +3,7 @@ CFLAGS = -g -Wall -pedantic
 
 merchant: merchant.o utils.o
 
-merchant.o: merchant.c 
+merchant.o: merchant.c
 
 utils.o: utils.c types.h
 

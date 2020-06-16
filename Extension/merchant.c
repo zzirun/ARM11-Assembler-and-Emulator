@@ -2,9 +2,6 @@
 #include "utils.c"
 #include "login.c"
 
-
-
-
 receipt_t *take_order(menu_t *menu, order_list_t *order_list) {
 	char first_input[4];
 	while (1) {

@@ -1,0 +1,19 @@
+firstyear.grp17@gmail.com
+BLACKpink2
+LOAD MENU
+1 matcha_roll_cake 12.50
+2 unicorn_elixir 10.00
+3 souffle_pancakes 20.50
+4 hojicha_parfait 15.99
+5 iced_latte 8.50
+6 vanilla_soft_serve 5.90
+7 strawberry_kakigori 14.00
+8 buttermilk_waffles 18.00
+9 warabimochi 14.00
+10 red_velvet_cake 13.00
+TAKE ORDER
+1 1
+5 3
+ivytam2000@gmail.com
+Ivy Tam
+

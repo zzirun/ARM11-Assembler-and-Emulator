@@ -91,8 +91,8 @@ char* register_new(FILE* fp, char* id) {
 		exit(EXIT_FAILURE);
 	}
 }
-
-char* login(void) {
+//
+char* login(char *id_data) {
 	char* result = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
 	FILE* fp = fopen(id_data, "r+"); //Open for reading and possibly writing
 	char id[MAX_ID_LENGTH] = {0};
