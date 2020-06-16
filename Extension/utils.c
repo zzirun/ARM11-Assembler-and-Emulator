@@ -212,7 +212,7 @@ void print_receipt(receipt_t *receipt, FILE* dest) {
   char *final_output = "Your total amount due is      :";
 	fprintf(dest, "\t %-34s %8.2f\n\n", final_output, receipt->total_amount);
   if (receipt->payment_type) {
-    fprintf(dest, "\nYou paid by : %s\n", payment_string[receipt->payment_type]);
+    fprintf(dest, "\nYou paid by : %s\n", payment_string[receipt->payment_type - 1]);
   }
 }
 
