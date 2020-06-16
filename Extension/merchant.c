@@ -45,9 +45,8 @@ void take_order(merchant_t *merchant, order_list_t *ol) {
 	while (1) {
     fprintf(merchant->output, "\n//////////////////////////////////////////////////////////////////\n");
 	  PRINT_MENU(merchant->menu, stdout);
-		fprintf(merchant->output, "Please input item ID or type \"end\" to finalize > ");
-		fscanf(merchant->input, "%s \n", first_input);
-		printf("%s", first_input);
+	    fprintf(merchant->output, "Please input item ID or type \"end\" to finalize > ");
+		fscanf(merchant->input, "%s", first_input);
     if (!first_input) {
       fprintf(merchant->output, "No input processed, please try again.\n");
       continue;
@@ -77,8 +76,6 @@ void take_order(merchant_t *merchant, order_list_t *ol) {
       }
       do {
         fprintf(merchant->output, "Please input quantity > ");
-        fscanf(merchant->input, "%d", &quantity);
-        printf("%d", quantity);
       } while (!fscanf(merchant->input, "%d", &quantity));
       add_order(item_id, quantity, merchant->menu, order_list);
     } 

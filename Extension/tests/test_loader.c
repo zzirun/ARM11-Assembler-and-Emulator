@@ -1,11 +1,20 @@
 #include "login.c"
 #include <assert.h>
 
+typedef struct order_t{
+    int order_no;
+    int quantity;
+} order_t;
 
-int main(int argc, char **argv){
-    assert(arg c == 2);
-    FILE *test_file =
-    login()
+typedef struct text_file_t{
+    order_t *orders;
+    char *
+}text_file_t;
+
+
+
+int tokenizer(int argc, char **argv){
+
 
 
 
