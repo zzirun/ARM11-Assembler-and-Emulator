@@ -44,6 +44,7 @@ void print_receipt(receipt_t *receipt, FILE *dest);
 char* store_receipt(merchant_t *merchant, receipt_t *receipt);
 /* Sends receipt stored in path to customer */
 void send_receipt(merchant_t *merchant, char* path_to_receipt);
+void free_receipt(receipt_t *receipt);
 
 /* Gets unpaid order from list, given input */
 unpaid_t *get_unpaid_order(merchant_t *merchant);

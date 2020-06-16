@@ -229,6 +229,7 @@ char* store_receipt(merchant_t *merchant, receipt_t *receipt) {
 	FILE* dest = fopen(path_to_receipt, "w");
   print_receipt(receipt, dest);
 	fclose(dest);
+  free_receipt(receipt);
 	return path_to_receipt;
 }
 
@@ -252,6 +253,11 @@ void send_receipt(merchant_t *merchant, char* path_to_receipt) {
 	system(args);
   /* Done!! */
   printf("DONE!\n");
+}
+
+void free_receipt(receipt_t *receipt) {
+  FREE_ORDER_LIST(receipt->order_list);
+  free(receipt);
 }
 
 unpaid_t *get_unpaid_order(merchant_t *merchant) {
@@ -279,6 +285,7 @@ void remove_unpaid_order(merchant_t *merchant, unpaid_t *unpaid) {
   }
   FREE_ORDER_LIST(unpaid->order_list);
   free(unpaid->customer_name);
+  free(unpaid);
   merchant->unpaid_orders->no_of_unpaid--;
 }
 
@@ -312,7 +319,7 @@ unpaid_list_t *unpaid_list_new(void) {
 void free_unpaid_list(unpaid_list_t *unpaid_list) {
   unpaid_t *curr = unpaid_list->head;
   unpaid_t *next;
-  while (!curr) {
+  while (curr) {
     next = curr->next;
     free(curr->customer_name);
     FREE_ORDER_LIST(curr->order_list);

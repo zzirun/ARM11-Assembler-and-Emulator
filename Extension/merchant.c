@@ -39,7 +39,7 @@ void take_order(merchant_t *merchant, order_list_t *ol) {
     fprintf(merchant->output, "\n//////////////////////////////////////////////////////////////////\n");
 	  PRINT_MENU(merchant->menu, stdout);
 		fprintf(merchant->output, "Please input item ID or type \"end\" to finalize > ");
-		fgets(first_input, 4, merchant->input);
+		fscanf(merchant->input, "%s", first_input);
     if (!first_input) {
       fprintf(merchant->output, "No input processed, please try again.\n");
       continue;
