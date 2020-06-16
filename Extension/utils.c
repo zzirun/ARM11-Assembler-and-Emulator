@@ -150,6 +150,9 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
     // Add to list in position
     order->next = curr;
     prev->next = order;
+    if (!curr) {
+      order_list->tail = order;
+    }
     curr = order;
 	} else {
     // Order already in list
@@ -196,7 +199,7 @@ receipt_t *make_receipt(order_list_t *order_list) {
 	receipt->order_list = order_list;
   // Calculate price
   order_t *curr = order_list->head->next;
-  while (!curr) {
+  while (curr) {
     receipt->total_amount += curr->price * curr->quantity;
     curr = curr->next;
   }
@@ -283,7 +286,7 @@ void remove_unpaid_order(merchant_t *merchant, unpaid_t *unpaid) {
   if (unpaid->next) {
     unpaid->next->prev = unpaid->prev;
   }
-  FREE_ORDER_LIST(unpaid->order_list);
+  //FREE_ORDER_LIST(unpaid->order_list);
   free(unpaid->customer_name);
   free(unpaid);
   merchant->unpaid_orders->no_of_unpaid--;

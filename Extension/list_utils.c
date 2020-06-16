@@ -26,6 +26,7 @@ void free_list_elem(list_elem_t *item) {
 }
 
 void free_list(list_t *list) {
+  if (!list){return;}
 	list_elem_t *curr = list->head->next;
 	while (curr) {
 		list_elem_t *temp = curr;
