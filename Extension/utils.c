@@ -196,7 +196,7 @@ receipt_t *make_receipt(order_list_t *order_list) {
 	receipt->order_list = order_list;
   // Calculate price
   order_t *curr = order_list->head->next;
-  while (!curr) {
+  while (curr) {
     receipt->total_amount += curr->price * curr->quantity;
     curr = curr->next;
   }
