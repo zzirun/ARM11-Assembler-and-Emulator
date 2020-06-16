@@ -1,4 +1,5 @@
 #include "login.h"
+#include <stdio.h>
 
 /* Appends a random ASCII character between 33 ('!') and 122 ('z'),
 this process is known as "peppering", it is done to improve security */
@@ -40,9 +41,11 @@ bool check_password(char* pw, long hash_pw) {
 
 /* If user_id is in fp, we update password with
 the hash value stored in fp and return true */
-bool check_id(FILE* fp, char* id, long* password) {
-	printf("Please enter you user ID to login > ");
-	scanf("%s", id);
+bool check_id(FILE* fp, char* id, long* password, FILE *f) {
+    if(f == stdin) {
+        printf("Please enter you user ID to login > ");
+    }
+	fscanf(f,"%s", id);
 	char str[MAX_ID_LENGTH] = {0};
 	bool registered = false;
 	const char delim[2] = " "; //Split at space
@@ -91,33 +94,44 @@ char* register_new(FILE* fp, char* id) {
 		exit(EXIT_FAILURE);
 	}
 }
-
-char* login(void) {
+// For interactive mode ensure f = stdin
+// For testing mode f = test file
+char* login(FILE *f) {
 	char* result = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
 	FILE* fp = fopen(id_data, "r+"); //Open for reading and possibly writing
 	char id[MAX_ID_LENGTH] = {0};
 	long password = 0;
-	bool registered = check_id(fp, id, &password);
+
+	bool registered = check_id(fp, id, &password, f);
 	if (registered) {
-		printf("Please enter your password > ");
+	    if(f == stdin) {
+            printf("Please enter your password > ");
+        }
 		char pw1[MAX_PASSWORD_LENGTH] = {0};
-		scanf("%s", pw1);
+		fscanf(f,"%s", pw1);
 		while (!check_password(pw1, password)) {
 			printf("Please try again > ");
-			scanf("%s", pw1);
+			fscanf(f, "%s", pw1);
 		}
 		printf("successfully logged in! \n\n");
 		snprintf(result, MAX_FOLDER_PATH_LENGTH, "%s%s/", base_login_folder, id);
 	} else {
 		printf("No account with the associated ID was found. Would you like to register? [y/n] > ");
 		char to_register;
-		scanf(" %c", &to_register);
+		fscanf(f, " %c", &to_register);
 		if (to_register == 'y' || to_register == 'Y') {
 			result = register_new(fp, id);
 		} else {
-			result = login();
+			result = login(f);
 		}
 	}
 	fclose(fp);
 	return result;
 }
+
+void login_d(FILE *f){
+    char pw1[MAX_PASSWORD_LENGTH] = {0};
+    fscanf(f,"%s", pw1);
+    printf("%s \n", pw1);
+}
+

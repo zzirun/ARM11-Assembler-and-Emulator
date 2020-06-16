@@ -16,7 +16,7 @@
 (!strcmp(first_input, "e") || !strcmp(first_input, "E"))
 
 /* Returns merchant data prior to login/registration, input of email, password */
-merchant_t *login_and_init(void);
+merchant_t *login_and_init(FILE *f);
 
 /* Takes a new order */
 void take_order(merchant_t *merchant, order_list_t *order_list);
