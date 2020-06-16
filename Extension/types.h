@@ -9,6 +9,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <assert.h>
 
 #define NUM_OF_PAYMENT_TYPES (3)
 
@@ -21,15 +22,15 @@
 #define MAX_PASSWORD_LENGTH (50)
 #define MAX_RECEIPT_PATH_LENGTH (75)
 
-char *id_data = "merchantID.txt";
+extern char *id_data;
 
-char *base_login_folder = "Merchants/";
+extern char *base_login_folder;
 
-char *menu_name = "menu.txt";
+extern char *menu_name;
 
-char *payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
+extern char *payment_string[3];
 
-char *receipt_base = "Receipt_from_";
+extern char *receipt_base;
 
 /* Actions that can be carried out by the system */
 typedef enum action_t {

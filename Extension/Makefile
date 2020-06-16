@@ -7,11 +7,11 @@ main.o: main.c merchant.h
 
 merchant.o: merchant.c merchant.h
 
-utils.o: utils.c utils.h
+utils.o: utils.c utils.h types.h
 
 login.0: login.c login.h
 
-list_utils.o: types.h
+list_utils.o: list_utils.c types.h
 
 clean:
 	rm -rf login

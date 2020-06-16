@@ -27,6 +27,7 @@ merchant_t *login_and_init(void) {
   merchant->unpaid_orders = unpaid_list_new();
   merchant->input = stdin;
   merchant->output = stdout;
+  return merchant;
 }
 
 // DRAFT DONE, TO CHECK
@@ -81,7 +82,7 @@ void edit_order(merchant_t *merchant) {
   // Check order not empty
   assert(order_list->head != order_list->tail);
   // Print current order
-  ffprintf(merchant->output, merchant->output, "\nYour current order is :\n");
+  fprintf(merchant->output, merchant->output, "\nYour current order is :\n");
   PRINT_ORDER_LIST(order_list, merchant->output);
   // Edit order
   take_order(merchant, order_list);
@@ -103,14 +104,14 @@ void pay(merchant_t *merchant, order_list_t *ol) {
   }
   receipt_t *receipt = make_receipt(order_list);
   print_receipt(receipt, merchant->output);
-  payment_t payment_type;
+  int payment_type;
   do {
-    ffprintf(merchant->output, merchant->output, "How do you want to pay? [1]Cash [2]Card [3]e-Wallet > ");
-  } while (!ffscanf(merchant->input, merchant->input, "%d", &payment_type) 
+    fprintf(merchant->output, merchant->output, "How do you want to pay? [1]Cash [2]Card [3]e-Wallet > ");
+  } while (!fscanf(merchant->input, merchant->input, "%d", &payment_type) 
             || INVALID_PAYMENT(payment_type));	
   receipt->payment_type = payment_type;
   /* Store receipt in merchant's folder */
-  char* path_to_receipt = store_receipt(merchant->folder_path, receipt);
+  char* path_to_receipt = store_receipt(merchant, receipt);
   /* Send receipt to customer */
   send_receipt(merchant, path_to_receipt);
   /* Remove unpaid order from list, free memory */

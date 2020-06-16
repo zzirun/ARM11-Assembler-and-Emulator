@@ -19,14 +19,22 @@
  *    b) Input N/n upon asking for program continuation corresponds to program termination 
  */ 
 
+char *id_data = "merchantID.txt";
 
+char *base_login_folder = "Merchants/";
+
+char *menu_name = "menu.txt";
+
+char *payment_string[3] = {"Cash","Credit/Debit Card", "e-Wallet"};
+
+char *receipt_base = "Receipt_from_";
 
 int main(void) {
 
   merchant_t *merchant = login_and_init();
 
   while (1) {
-    action_t action;
+    int action;
     printf("Choose Action: [0]Quit [1]Take Order [2]Edit Order [3]Cancel Order [4]Pay Order [5]Load New merchant");
     // ADD DO WHILE FOR CHECKING ACTION INPUT
     // CHECK IF ERROR IF ACTION_T TAKES IN A INVALID NUMBER

@@ -260,7 +260,7 @@ void add_unpaid(merchant_t *merchant, order_list_t *order_list) {
   char *customer_name = calloc(MAX_CUSTOMER_NAME_LENGTH, sizeof(char));
   do {
     fprintf(merchant->output, "Customer name > ");
-  } while (!fscanf(merchant->input, "%s", &customer_name));
+  } while (!fscanf(merchant->input, "%s", customer_name));
   /* Initialise unpaid */  
   unpaid_t *unpaid = calloc(1, sizeof(unpaid_t));
   unpaid->customer_name = customer_name;
