@@ -1,4 +1,3 @@
-#include "types.h"
 #include "utils.h"
 
 /*Lists all files in the directory specified by path, printed with indent */
@@ -13,6 +12,15 @@ void list_all_files(DIR *path) {
 			printf("  %s\n", dir->d_name);
 		}
 	}
+}
+
+char* current_time(void) {
+	time_t rawtime;
+	time(&rawtime);
+  struct tm* timeinfo = localtime (&rawtime);
+  char* time_str = calloc(20, sizeof(char));
+	snprintf(time_str, 20, "%02d:%02d:%02d_%02d%02d%02d", timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec, timeinfo->tm_mday, timeinfo->tm_mon + 1, timeinfo->tm_year - 100);
+  return time_str;
 }
 
 /**
@@ -78,15 +86,6 @@ bool parse_menu_item(char *item_str, menu_t *menu) {
  * Returns true on success, false on failure
  */
 bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
-  // Find item in menu based on id
-  menu_item_t *curr_item = menu->head->next;
-	while (curr_item && curr_item->id != id) {
-		curr_item = curr_item->next;
-	}
-  if (!curr_item) {
-    fprintf(stderr, "Menu item not available");
-    return false;
-  }
   // Find position to add item in list (ascending order of id)
   order_t *prev;
 	order_t *curr = order_list->head->next;
@@ -95,8 +94,20 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
 		curr = curr->next;
 	}
 	if (!curr || curr->id > id) { 
+    if (quantity == 0) {
+      fprintf(stderr, "Empty item");
+      return true;
+    }
     // New order 
     // Clone item to order from menu and assign quantity
+    menu_item_t *curr_item = menu->head->next;
+    while (curr_item && curr_item->id != id) {
+      curr_item = curr_item->next;
+    }
+    if (!curr_item) {
+      fprintf(stderr, "Menu item not available");
+      return false;
+    }
     order_t *order = ORDER_NEW();
     char *item_name = calloc(strlen(curr_item->name) + 1, sizeof(char));
     if (!order || !item_name) {
@@ -111,51 +122,22 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
     // Add to list in position
     order->next = curr;
     prev->next = order;
+    curr = order;
 	} else {
-    // Increase quantity of order already in list
-		curr->quantity += quantity;
+    // Order already in list
+    if (curr->quantity == 0) {
+      // If quantity 0, remove
+      prev->next = curr->next;
+      if (curr == order_list->tail) {
+        order_list->tail = prev;
+      }
+      FREE_ORDER(curr);
+    } else {
+      // Else replace with new quantity of order 
+      curr->quantity = quantity;
+    }
 	}	
   return true;
-}
-
-/**
- * To delete or change quantity of items ordered
- */
-void edit_order(order_list_t *order_list) {
-	printf("\n\t Your current order is :");
-	if (order_list->head == order_list->tail) {
-		printf("\n\t Empty! \n");
-		return;
-	}
-  PRINT_ORDER_LIST(order_list, stdout);
-	printf("Which item do you want to change? > ");
-	int id;
-	scanf("%d", &id);
-	while (INVALID_ITEM_ID(id, order_list)) {
-		printf("Invalid item ID! > ");
-		scanf("%d", &id);
-		printf("\n");
-	}
-	order_t *prev = order_list->head;
-	order_t *curr = order_list->head->next;
-	while (curr->id < id) {
-		prev = curr;
-		curr = curr->next;
-	}
-	printf("Please input new quantity. To delete order, set input to 0. > ");
-	int new_quantity;
-	scanf("%d", &new_quantity);
-	if (new_quantity > 0) {
-		curr->quantity = new_quantity;
-	} else {
-		if (curr == order_list->tail) {
-			prev->next = 0;
-			order_list->tail = prev;
-		} else {
-			prev->next = curr->next;
-		}
-		FREE_ORDER(curr);
-	}
 }
 
 /**
@@ -198,6 +180,116 @@ void print_receipt(receipt_t *receipt, FILE* dest) {
   PRINT_ORDER_LIST(receipt->order_list, dest);
   char *final_output = "Your total amount due is      :";
 	fprintf(dest, "\t %-34s %8.2f\n\n", final_output, receipt->total_amount);
-  fprintf(dest, "\nYou paid by : %s\n", payment_string[receipt->payment_type]);
+  if (receipt->payment_type) {
+    fprintf(dest, "\nYou paid by : %s\n", payment_string[receipt->payment_type]);
+  }
 }
 
+char* store_receipt(merchant_t *merchant, receipt_t *receipt) {
+  /* Allocate path to receipt string */
+  char* path_to_receipt = calloc(MAX_RECEIPT_PATH_LENGTH, sizeof(char));
+  if (!path_to_receipt) {
+    fprintf(stderr, "Cannot store receipt");
+    // MAKE TERMINATE FUNCTION
+  }
+  /* Modify receipt path name to merchant's (folder) name and current time */
+	char* curr_time = current_time();
+  snprintf(path_to_receipt, MAX_RECEIPT_PATH_LENGTH, "%s%s", 
+    merchant->folder_path, curr_time);
+	free(curr_time);
+  /* Enter receipt data (order list, total, payment method) */
+	FILE* dest = fopen(path_to_receipt, "w");
+  print_receipt(receipt, dest);
+	fclose(dest);
+	return path_to_receipt;
+}
+
+/* Calls Python function to send receipt as email */
+void send_receipt(merchant_t *merchant, char* path_to_receipt) {
+  /* Get customer email */
+  char receiver[MAX_EMAIL_LENGTH] = {0};
+  printf("Please enter customer email address to receive receipt > ");
+  scanf("%s", receiver);
+  /* Get name of issuer which is printed in the email description */
+  char issuer[MAX_ID_LENGTH];
+  printf("Please input name of issuer > ");
+  scanf(" %s", issuer);
+  char subject[MAX_SUBJECT_LENGTH] = {0};
+  snprintf(subject, MAX_SUBJECT_LENGTH, "%s%s", receipt_base, issuer);
+  /* Send receipt */
+  printf("Sending your receipt... \n");
+	char args[256] = {0};
+	snprintf(args, sizeof(args), "python3 ./send_email.py %s %s %s %s %s", 
+    merchant->email, merchant->password, receiver, subject, path_to_receipt);
+	system(args);
+  /* Done!! */
+  printf("DONE!\n");
+}
+
+unpaid_t *get_unpaid_order(merchant_t *merchant) {
+  fprintf(merchant->output, "Unpaid orders: \n");
+  unpaid_t *curr = merchant->unpaid_orders->head->next;
+  for (int i = 0; i < merchant->unpaid_orders->no_of_unpaid; i++) {
+    fprintf(merchant->output, "%d) %s\n", i, curr->customer_name);
+    curr = curr->next;
+  }
+  int pos;
+  do {
+    fprintf(merchant->output, "Enter order number to be paid > ");
+  } while (!fscanf(merchant->input, "%d", &pos) 
+    || pos > merchant->unpaid_orders->no_of_unpaid);
+  curr = merchant->unpaid_orders->head->next;
+  for (int i = 0; i < pos; i++, curr = curr->next);
+  return curr;
+}
+
+void remove_unpaid_order(merchant_t *merchant, unpaid_t *unpaid) {
+  assert(unpaid->prev);
+  unpaid->prev->next = unpaid->next;
+  if (unpaid->next) {
+    unpaid->next->prev = unpaid->prev;
+  }
+  FREE_ORDER_LIST(unpaid->order_list);
+  free(unpaid->customer_name);
+  merchant->unpaid_orders->no_of_unpaid--;
+}
+
+// TO DO DEAL WITH CALLOC FAILURE, REALLOC NAME TO SAVE SPACE
+void add_unpaid(merchant_t *merchant, order_list_t *order_list) {
+  /* Get customer name associated with order */
+  char *customer_name = calloc(MAX_CUSTOMER_NAME_LENGTH, sizeof(char));
+  do {
+    fprintf(merchant->output, "Customer name > ");
+  } while (!fscanf(merchant->input, "%s", &customer_name));
+  /* Initialise unpaid */  
+  unpaid_t *unpaid = calloc(1, sizeof(unpaid_t));
+  unpaid->customer_name = customer_name;
+  unpaid->order_list = order_list;
+  /* Add unpaid to list */
+  unpaid->prev = merchant->unpaid_orders->tail;
+  unpaid->prev->next = unpaid;
+  merchant->unpaid_orders->tail = unpaid;
+  merchant->unpaid_orders->no_of_unpaid++;
+}
+
+// DEAL WITH CALLOC FAILURE
+unpaid_list_t *unpaid_list_new(void) {
+  unpaid_list_t *unpaid_list = calloc(1, sizeof(unpaid_list_t));
+  unpaid_t *first = calloc(1, sizeof(unpaid_t));
+  unpaid_list->head = first;
+  unpaid_list->tail = first;
+  return unpaid_list;
+}
+
+void free_unpaid_list(unpaid_list_t *unpaid_list) {
+  unpaid_t *curr = unpaid_list->head;
+  unpaid_t *next;
+  while (!curr) {
+    next = curr->next;
+    free(curr->customer_name);
+    FREE_ORDER_LIST(curr->order_list);
+    free(curr);
+    curr = next;
+  }
+  free(unpaid_list);
+}

@@ -1,4 +1,4 @@
-#include "types.h"
+#include "login.h"
 
 /* Appends a random ASCII character between 33 ('!') and 122 ('z'),
 this process is known as "peppering", it is done to improve security */
@@ -91,8 +91,8 @@ char* register_new(FILE* fp, char* id) {
 		exit(EXIT_FAILURE);
 	}
 }
-//
-char* login(char *id_data) {
+
+char* login(void) {
 	char* result = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
 	FILE* fp = fopen(id_data, "r+"); //Open for reading and possibly writing
 	char id[MAX_ID_LENGTH] = {0};

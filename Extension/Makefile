@@ -1,13 +1,17 @@
 CC = gcc
 CFLAGS = -g -Wall -pedantic
 
-merchant: merchant.o utils.o
+main: main.o merchant.o utils.o login.o list_utils.o
 
-merchant.o: merchant.c
+main.o: main.c merchant.h
 
-utils.o: utils.c types.h
+merchant.o: merchant.c merchant.h
 
-login: login.c
+utils.o: utils.c utils.h
+
+login.0: login.c login.h
+
+list_utils.o: types.h
 
 clean:
 	rm -rf login

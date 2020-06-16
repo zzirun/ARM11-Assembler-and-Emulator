@@ -9,6 +9,7 @@
 #define MAX_SUBJECT_LENGTH (50)
 #define MAX_PASSWORD_LENGTH (50)
 #define MAX_RECEIPT_PATH_LENGTH (75)
+#define MAX_CUSTOMER_NAME_LENGTH (10)
 
 
 #define MAX_MENU_ITEM_LENGTH (80)
@@ -18,6 +19,8 @@
 /* Lists all files in the directory specified by path */
 void list_all_files(DIR *path);
 
+char* current_time(void);
+
 /* Parses menu text file specified by path into an menu ADT */
 bool parse_menu(char* path_to_menu, menu_t* menu);
 /* Parses and adds a menu item into the menu */
@@ -25,8 +28,6 @@ bool parse_menu_item(char* item_str, menu_t* menu);
 
 /* Adds specified quantity of order referenced by id in ascending order of id */
 bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list);
-/* Edits items in the list of orders */
-void edit_order(order_list_t *order_list);
 
 /* Mode 0 : prints menu; Mode 1 : prints list of orders */
 void print_list(list_t *list, int mode, FILE *dest);
@@ -37,3 +38,18 @@ void print_list(list_t *list, int mode, FILE *dest);
 receipt_t *make_receipt(order_list_t *order_list);
 /* Prints a receipt */
 void print_receipt(receipt_t *receipt, FILE *dest);
+/* Stores receipt in merchant folder */
+char* store_receipt(merchant_t *merchant, receipt_t *receipt);
+/* Sends receipt stored in path to customer */
+void send_receipt(merchant_t *merchant, char* path_to_receipt);
+
+/* Gets unpaid order from list, given input */
+unpaid_t *get_unpaid_order(merchant_t *merchant);
+/* Removes unpaid order from list */
+void remove_unpaid_order(merchant_t *merchant, unpaid_t *unpaid);
+/* Adds unpaid order to back of list */
+void add_unpaid(merchant_t *merchant, order_list_t *order_list);
+/* Makes new unpaid list */
+unpaid_list_t *unpaid_list_new(void);
+/* Frees unpaid list */
+void free_unpaid_list(unpaid_list_t *unpaid_list);
