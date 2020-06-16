@@ -25,4 +25,4 @@ add_executable(arm11_17
         src/execute.c
         src/types.h
         src/utils.c
-        src/utils.h src/assembler/assemble_utils.c src/assembler/symbol_table_utils.c src/assembler/program_utils.c Extension/test_suite.c)
+        src/utils.h src/assembler/assemble_utils.c src/assembler/symbol_table_utils.c src/assembler/program_utils.c)
