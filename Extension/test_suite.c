@@ -10,6 +10,8 @@
 void test_login(void) {
     //1. Tests a registered account with the wrong password
     printf("1. Testing a registered account with the wrong password...\n");
+    login("login01.txt", "out.txt"); // TODO: MAKE THE FILE and MODIFY LOGIN FUNCTION
+    assert("out.txt" == "expected_login01.txt"); //TODO: find a function that compares txt files
     printf("Test passed!\n");
 
     //2. Tests a non-registered account
