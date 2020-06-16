@@ -12,8 +12,19 @@
 #define EDIT_ORDER(input) \
 (!strcmp(first_input, "e") || !strcmp(first_input, "E"))
 
-receipt_t *take_order(menu_t *menu, order_list_t *order_list);
+merchant_t *login_and_init(void);
 
-void edit_order(order_list_t *order_list);
+void take_order(merchant_t *merchant, order_list_t *order_list);
 
-char* store_receipt(char* base_path_name, receipt_t *receipt);
+void edit_order(merchant_t *merchant);
+
+// To Do: Cancel order
+
+void pay(merchant_t *merchant, order_list_t *order_list);
+
+// To Do : Load New Menu (if have time)
+
+// To Do: Free merchant
+
+
+

@@ -1,13 +1,10 @@
-#include "login.c"
 #include <assert.h>
-
+#include "../login.c"
 
 int main(int argc, char **argv){
-    assert(arg c == 2);
-    FILE *test_file =
-    login()
-
-
-
+    assert(argc == 2);
+    FILE *f = fopen(argv[1], "r");
+    login(f);
+    return 0;
 }
 

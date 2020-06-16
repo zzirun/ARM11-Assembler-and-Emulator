@@ -40,9 +40,9 @@ bool check_password(char* pw, long hash_pw) {
 
 /* If user_id is in fp, we update password with
 the hash value stored in fp and return true */
-bool check_id(FILE* fp, char* id, long* password) {
+bool check_id(FILE* fp, char* id, long* password, FILE *f) {
 	printf("Please enter you user ID to login > ");
-	scanf("%s", id);
+	fscanf(f,"%s", id);
 	char str[MAX_ID_LENGTH] = {0};
 	bool registered = false;
 	const char delim[2] = " "; //Split at space
@@ -91,13 +91,13 @@ char* register_new(FILE* fp, char* id) {
 		exit(EXIT_FAILURE);
 	}
 }
-//
-char* login(char *id_data) {
+
+char* login(FILE *f) {
 	char* result = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
 	FILE* fp = fopen(id_data, "r+"); //Open for reading and possibly writing
 	char id[MAX_ID_LENGTH] = {0};
 	long password = 0;
-	bool registered = check_id(fp, id, &password);
+	bool registered = check_id(fp, id, &password, f);
 	if (registered) {
 		printf("Please enter your password > ");
 		char pw1[MAX_PASSWORD_LENGTH] = {0};
@@ -115,7 +115,7 @@ char* login(char *id_data) {
 		if (to_register == 'y' || to_register == 'Y') {
 			result = register_new(fp, id);
 		} else {
-			result = login();
+			result = login(f);
 		}
 	}
 	fclose(fp);
