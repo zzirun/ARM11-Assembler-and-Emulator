@@ -10,9 +10,10 @@ merchant_t *login_and_init(void) {
 	fprintf(stdout, "To allow us to send email receipts to customers,\n");
 	fprintf(stdout, "Please enter your email address > "); 
   //Currently only support gmail accounts that allow access to less secure apps
-	fgets(email, MAX_EMAIL_LENGTH, stdin);
-	fprintf(stdout, "Please enter you password > ");
-	fgets(password, MAX_PASSWORD_LENGTH, stdin);
+	// CHECK FOR WORD LIMIT?
+  fscanf(stdin, "%s", email);
+	fprintf(stdout, "\nPlease enter you password > ");
+	fscanf(stdin, "%s", password);
   /* Make merchant's menu */
 	menu_t* menu = MENU_NEW(); 
   char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
