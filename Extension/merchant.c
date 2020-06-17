@@ -23,9 +23,13 @@ merchant_t *login_and_init(FILE *f) {
 				fscanf(f, "%s", email);
 				fprintf(stdout, "Please enter your password > ");
 				fscanf(f, "%s", password);
+				printf("Authentication successful!\n");
 			}
-			printf("Authentication successful!\n");
-  }
+  } else {
+		fscanf(f, "%s", email);
+		fscanf(f, "%s", password);
+		printf("Authentication successful!\n");
+	}
   /* Make merchant's menu */
 	menu_t* menu = MENU_NEW();
   char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
@@ -46,11 +50,11 @@ merchant_t *login_and_init(FILE *f) {
 // DRAFT DONE, TO CHECK
 void take_order(merchant_t *merchant, order_list_t *ol, char* customer_name) {
   order_list_t* order_list = ol ? ol : ORDER_LIST_NEW();
-	char first_input[4];
+	char first_input[4] = {0};
 	while (1) {
-    fprintf(merchant->output, "\n//////////////////////////////////////////////////////////////////\n");
+    fprintf(merchant->output, "\n******************************************************************\n");
 	  PRINT_MENU(merchant->menu, stdout);
-		fprintf(merchant->output, "\n//////////////////////////////////////////////////////////////////\n");
+		fprintf(merchant->output, "\n******************************************************************\n");
 	  fprintf(merchant->output, "\nPlease input item ID or type \"end\" to finalize > ");
 		fscanf(merchant->input, "%s", first_input);
 		if (FINALIZE_ORDER(first_input)) {
@@ -58,6 +62,8 @@ void take_order(merchant_t *merchant, order_list_t *ol, char* customer_name) {
 				fprintf(merchant->output, "\n Empty order will not be saved! \n");
 				break;
 			} else {
+				printf("\n\t Your receipt :");
+				PRINT_ORDER_LIST(order_list, merchant->output);
         char pay_now;
 				do {
 					fprintf(merchant->output, "\nPay Now? [0]No [1]Yes > ");

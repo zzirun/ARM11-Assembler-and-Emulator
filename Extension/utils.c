@@ -237,11 +237,11 @@ void send_receipt(merchant_t *merchant, char* path_to_receipt) {
   /* Get customer email */
   char receiver[MAX_EMAIL_LENGTH] = {0};
   printf("Please enter customer email address to receive receipt > ");
-  scanf("%s", receiver);
+  fscanf(merchant->input, "%s", receiver);
   /* Get name of issuer which is printed in the email description */
   char issuer[MAX_ID_LENGTH];
   printf("Please input name of issuer > ");
-  scanf(" %s", issuer);
+  fscanf(merchant->input, " %s", issuer);
   char subject[MAX_SUBJECT_LENGTH] = {0};
   snprintf(subject, MAX_SUBJECT_LENGTH, "%s%s", receipt_base, issuer);
   /* Send receipt */

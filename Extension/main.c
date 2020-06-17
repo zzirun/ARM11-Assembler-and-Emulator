@@ -27,14 +27,14 @@ int main(int argc, char **argv) {
       fp = stdin;
   }
   // Testing Mode
-  else if(argc == 2){
+  else if(argc == 2) {
       fp = fopen(argv[1], "r");
       if(!fp){
           perror("error opening file");
           exit(EXIT_FAILURE);
       }
   }
-  else{
+  else {
       perror("Wrong number of arguments passed");
       exit(EXIT_FAILURE);
   }

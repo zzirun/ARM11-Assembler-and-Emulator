@@ -70,14 +70,14 @@ char* register_new(FILE* fp, char* id) {
 	char pw[MAX_PASSWORD_LENGTH] = {0};
 	scanf("%s", pw);
 	char* path_name = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
-	snprintf(path_name, MAX_FOLDER_PATH_LENGTH, "%s%s", base_login_folder, id);
+	snprintf(path_name, MAX_FOLDER_PATH_LENGTH, "%s%s/", base_login_folder, id);
 	if (!mkdir(path_name, PERMISSION_BITS)) {
 		printf("Thank you for joining us as a merchant! Please drag and drop your menu.txt into Merchants/%s\n" ,id);
 		printf("Press any key when you have done so to continue > ");
 		getchar(); //To skip the \n from previous input
 		getchar();
 		char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
-		snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s/%s", path_name, "menu.txt");
+		snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", path_name, "menu.txt");
 		while (!fopen(path_to_menu, "r")) {
 			printf("menu.txt not found! Please make sure it is at the right location and named correctly.\n");
 			printf("Press any key when you have done so to continue > ");
@@ -94,6 +94,7 @@ char* register_new(FILE* fp, char* id) {
 		exit(EXIT_FAILURE);
 	}
 }
+
 // For interactive mode ensure f = stdin
 // For testing mode f = test file
 char* login(FILE *f) {
@@ -130,8 +131,10 @@ char* login(FILE *f) {
 	return result;
 }
 
+/*
 void login_d(FILE *f){
     char pw1[MAX_PASSWORD_LENGTH] = {0};
     fscanf(f,"%s", pw1);
     printf("%s \n", pw1);
 }
+*/

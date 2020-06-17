@@ -7,8 +7,8 @@
 #include <stdbool.h>
 //#include <dirent.h>
 #include <time.h>
-//#include <sys/stat.h>
-//#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <assert.h>
 
 #define PERMISSION_BITS (0777)
