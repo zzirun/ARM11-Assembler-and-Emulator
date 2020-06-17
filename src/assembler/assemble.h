@@ -1,4 +1,4 @@
-#include "assemble_types.h"
+#include "assemble_instruction_utils.h"
 
 /* Constructs label to address map, loads instructions from assembly file */
 void first_pass(char *input_file_path, symbol_table_t *, program_t *);

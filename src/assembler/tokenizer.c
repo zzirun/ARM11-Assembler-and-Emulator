@@ -1,5 +1,4 @@
 #include "assemble.h"
-#include "assemble_instruction_utils.h"
 
 /** Assigns mnemonic & assemble function for the tokenized instruction 
  *  according to the first word (mnemonic) of the instruction string 

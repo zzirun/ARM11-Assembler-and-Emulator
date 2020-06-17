@@ -1,5 +1,4 @@
 #include "emulate.h"
-#include "emulate_instruction_utils.h"
 
 void bin_load(char *f, machine_state *ms) {
   // Opens file

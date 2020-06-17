@@ -1,5 +1,4 @@
 #include "emulate.h"
-#include "emulate_instruction_utils.h"
 
 void decode(machine_state* ms) {
   decoded_instr_t *decoded = &ms->instr_to_execute;

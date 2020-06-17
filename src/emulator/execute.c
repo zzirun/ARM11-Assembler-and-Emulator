@@ -1,5 +1,4 @@
 #include "emulate.h"
-#include "emulate_instruction_utils.h"
 
 /*  Executes current instruction_to_execute of machine state 
  *  if condition is met

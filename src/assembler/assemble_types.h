@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "../emulator/emulate_types.h"
+#include "../emulator/emulate_instruction_utils.h"
 
 /** Mnemonic type, corresponds to first word of instruction string
  * (for DP instruction types, set to same integer as for opcode enums

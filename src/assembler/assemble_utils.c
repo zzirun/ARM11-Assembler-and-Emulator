@@ -1,4 +1,4 @@
-#include "assemble_instruction_utils.h"
+#include "assemble.h"
 
 /** Parses assembly file to :
  *  * build label to address map 
