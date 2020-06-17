@@ -96,6 +96,9 @@ void take_order(merchant_t *merchant, order_list_t *ol, char* customer_name) {
 void edit_order(merchant_t *merchant) {
   // Get order to edit
   unpaid_t *unpaid = get_unpaid_order(merchant);
+	if (!unpaid) {
+		return;
+	}
   order_list_t *order_list = unpaid->order_list;
   // Check order not empty
   assert(order_list->head != order_list->tail);
@@ -108,7 +111,6 @@ void edit_order(merchant_t *merchant) {
   remove_unpaid_order(merchant, unpaid);
 }
 
-/*
 // DRAFT DONE, TO CHECK
 void pay(merchant_t *merchant, order_list_t *ol) {
   order_list_t *order_list;
@@ -119,6 +121,9 @@ void pay(merchant_t *merchant, order_list_t *ol) {
   } else {
     // NULL for pay later
     unpaid = get_unpaid_order(merchant);
+		if (!unpaid) {
+			return;
+		}
     order_list = unpaid->order_list;
   }
   receipt_t *receipt = make_receipt(order_list);
@@ -139,8 +144,8 @@ void pay(merchant_t *merchant, order_list_t *ol) {
   }
   free(path_to_receipt);
 }
-*/
 
+/*
 void pay(merchant_t *merchant, order_list_t *ol) {
   unpaid_t *unpaid = get_unpaid_order(merchant);
 	if (!unpaid) {
@@ -155,16 +160,17 @@ void pay(merchant_t *merchant, order_list_t *ol) {
   } while (!fscanf(merchant->input,"%d", &payment_type)
             || INVALID_PAYMENT(payment_type));
   receipt->payment_type = payment_type;
-  /* Store receipt in merchant's folder */
+  // Store receipt in merchant's folder
   char* path_to_receipt = store_receipt(merchant, receipt);
-  /* Send receipt to customer */
+  // Send receipt to customer
   send_receipt(merchant, path_to_receipt);
-  /* Remove unpaid order from list, free memory */
+  // Remove unpaid order from list, free memory
   remove_unpaid_order(merchant, unpaid);
 	//Order_list freed by remove_unpaid_order
 	free(receipt);
   free(path_to_receipt);
 }
+*/
 
 void cancel_order(merchant_t* merchant) {
 	unpaid_t* unpaid = get_unpaid_order(merchant);
