@@ -1,0 +1,8 @@
+
+	 Your receipt : 
+	 3   souffle_pancakes                  20.50     2
+	 7   strawberry_kakigori               14.00     1
+	 Your total amount due is      :       55.00
+
+
+You paid by : Credit/Debit Card

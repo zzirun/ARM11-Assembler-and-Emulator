@@ -1,6 +1,3 @@
-firstyear.grp17@gmail.com
-BLACKpink2
-LOAD MENU
 1 matcha_roll_cake 12.50
 2 unicorn_elixir 10.00
 3 souffle_pancakes 20.50
@@ -11,9 +8,3 @@ LOAD MENU
 8 buttermilk_waffles 18.00
 9 warabimochi 14.00
 10 red_velvet_cake 13.00
-TAKE ORDER
-1 1
-5 3
-ivytam2000@gmail.com
-Ivy Tam
-

@@ -1,0 +1,8 @@
+
+	 Your receipt : 
+	 2   nasi_lemak                         9.99     3
+	 5   kuih_lapis                         0.99     1
+	 Your total amount due is      :       30.96
+
+
+You paid by : e-Wallet

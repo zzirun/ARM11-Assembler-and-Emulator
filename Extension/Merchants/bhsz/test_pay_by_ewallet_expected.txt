@@ -1,0 +1,9 @@
+
+	 Your receipt : 
+	 2   nasi_lemak                         9.99     2
+	 4   pork_soup                          5.99     2
+	 8   kaya_bread                         2.99     1
+	 Your total amount due is      :       34.95
+
+
+You paid by : e-Wallet
