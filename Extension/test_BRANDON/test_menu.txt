@@ -1,0 +1,6 @@
+1 item_a 0.99
+2 item_b 1.99
+3 item_c 2.99
+4 item_d 3.99
+5 item_e 4.99
+6 item_f 5.99

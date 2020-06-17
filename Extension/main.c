@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   if(argc == 1) {
       fp = stdin;
   }
-  // Testing Mode
+  // Testing Mode (Passing in a text file of inputs to test)
   else if(argc == 2) {
       fp = fopen(argv[1], "r");
       if(!fp){
