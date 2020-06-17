@@ -5,22 +5,24 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <dirent.h>
+//#include <dirent.h>
 #include <time.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+//#include <sys/stat.h>
+//#include <sys/types.h>
 #include <assert.h>
 
-#define NUM_OF_PAYMENT_TYPES (3)
-
 #define PERMISSION_BITS (0777)
+#define NUM_OF_PAYMENT_TYPES (3)
+#define MAX_CUSTOMER_NAME_LENGTH (10)
 #define MAX_ID_LENGTH (20)
-#define MAX_EMAIL_LENGTH (30)
+#define MAX_EMAIL_LENGTH (30) //Max length of email for the sender and receiver of a receipt
 #define MAX_FOLDER_PATH_LENGTH (30) //strlen("Merchants/") + strlen(user_id)
 #define MAX_MENU_PATH_LENGTH (35) //strlen(folder_path) + strlen("menu.txt")
+#define MAX_USER_ID_LENGTH (50)
 #define MAX_SUBJECT_LENGTH (50)
 #define MAX_PASSWORD_LENGTH (50)
 #define MAX_RECEIPT_PATH_LENGTH (75)
+#define MAX_MENU_ITEM_LENGTH (80)
 
 extern char *id_data;
 
@@ -39,7 +41,6 @@ typedef enum action_t {
   EDIT_ORDER = 2,
   CANCEL_ORDER = 3,
   PAY_ORDER = 4,
-  LOAD_NEW_MENU = 5  
 } action_t;
 
 /*Payment types */

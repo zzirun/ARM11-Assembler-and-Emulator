@@ -1,6 +1,6 @@
 #include "types.h"
 
-// Q: DEALING WITH CALLOC FAIILURES?
+// Q: DEALING WITH CALLOC FAIILURES
 
 list_elem_t *list_elem_new(void) {
   return calloc(1, sizeof(list_elem_t));

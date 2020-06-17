@@ -14,6 +14,6 @@ login.0: login.c login.h
 list_utils.o: list_utils.c types.h
 
 clean:
-	rm -rf login
+	rm -rf *.o main
 
 .PHONY: clean

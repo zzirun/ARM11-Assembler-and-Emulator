@@ -10,6 +10,7 @@ char *payment_string[3];
 char *receipt_base;
 
 void init(void) {
+
   id_data = "merchantID.txt";
 
   base_login_folder = "Merchants/";
@@ -28,20 +29,7 @@ void init(void) {
 
 }
 
-/*Lists all files in the directory specified by path, printed with indent */
-void list_all_files(DIR *path) {
-	struct dirent *dir;
-	if (!path) {
-		perror("Invalid path");
-		exit(EXIT_FAILURE);
-	}
-	while ((dir = readdir(path))) {
-		if (strcmp(dir->d_name, "..") && strcmp(dir->d_name, ".")) {
-			printf("  %s\n", dir->d_name);
-		}
-	}
-}
-
+/* Returns the current time as a string, used as unique identifier for receipts */
 char* current_time(void) {
 	time_t rawtime;
 	time(&rawtime);
@@ -53,7 +41,7 @@ char* current_time(void) {
 
 /**
  * Reads a text file specified by path into a menu ADT
- * * assumes each menu item is on a different line  
+ * * assumes each menu item is on a different line
  * Returns true on success, false on failure
  */
 
@@ -81,7 +69,7 @@ bool parse_menu(char* path_to_menu, menu_t* menu) {
 
 /**
  * Reads a line with into a menu item
- * * assumes each field in the item doesn't contain spaces 
+ * * assumes each field in the item doesn't contain spaces
  *   and the fields are separated by spaces
  */
 bool parse_menu_item(char *item_str, menu_t *menu) {
@@ -108,7 +96,7 @@ bool parse_menu_item(char *item_str, menu_t *menu) {
 }
 
 /**
- * Adds specified quantity of items referenced by id from menu to list 
+ * Adds specified quantity of items referenced by id from menu to list
  * in ascending order of id,
  * or increases quantity of order if item already in list
  * Returns true on success, false on failure
@@ -121,20 +109,12 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
 		prev = curr;
 		curr = curr->next;
 	}
-	if (!curr || curr->id > id) { 
-    if (quantity == 0) {
-      fprintf(stderr, "Empty item");
-      return true;
-    }
-    // New order 
+	if (!curr || curr->id > id) {
+    // New order
     // Clone item to order from menu and assign quantity
     menu_item_t *curr_item = menu->head->next;
     while (curr_item && curr_item->id != id) {
       curr_item = curr_item->next;
-    }
-    if (!curr_item) {
-      fprintf(stderr, "Menu item not available");
-      return false;
     }
     order_t *order = ORDER_NEW();
     char *item_name = calloc(strlen(curr_item->name) + 1, sizeof(char));
@@ -156,7 +136,7 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
     curr = order;
 	} else {
     // Order already in list
-    if (curr->quantity == 0) {
+    if (quantity == 0) {
       // If quantity 0, remove
       prev->next = curr->next;
       if (curr == order_list->tail) {
@@ -164,24 +144,25 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
       }
       FREE_ORDER(curr);
     } else {
-      // Else replace with new quantity of order 
+      // Else replace with new quantity of order
       curr->quantity = quantity;
     }
-	}	
+	}
   return true;
 }
 
 /**
- * Mode 0 : print menu; Mode 1 : print order_list 
+ * Mode 0 : print menu; Mode 1 : print order_list
  * Prints each item's id, name, price, + quantity if order_list
  */
 void print_list(list_t *list, int mode, FILE *dest) {
 	list_elem_t *curr = list->head->next;
 	fprintf(dest, "\n");
 	while (curr) {
-		fprintf(dest, "\t %-3d %-30s %8.2f ", curr->id, curr->name, curr->price);
 		if (mode) {
-			fprintf(dest, "%5d", curr->quantity);
+			fprintf(dest, "\t %-3d %-30s %8.2f %5d", curr->id, curr->name, curr->price, curr->quantity);
+		} else if (!mode){
+			fprintf(dest, "\t %-3d %-30s %8.2f ", curr->id, curr->name, curr->price);
 		}
 		fprintf(dest, "\n");
 		curr = curr->next;
@@ -225,15 +206,30 @@ char* store_receipt(merchant_t *merchant, receipt_t *receipt) {
   }
   /* Modify receipt path name to merchant's (folder) name and current time */
 	char* curr_time = current_time();
-  snprintf(path_to_receipt, MAX_RECEIPT_PATH_LENGTH, "%s%s", 
+  snprintf(path_to_receipt, MAX_RECEIPT_PATH_LENGTH, "%s%s",
     merchant->folder_path, curr_time);
 	free(curr_time);
   /* Enter receipt data (order list, total, payment method) */
 	FILE* dest = fopen(path_to_receipt, "w");
   print_receipt(receipt, dest);
 	fclose(dest);
-  free_receipt(receipt);
 	return path_to_receipt;
+}
+
+/* Calls Python function to authenticate email on SMTP server */
+bool connect(char* email, char* password) {
+	bool result = true;
+	char command[256] = {0};
+	snprintf(command, sizeof(command), "python3 ./send_email.py %s %s", email, password);
+	printf("Trying to authenticate...\n");
+	FILE* fp = popen(command, "r");
+	char buffer[256] = {0};
+	fgets(buffer, 256, fp);
+	if (!strcmp(buffer, "Unable to authenticate\n")) {
+		result = false;
+	}
+	pclose(fp);
+	return result;
 }
 
 /* Calls Python function to send receipt as email */
@@ -251,8 +247,8 @@ void send_receipt(merchant_t *merchant, char* path_to_receipt) {
   /* Send receipt */
   printf("Sending your receipt... \n");
 	char args[256] = {0};
-	snprintf(args, sizeof(args), "python3 ./send_email.py %s %s %s %s %s", 
-    merchant->email, merchant->password, receiver, subject, path_to_receipt);
+	snprintf(args, sizeof(args), "python3 ./send_email.py %s %s %s %s %s",
+  merchant->email, merchant->password, receiver, subject, path_to_receipt);
 	system(args);
   /* Done!! */
   printf("DONE!\n");
@@ -264,16 +260,20 @@ void free_receipt(receipt_t *receipt) {
 }
 
 unpaid_t *get_unpaid_order(merchant_t *merchant) {
-  fprintf(merchant->output, "Unpaid orders: \n");
+	if (merchant->unpaid_orders->no_of_unpaid == 0) {
+		printf("\n No unpaid orders\n");
+		return NULL;
+	}
+  fprintf(merchant->output, "\nUnpaid orders: \n");
   unpaid_t *curr = merchant->unpaid_orders->head->next;
   for (int i = 0; i < merchant->unpaid_orders->no_of_unpaid; i++) {
-    fprintf(merchant->output, "%d) %s\n", i, curr->customer_name);
+    fprintf(merchant->output, "    %d) %s\n", i, curr->customer_name);
     curr = curr->next;
   }
   int pos;
   do {
-    fprintf(merchant->output, "Enter order number to be paid > ");
-  } while (!fscanf(merchant->input, "%d", &pos) 
+    fprintf(merchant->output, "Enter order number > ");
+  } while (!fscanf(merchant->input, "%d", &pos)
     || pos > merchant->unpaid_orders->no_of_unpaid);
   curr = merchant->unpaid_orders->head->next;
   for (int i = 0; i < pos; i++, curr = curr->next);
@@ -282,26 +282,32 @@ unpaid_t *get_unpaid_order(merchant_t *merchant) {
 
 void remove_unpaid_order(merchant_t *merchant, unpaid_t *unpaid) {
   assert(unpaid->prev);
-  unpaid->prev->next = unpaid->next;
-  if (unpaid->next) {
-    unpaid->next->prev = unpaid->prev;
-  }
-  //FREE_ORDER_LIST(unpaid->order_list);
+	if (unpaid->next) {
+		unpaid->prev->next = unpaid->next;
+		unpaid->next->prev = unpaid->prev;
+	} else {
+		unpaid->prev->next = NULL;
+		merchant->unpaid_orders->tail = unpaid->prev;
+	}
+  FREE_ORDER_LIST(unpaid->order_list);
   free(unpaid->customer_name);
   free(unpaid);
   merchant->unpaid_orders->no_of_unpaid--;
 }
 
 // TO DO DEAL WITH CALLOC FAILURE, REALLOC NAME TO SAVE SPACE
-void add_unpaid(merchant_t *merchant, order_list_t *order_list) {
+void add_unpaid(merchant_t *merchant, order_list_t *order_list, char* cust_name) {
   /* Get customer name associated with order */
-  char *customer_name = calloc(MAX_CUSTOMER_NAME_LENGTH, sizeof(char));
-  do {
-    fprintf(merchant->output, "Customer name > ");
-  } while (!fscanf(merchant->input, "%s", customer_name));
-  /* Initialise unpaid */  
-  unpaid_t *unpaid = calloc(1, sizeof(unpaid_t));
-  unpaid->customer_name = customer_name;
+	unpaid_t *unpaid = calloc(1, sizeof(unpaid_t));
+	char *customer_name = calloc(MAX_CUSTOMER_NAME_LENGTH, sizeof(char));
+	if (!cust_name) {
+		fprintf(merchant->output, "Customer name > ");
+		fscanf(merchant->input, "%s", customer_name);
+		unpaid->customer_name = customer_name;
+	} else {
+		unpaid->customer_name = strcpy(customer_name, cust_name);
+	}
+  /* Initialise unpaid */
   unpaid->order_list = order_list;
   /* Add unpaid to list */
   unpaid->prev = merchant->unpaid_orders->tail;

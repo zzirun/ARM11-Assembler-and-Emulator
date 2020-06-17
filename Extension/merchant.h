@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "login.h"
 
-#define MAX_USER_ID_LENGTH (50)
+//#define MAX_USER_ID_LENGTH (50)
 
 #define INVALID_ITEM_ID(item_id, list) \
 (item_id > list->tail->id || item_id < list->head->next->id)
@@ -19,20 +19,18 @@
 merchant_t *login_and_init(FILE *f);
 
 /* Takes a new order */
-void take_order(merchant_t *merchant, order_list_t *order_list);
+void take_order(merchant_t *merchant, order_list_t *order_list, char* customer_name);
 
 /* Edits a previous order */
 void edit_order(merchant_t *merchant);
-
-// To Do: Cancel order
 
 /* Pays an order */
 /* If NULL order, order is selected from list of unpaid orders */
 void pay(merchant_t *merchant, order_list_t *order_list);
 
+/* Cancels order by removing from unpaid order */
+void cancel_order(merchant_t* merchant);
+
 // To Do : Load New Menu (if have time)
 
 void free_merchant(merchant_t *merchant);
-
-
-

@@ -1,5 +1,5 @@
 #include "login.h"
-#include <stdio.h>
+//#include <stdio.h>
 
 /* Appends a random ASCII character between 33 ('!') and 122 ('z'),
 this process is known as "peppering", it is done to improve security */
@@ -42,9 +42,9 @@ bool check_password(char* pw, long hash_pw) {
 /* If user_id is in fp, we update password with
 the hash value stored in fp and return true */
 bool check_id(FILE* fp, char* id, long* password, FILE *f) {
-    if(f == stdin) {
-        printf("Please enter you user ID to login > ");
-    }
+  if(f == stdin) {
+		printf("Please enter you user ID to login > ");
+  }
 	fscanf(f,"%s", id);
 	char str[MAX_ID_LENGTH] = {0};
 	bool registered = false;
@@ -101,12 +101,11 @@ char* login(FILE *f) {
 	FILE* fp = fopen(id_data, "r+"); //Open for reading and possibly writing
 	char id[MAX_ID_LENGTH] = {0};
 	long password = 0;
-
 	bool registered = check_id(fp, id, &password, f);
 	if (registered) {
-	    if(f == stdin) {
-            printf("Please enter your password > ");
-        }
+		if(f == stdin) {
+    	printf("Please enter your password > ");
+    }
 		char pw1[MAX_PASSWORD_LENGTH] = {0};
 		fscanf(f,"%s", pw1);
 		while (!check_password(pw1, password)) {
@@ -120,8 +119,10 @@ char* login(FILE *f) {
 		char to_register;
 		fscanf(f, " %c", &to_register);
 		if (to_register == 'y' || to_register == 'Y') {
+			printf("\n");
 			result = register_new(fp, id);
 		} else {
+			printf("\n");
 			result = login(f);
 		}
 	}
@@ -134,4 +135,3 @@ void login_d(FILE *f){
     fscanf(f,"%s", pw1);
     printf("%s \n", pw1);
 }
-
