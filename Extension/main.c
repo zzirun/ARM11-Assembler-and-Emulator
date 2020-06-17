@@ -19,17 +19,34 @@
  *    b) Input N/n upon asking for program continuation corresponds to program termination 
  */ 
 
-int main(void) {
+int main(int argc, char **argv) {
   init();
+  FILE *fp = NULL;
+  // Interactive Mode
+  if(argc == 1) {
+      fp = stdin;
+  }
+  // Testing Mode
+  else if(argc == 2){
+      fp = fopen(argv[1], "r");
+      if(!fp){
+          perror("error opening file");
+          exit(EXIT_FAILURE);
+      }
+  }
+  else{
+      perror("Wrong number of arguments passed");
+      exit(EXIT_FAILURE);
+  }
 
-  merchant_t *merchant = login_and_init();
+  merchant_t *merchant = login_and_init(fp);
 
   while (1) {
     int action;
     printf("Choose Action: [0]Quit [1]Take Order [2]Edit Order [3]Cancel Order [4]Pay Order [5]Load New merchant");
     // ADD DO WHILE FOR CHECKING ACTION INPUT
     // CHECK IF ERROR IF ACTION_T TAKES IN A INVALID NUMBER
-    scanf("%d", &action);
+    fscanf(fp, "%d", &action);
     if (action == QUIT) {
       break;
     }

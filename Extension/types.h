@@ -101,6 +101,7 @@ typedef struct merchant_t {
   unpaid_list_t *unpaid_orders;
 } merchant_t;
 
+
 /*Creates new list element */
 list_elem_t *list_elem_new(void);
 #define MENU_ITEM_NEW() list_elem_new()

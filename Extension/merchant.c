@@ -1,19 +1,26 @@
 #include "merchant.h"
+#include <stdio.h>
 
 // TO MODIFY - to fit with text file input
-merchant_t *login_and_init(void) {
+// For interactive mode ensure f = stdin
+// For testing mode f = test file
+merchant_t *login_and_init(FILE *f) {
   /* Attempt to login */
-  char* folder_path = login();
+  char* folder_path = login(f);
   /* Merchant's email login authentication */
   char *email = calloc(MAX_EMAIL_LENGTH, sizeof(char));
   char *password = calloc(MAX_PASSWORD_LENGTH, sizeof(char));
-	fprintf(stdout, "To allow us to send email receipts to customers,\n");
-	fprintf(stdout, "Please enter your email address > "); 
+  if(f == stdin) {
+      fprintf(stdout, "To allow us to send email receipts to customers,\n");
+      fprintf(stdout, "Please enter your email address > ");
+  }
   //Currently only support gmail accounts that allow access to less secure apps
 	// CHECK FOR WORD LIMIT?
-  fscanf(stdin, "%s", email);
-	fprintf(stdout, "\nPlease enter you password > ");
-	fscanf(stdin, "%s", password);
+     fscanf(f, "%s", email);
+  if(f == stdin) {
+      fprintf(stdout, "\nPlease enter your password > ");
+  }
+	fscanf(f, "%s", password);
   /* Make merchant's menu */
 	menu_t* menu = MENU_NEW(); 
   char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
@@ -26,7 +33,7 @@ merchant_t *login_and_init(void) {
   merchant->folder_path = folder_path;
   merchant->menu = menu;
   merchant->unpaid_orders = unpaid_list_new();
-  merchant->input = stdin;
+  merchant->input = f;
   merchant->output = stdout;
   return merchant;
 }
@@ -38,7 +45,7 @@ void take_order(merchant_t *merchant, order_list_t *ol) {
 	while (1) {
     fprintf(merchant->output, "\n//////////////////////////////////////////////////////////////////\n");
 	  PRINT_MENU(merchant->menu, stdout);
-		fprintf(merchant->output, "Please input item ID or type \"end\" to finalize > ");
+	    fprintf(merchant->output, "Please input item ID or type \"end\" to finalize > ");
 		fscanf(merchant->input, "%s", first_input);
     if (!first_input) {
       fprintf(merchant->output, "No input processed, please try again.\n");
@@ -52,7 +59,7 @@ void take_order(merchant_t *merchant, order_list_t *ol) {
         bool pay_now;
         do {
           fprintf(merchant->output, "\n Pay Now? [0]No [1]Yes \n");
-        } while (!fscanf(merchant->input, "%d", &pay_now));    
+        } while (!fscanf(merchant->input, "%d", &pay_now));
         if (pay_now) {
           pay(merchant, order_list);
         } else {
@@ -69,7 +76,7 @@ void take_order(merchant_t *merchant, order_list_t *ol) {
       }
       do {
         fprintf(merchant->output, "Please input quantity > ");
-      } while (!fscanf(merchant->input, "%d", &quantity));    
+      } while (!fscanf(merchant->input, "%d", &quantity));
       add_order(item_id, quantity, merchant->menu, order_list);
     } 
   }
