@@ -1,7 +1,7 @@
 #ifndef ARM11_17_EMULATE
 #define ARM11_17_EMULATE
 
-#include "emulate_types.h"
+#include "emulate_instruction_utils.h"
 
 /* Binary loader (binary file to array) */
 void bin_load(char *f, machine_state* ms);

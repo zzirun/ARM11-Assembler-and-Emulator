@@ -1,5 +1,4 @@
 #include "assemble_types.h"
-#include "../emulator/emulate_instruction_utils.h"
 
 #define NUMBER_OF_BYTES_PER_INST (4)
 #define HEXADECIMAL_BASE (16)
@@ -24,7 +23,6 @@
 
 /* Gets register number from string eg: input r9 returns 9 */
 #define GET_REG_FROM_STR(reg_as_str) (atoi(reg_as_str + 1))
-
 
 /* Removes leading and ending whitespace and commas */
 char *trim(char *str);

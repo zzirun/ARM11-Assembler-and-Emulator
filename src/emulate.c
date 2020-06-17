@@ -1,5 +1,4 @@
 #include "emulator/emulate.h"
-#include "emulator/emulate_instruction_utils.h"
 
 int main(int argc, char **argv) {
   /*

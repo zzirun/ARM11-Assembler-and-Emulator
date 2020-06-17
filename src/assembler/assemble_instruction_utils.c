@@ -33,19 +33,15 @@ int num_of_operands(char *str) {
   return result;
 }
 
-/*  Parses numerical constant <#/=expression> string (base 10/16), 
+/** Parses numerical constant string (num_str): <#/=expression> 
+ *  (in base 10/16), converting it into an integer.
  *  * Returns magnitude of integer
- *  * Modifies output parameter sign if needed 
- *    (+, 1), (-, 0), default : +
- */
-/**
- * Parses numerical constant string('num_str'): <#/=expression> (in base 10/16) & converts it into an integer.
- * It also modifies the contents of the boolean pointed by the parameter 'sign' to be false if the integer is
- * negative and true otherwise.
+ *  * Modifies output parameter sign if needed to 
+ *    false if negative ('-' found), true otherwise
  *
- * @param num_str
- * @param sign
- * @return num_str as an unsigned 32-bit integer
+ *  @param num_str
+ *  @param sign
+ *  @return num_str as an unsigned 32-bit integer
  */
 
 uint32_t parse_numerical_expr(char *num_str, bool *sign) {
@@ -110,18 +106,13 @@ shift_t get_shift_type(char *shift_type_str) {
   exit(EXIT_FAILURE);
 }
 
-/*  Parses a (possibly null) shift string 
- *  * form: <shiftname> <#expression>/<register>
- *  Returns encoding of shift as in DP/SDT
- */
-/**
- * Parses a shift string in the form : <shiftname> <#expression>/<register>
- * and returns the binary representation of the shift.
+/** Parses a (possibly null) shift string 
+ *  in the form : <shiftname> <#expression>/<register>, 
+ *  returns the binary encoding of the shift as in DP/SDT
  *
- * @param shift_str
- * @return encoding of shift_str
+ *  @param shift_str
+ *  @return encoding of shift_str
  */
-
 uint8_t parse_shift(char *shift_str) {
   /* No shift */
   if (!shift_str) {
@@ -132,7 +123,7 @@ uint8_t parse_shift(char *shift_str) {
   char *shift_field = strtok(shift_str, " ");
   uint8_t shift_type = get_shift_type(shift_field);
   // Get shift amount
-  // And move shift amount to correct bit position
+  // Move shift amount to correct bit position
   shift_field = trim(strtok(NULL, ""));
   bool shift_by_reg;
   uint8_t shift_amount;
@@ -156,7 +147,6 @@ uint8_t parse_shift(char *shift_str) {
   return shift_amount | (shift_type << 1) | shift_by_reg;
 }
 
-// TO DO : ADD ERRORS FOR INVALID CASES
 /*  Helper for DP and SDT assembler 
  *  Assigns 
  *  * immediate flag
@@ -240,9 +230,9 @@ void get_op_from_str(char *op_as_str, decoded_instr_t *instr) {
 }
 
 uint32_t signed_to_twos_complement(int32_t value) {
-    uint32_t result = abs(value);
-    if (value < 0) {
-        result = ~result + 1;
-    }
-    return result;
+  uint32_t result = abs(value);
+  if (value < 0) {
+    result = ~result + 1;
+  }
+  return result;
 }

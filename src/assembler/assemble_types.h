@@ -8,10 +8,12 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "../emulator/emulate_types.h"
+#include "../emulator/emulate_instruction_utils.h"
 
-// instr mnemonic (first word of instr)
-// for DP, set to same integer as opcode enum -
-// - for ease of conversion of mnemonic to opcode
+/** Mnemonic type, corresponds to first word of instruction string
+ * (for DP instruction types, set to same integer as for opcode enums
+ *  in emulator for ease of conversion from mnemonic to opcode)
+ */ 
 typedef enum mnemonic_t {
   AND = 0,  
   EOR = 1,  
@@ -40,10 +42,11 @@ typedef enum mnemonic_t {
 
 /************ LINKED LIST DATA STRUCTURES AND FUNCTIONS : ************/
 
-/************ LABEL TO ADDRESS MAPPING ************/
+/*********************** LABEL TO ADDRESS MAPPING ************************/
 
-// assume as in emulator - 2^16 bytes of memory :
-// addresses can be represented in 16 bits
+/** Assume as in emulator - 2^16 bytes of memory 
+ *  ie addresses can be represented in 16 bits
+ */ 
 typedef struct symbol_table_elem_t {
   char *label;
   uint16_t address;
@@ -56,16 +59,18 @@ typedef struct symbol_table_t {
 } symbol_table_t;
 
 symbol_table_t *create_symbol_table(void);
+/* Adds label and its corresponding address into a symbol table */
 void add_mapping(symbol_table_t *table, const char *label, uint16_t address);
+/* Returns true and modifies address to value mapped by label iff found */
 bool map(symbol_table_t *table, const char *label, uint16_t *address);
 void free_symbol_table(symbol_table_t *table);
 
-/**************************************************/
+/*************************************************************************/
 
 /************************** INSTRUCTIONS STORED **************************/
 
-// stores a single instr (as different formats) and address to next instr
-// data in union replaced at each stage of assembly
+/** Instruction/data contained at an address in a program
+ */ 
 typedef struct prog_elem_t {
   uint16_t address;
   union {
@@ -75,14 +80,28 @@ typedef struct prog_elem_t {
   struct prog_elem_t *next;
 } prog_elem_t, instr_t, data_t;
 
+/** Program - a list of instructions/data : 
+ * 
+ *   | INSTRUCTIONS | DATA ADDED BY LOADER |
+ *   ^              ^                      ^
+ *  HEAD        LAST_INSTR                TAIL
+ * 
+ *  * last_instr marks the end of instructions to assemble,
+ *    program will continue with data added by loading instructions (if any)
+ */
 typedef struct program_t {
   prog_elem_t *head;
   prog_elem_t *tail;
-  prog_elem_t *last_instr;
-  prog_elem_t *curr; // for looping over elements
+  prog_elem_t *last_instr; 
+  prog_elem_t *curr;  // for looping over elements
 } program_t;
 
-// instr split into string operands
+/** An instruction string to be assembled, contains:
+ *  * Original instruction string loaded from file
+ *  * Instruction mnemonic type, assemble function
+ *  * Instruction's operands as an array of pointers 
+ *    to the original string
+ */
 typedef struct instr_str_t {
   char *instr_line;
   mnemonic_t mnemonic;
@@ -90,12 +109,14 @@ typedef struct instr_str_t {
   char **operands;
 } instr_str_t;
 
-void free_instr_str(instr_str_t *);
-
 program_t *create_program(void);
+/* Loads an instruction as an entire string at an address in the program*/
 void add_instr(program_t *program, const char *instr_line, uint16_t address);
-uint16_t add_data(program_t *program, uint32_t binary_value); //for ldr in sdt
+/* For LDR: Adds data to end of assembled program, returning its address */
+uint16_t add_data(program_t *program, uint32_t binary_value); 
 void free_program(program_t *program);
+
+void free_instr_str(instr_str_t *instr_str);
 
 /*************************************************************************/
 

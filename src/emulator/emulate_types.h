@@ -11,6 +11,7 @@
 
 #define ADDRESS_COUNT (65536)
 #define REGISTER_COUNT (13)
+#define PC_REG_NUM (15)
 
 typedef uint8_t byte_t;
 typedef uint32_t word_t;
