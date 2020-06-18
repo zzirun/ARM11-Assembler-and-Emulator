@@ -1,4 +1,14 @@
 #include "merchant.h"
+
+#define FINALIZE_ORDER(input) \
+(!strcmp(input, "end") || !strcmp(input, "END"))
+
+#define EDIT_ORDER(input) \
+(!strcmp(first_input, "e") || !strcmp(first_input, "E"))
+
+#define INVALID_ITEM_ID(item_id, list) \
+(item_id > list->tail->id || item_id < list->head->next->id)
+
 /**
  * Adds specified quantity of items referenced by id from menu to list
  * in ascending order of id,

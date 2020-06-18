@@ -1,5 +1,12 @@
 #include "merchant.h"
 
+#define MAX_ID_LENGTH (20)
+#define PERMISSION_BITS (0777)
+#define MAX_PASSWORD_LENGTH (50)
+#define MAX_FOLDER_PATH_LENGTH (30) //strlen("Merchants/") + strlen(user_id)
+#define MAX_MENU_PATH_LENGTH (35) //strlen(folder_path) + strlen("menu.txt")
+
+
 /* Appends a random ASCII character between 33 ('!') and 122 ('z'),
 this process is known as "peppering", it is done to improve security */
 char* pepper(char* str) {
@@ -131,17 +138,6 @@ char* login(FILE *f) {
 	return result;
 }
 
-/*
-void login_d(FILE *f){
-    char pw1[MAX_PASSWORD_LENGTH] = {0};
-    fscanf(f,"%s", pw1);
-    printf("%s \n", pw1);
-}
-*/
-
-// TO MODIFY - to fit with text file input
-// For interactive mode ensure f = stdin
-// For testing mode f = test file
 merchant_t *login_and_init(char *input, char *output) {
   merchant_t *merchant = calloc(1, sizeof(merchant_t));
   if (!merchant) {

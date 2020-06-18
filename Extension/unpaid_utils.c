@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#define MAX_CUSTOMER_NAME_LENGTH (10)
+
 unpaid_t *create_unpaid(void) {
   unpaid_t *unpaid = calloc(1, sizeof(unpaid_t));
   order_list_t *order_list = ORDER_LIST_NEW();

@@ -54,7 +54,7 @@ void test_check_id(FILE* test_log) {
 	FILE* user_data = fopen("merchantID.txt", "r");
 	FILE* registered = fopen(registered_user_txt, "r");
 	FILE* not_registered = fopen(non_registered_user_txt, "r");
-	char user_id[MAX_USER_ID_LENGTH] = {0};
+	char user_id[MAX_ID_LENGTH] = {0};
 	long password = 0;
 	if (!check_id(user_data, user_id, &password, registered)) {
 		outcome = 0;
@@ -72,7 +72,7 @@ void test_check_password(FILE* test_log) {
 	int outcome = 1;
 	FILE* user_data = fopen("merchantID.txt", "r");
 	FILE* registered = fopen(registered_user_txt, "r");
-	char user_id[MAX_USER_ID_LENGTH] = {0};
+	char user_id[MAX_ID_LENGTH] = {0};
 	long password = 0;
 	if (!check_id(user_data, user_id, &password, registered)) {
 		outcome = 0;

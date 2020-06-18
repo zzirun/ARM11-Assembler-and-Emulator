@@ -5,25 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-//#include <dirent.h>
 #include <time.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <assert.h>
 
-#define PERMISSION_BITS (0777)
-#define NUM_OF_PAYMENT_TYPES (3)
-#define MAX_CUSTOMER_NAME_LENGTH (10)
-#define MAX_ID_LENGTH (20)
-#define MAX_EMAIL_LENGTH (30) //Max length of email for the sender and receiver of a receipt
-#define MAX_FOLDER_PATH_LENGTH (30) //strlen("Merchants/") + strlen(user_id)
-#define MAX_MENU_PATH_LENGTH (35) //strlen(folder_path) + strlen("menu.txt")
-#define MAX_USER_ID_LENGTH (50)
-#define MAX_SUBJECT_LENGTH (50)
-#define MAX_PASSWORD_LENGTH (50)
-#define MAX_RECEIPT_PATH_LENGTH (75)
-#define MAX_MENU_ITEM_LENGTH (80)
-
+// CHANGE TO DEFINE INSTEAD ?
 extern char *id_data;
 
 extern char *base_login_folder;
@@ -51,6 +38,8 @@ typedef enum payment_t {
   CARD = 2,
   E_WALLET = 3
 } payment_t;
+
+#define NUM_OF_PAYMENT_TYPES (3)
 
 /*Linked list element type - represents menu items or orders */
 typedef struct list_elem_t {

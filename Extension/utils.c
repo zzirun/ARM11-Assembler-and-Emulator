@@ -1,5 +1,9 @@
 #include "utils.h"
 
+#define MAX_MENU_ITEM_LENGTH (80)
+
+//Max length of email for the sender and receiver of a receipt
+
 char *id_data;
 char *base_login_folder;
 char *menu_name;

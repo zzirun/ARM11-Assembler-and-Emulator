@@ -1,5 +1,9 @@
 #include "merchant.h"
 
+#define INVALID_PAYMENT(type) (type < 0 || type > NUM_OF_PAYMENT_TYPES)
+#define MAX_RECEIPT_PATH_LENGTH (75)
+#define MAX_SUBJECT_LENGTH (50)
+
 receipt_t *make_receipt(unpaid_t *unpaid) {
   order_list_t *order_list = unpaid->order_list;
   // Create receipt and assign orders
@@ -83,11 +87,6 @@ void send_receipt(merchant_t *merchant, char* path_to_receipt) {
 	system(args);
   /* Done!! */
   printf("DONE!\n");
-}
-
-void free_receipt(receipt_t *receipt) {
-  FREE_ORDER_LIST(receipt->order_list);
-  free(receipt);
 }
 
 /* Returns the current time as a string, used as unique identifier for receipts */
