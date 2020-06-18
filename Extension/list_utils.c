@@ -1,8 +1,6 @@
 #include "types.h"
 
-// Q: DEALING WITH CALLOC FAIILURES
-
-// Initializes a new list item
+/* Initializes a new list item */
 list_elem_t *list_elem_new(void) {
   return calloc(1, sizeof(list_elem_t));
 }
@@ -17,19 +15,19 @@ list_t *list_new(void) {
 	return (!result || !result->head) ? NULL : result;
 }
 
-// Adds elem to end of list
+/* Adds elem to end of list */
 void add_to_list(list_elem_t *elem, list_t *list) {
   list->tail->next = elem;
 	list->tail = elem;
 }
 
-// Frees item in list
+/* Frees item in list */
 void free_list_elem(list_elem_t *item) {
 	free(item->name);
 	free(item);
 }
 
-// Frees contents of list including list itself
+/* Frees contents of list including list itself */
 void free_list(list_t *list) {
   if (!list){return;}
 	list_elem_t *curr = list->head->next;
