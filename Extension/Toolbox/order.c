@@ -1,4 +1,4 @@
-#include "merchant.h"
+#include "../merchant.h"
 
 #define FINALIZE_ORDER(input) \
 (!strcmp(input, "end") || !strcmp(input, "END"))

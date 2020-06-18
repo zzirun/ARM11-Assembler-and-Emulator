@@ -1,27 +1,27 @@
 CC = gcc
 CFLAGS = -g -Wall -pedantic
 
-merchant: merchant.o utils.o login.o list_utils.o order.o pay_receipt.o unpaid_utils.o
+merchant: merchant.o Toolbox/utils.o Toolbox/login.o Toolbox/list_utils.o Toolbox/order.o Toolbox/pay_receipt.o Toolbox/unpaid_utils.o
 
 merchant.o: merchant.c merchant.h
 
-utils.o: utils.c utils.h types.h
+Toolbox/utils.o: Toolbox/utils.c Toolbox/utils.h Toolbox/types.h
 
-login.o: login.c merchant.h
+Toolbox/login.o: Toolbox/login.c merchant.h
 
-list_utils.o: list_utils.c types.h
+Toolbox/list_utils.o: Toolbox/list_utils.c Toolbox/types.h
 
-order.o: order.c merchant.h
+Toolbox/order.o: Toolbox/order.c merchant.h
 
-pay_receipt.o: pay_receipt.c merchant.h
+Toolbox/pay_receipt.o: Toolbox/pay_receipt.c merchant.h
 
-unpaid_utils.o: unpaid_utils.c utils.h
+Toolbox/unpaid_utils.o: Toolbox/unpaid_utils.c Toolbox/utils.h
 
-runtest: runtest.o merchant.o utils.o login.o list_utils.o
+runtest: Toolbox/runtest.o Toolbox/merchant.o Toolbox/utils.o Toolbox/login.o Toolbox/list_utils.o
 
-runtest.o: runtest.c merchant.h
+Toolbox/runtest.o: Toolbox/runtest.c merchant.h
 
 clean:
-	rm -rf *.o merchant runtest
+	rm -rf Toolbox/*.o merchant.o merchant runtest
 
 .PHONY: clean

@@ -1,4 +1,4 @@
-#include "merchant.h"
+#include "../merchant.h"
 
 /* Checks if payment type selected is valid */
 #define INVALID_PAYMENT(type) (type < 0 || type > NUM_OF_PAYMENT_TYPES)
@@ -14,7 +14,7 @@ char *payment_type_str[3] = {"Cash", "Credit/Debit Card", "e-Wallet"};
 /** Pays an unpaid order, sending the receipt to the customer's email
  *  The customer can choose to pay immediately (1) or later (2)
  *  (1) the parameter unpaid_in will be paid
- *  (2) unpaid_in is NULL 
+ *  (2) unpaid_in is NULL
  *      - order to be paid has to be retrieved from list of unpaid orders
  *  A receipt is made (total calculated from order) and printed.
  *  User will be prompted with a payment method.
@@ -22,7 +22,7 @@ char *payment_type_str[3] = {"Cash", "Credit/Debit Card", "e-Wallet"};
  *  and sent to the customer's email.
  */
 void pay(merchant_t *merchant, unpaid_t *unpaid_in) {
-  // Check unpaid_in for NULL 
+  // Check unpaid_in for NULL
   unpaid_t *unpaid = unpaid_in ? unpaid_in : get_unpaid_order(merchant);
   // Check unpaid exists
   if (!unpaid) {
@@ -75,17 +75,17 @@ void print_receipt(receipt_t *receipt, FILE* dest) {
   fprintf(dest, "\n\t Your receipt : ");
   PRINT_ORDER_LIST(receipt->order_list, dest);
   char *final_output = "Your total amount due is      :";
-	fprintf(dest, "\t %-34s %8.2f\n\n", 
+	fprintf(dest, "\t %-34s %8.2f\n\n",
     final_output, receipt->total_amount);
   if (receipt->payment_type) {
-    fprintf(dest, "\nYou paid by : %s\n", 
+    fprintf(dest, "\nYou paid by : %s\n",
       payment_type_str[receipt->payment_type - 1]);
   }
 }
 
 /* Stores receipt in merchant's folder with name as current time */
 char* store_receipt(merchant_t *merchant, receipt_t *receipt) {
-  // Allocate path to receipt string 
+  // Allocate path to receipt string
   char* path_to_receipt = calloc(MAX_RECEIPT_PATH_LENGTH, sizeof(char));
   if (!path_to_receipt) {
     fprintf(stderr, "Cannot store receipt");
@@ -95,34 +95,34 @@ char* store_receipt(merchant_t *merchant, receipt_t *receipt) {
   snprintf(path_to_receipt, MAX_RECEIPT_PATH_LENGTH, "%s%s",
     merchant->folder_path, curr_time);
 	free(curr_time);
-  // Write receipt data (order list, total, payment method) 
+  // Write receipt data (order list, total, payment method)
 	FILE* dest = fopen(path_to_receipt, "w");
   print_receipt(receipt, dest);
 	fclose(dest);
 	return path_to_receipt;
 }
 
-/** Prompts for customer's email address, 
+/** Prompts for customer's email address,
  *  Calls Python function to send receipt as email to the customer
  */
 void send_receipt(merchant_t *merchant, char* path_to_receipt) {
-  // Get customer email 
+  // Get customer email
   char receiver[MAX_EMAIL_LENGTH] = {0};
   printf("Please enter customer email address to receive receipt > ");
   fscanf(merchant->input, "%s", receiver);
-  // Get name of issuer which is printed in the email description 
+  // Get name of issuer which is printed in the email description
   char issuer[MAX_ID_LENGTH];
   printf("Please input name of issuer > ");
   fscanf(merchant->input, " %s", issuer);
   char subject[MAX_SUBJECT_LENGTH] = {0};
   snprintf(subject, MAX_SUBJECT_LENGTH, "%s%s", RECEIPT_BASE, issuer);
-  // Send receipt 
+  // Send receipt
   printf("Sending your receipt... \n");
 	char args[256] = {0};
-	snprintf(args, sizeof(args), "python3 ./send_email.py %s %s %s %s %s",
+	snprintf(args, sizeof(args), "python3 Toolbox/send_email.py %s %s %s %s %s",
   merchant->email, merchant->password, receiver, subject, path_to_receipt);
 	system(args);
-  // Done!! 
+  // Done!!
   printf("DONE!\n");
 }
 
@@ -132,9 +132,8 @@ char* current_time(void) {
 	time(&rawtime);
   struct tm* timeinfo = localtime (&rawtime);
   char* time_str = calloc(20, sizeof(char));
-	snprintf(time_str, 20, "%02d:%02d:%02d_%02d%02d%02d", timeinfo->tm_hour, 
-    timeinfo->tm_min, timeinfo->tm_sec, timeinfo->tm_mday, 
+	snprintf(time_str, 20, "%02d:%02d:%02d_%02d%02d%02d", timeinfo->tm_hour,
+    timeinfo->tm_min, timeinfo->tm_sec, timeinfo->tm_mday,
     timeinfo->tm_mon + 1, timeinfo->tm_year - 100);
   return time_str;
 }
-

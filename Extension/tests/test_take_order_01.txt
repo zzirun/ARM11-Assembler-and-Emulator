@@ -15,4 +15,3 @@ end
 ivytam2000@gmail.com
 test_take_order_01
 0
-n

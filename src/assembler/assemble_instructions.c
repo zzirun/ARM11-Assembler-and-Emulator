@@ -13,7 +13,6 @@ void assemble_dp(program_t *prog, symbol_table_t *st) {
   /** Translate tokenised form into decoded data processing instruction, 
    *  Encode decoded instruction into binary
    */
-
   decoded_instr_t dec;
   dec.type = DATA_PROC;
   dec.cond = AL;
