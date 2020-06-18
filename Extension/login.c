@@ -4,6 +4,8 @@
 #define MAX_PASSWORD_LENGTH (50)
 #define MAX_FOLDER_PATH_LENGTH (30) //strlen("Merchants/") + strlen(user_id)
 #define MAX_MENU_PATH_LENGTH (35) //strlen(folder_path) + strlen("menu.txt")
+#define ID_DATA_FILE ("merchantID.txt")
+#define BASE_LOGIN_FOLDER ("Merchants/")
 
 /** Peppering a password to improve security : 
  *  Appends a random ASCII character between 33 ('!') and 122 ('z')
@@ -93,7 +95,7 @@ char* register_new(FILE* id_file, char* id) {
 	char pw[MAX_PASSWORD_LENGTH] = {0};
 	scanf("%s", pw);
 	char* path_name = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
-	snprintf(path_name, MAX_FOLDER_PATH_LENGTH, "%s%s/", base_login_folder, id);
+	snprintf(path_name, MAX_FOLDER_PATH_LENGTH, "%s%s/", BASE_LOGIN_FOLDER, id);
 	if (!mkdir(path_name, PERMISSION_BITS)) {
 		printf("Thank you for joining us as a merchant! Please drag and drop your menu.txt into Merchants/%s\n" ,id);
 		printf("Press any key when you have done so to continue > ");
@@ -130,7 +132,7 @@ char* register_new(FILE* id_file, char* id) {
 char* login(FILE *f) {
 	char* result = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
   // Open for reading and possibly writing
-	FILE* fp = fopen(id_data, "r+"); 
+	FILE* fp = fopen(ID_DATA_FILE, "r+"); 
 	char id[MAX_ID_LENGTH] = {0};
 	long password = 0;
 	bool registered = check_id(fp, id, &password, f);
@@ -145,7 +147,7 @@ char* login(FILE *f) {
 			fscanf(f, "%s", pw1);
 		}
 		printf("successfully logged in! \n\n");
-		snprintf(result, MAX_FOLDER_PATH_LENGTH, "%s%s/", base_login_folder, id);
+		snprintf(result, MAX_FOLDER_PATH_LENGTH, "%s%s/", BASE_LOGIN_FOLDER, id);
 	} else {
 		printf("No account with the associated ID was found. Would you like to register? [y/n] > ");
 		char to_register;
@@ -159,6 +161,23 @@ char* login(FILE *f) {
 		}
 	}
 	fclose(fp);
+	return result;
+}
+
+/* Calls Python function to authenticate email on SMTP server */
+bool connect(char* email, char* password) {
+	bool result = true;
+	char command[256] = {0};
+	snprintf(command, sizeof(command), "python3 ./send_email.py %s %s", 
+    email, password);
+	printf("Trying to authenticate...\n");
+	FILE* fp = popen(command, "r");
+	char buffer[256] = {0};
+	fgets(buffer, 256, fp);
+	if (!strcmp(buffer, "Unable to authenticate\n")) {
+		result = false;
+	}
+	pclose(fp);
 	return result;
 }
 
@@ -216,7 +235,7 @@ merchant_t *login_and_init(char *input, char *output) {
   // Make merchant's menu 
 	menu_t* menu = MENU_NEW();
   char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
-	snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", folder_path, menu_name);
+	snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", folder_path, MENU_NAME);
   parse_menu(path_to_menu, menu);
   merchant->menu = menu;
   merchant->unpaid_orders = unpaid_list_new();

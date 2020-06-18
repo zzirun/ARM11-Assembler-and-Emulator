@@ -10,16 +10,6 @@
 #include <sys/types.h>
 #include <assert.h>
 
-extern char *id_data;
-
-extern char *base_login_folder;
-
-extern char *menu_name;
-
-extern char *payment_string[3];
-
-extern char *receipt_base;
-
 #define NUM_ACTION (5)
 #define NUM_OF_PAYMENT_TYPES (3)
 

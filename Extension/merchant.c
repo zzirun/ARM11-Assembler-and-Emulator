@@ -6,7 +6,6 @@
 #define INVALID_ACTION(action) (action < 0 || action >= NUM_ACTION)
 
 int main(int argc, char **argv) {
-  init();
   merchant_t *merchant;
 
   if(argc == 0) {

@@ -1,48 +1,16 @@
 #include "utils.h"
 
+// Max length of a line describing a menu item from the text file
 #define MAX_MENU_ITEM_LENGTH (80)
-//Max length of email for the sender and receiver of a receipt
-
+//Line divider for display purposes when a menu/order is printed
 #define LINE_DIVIDER \
 ("\n******************************************************************\n")
-//Line divider for display purposes when main is printing
-
-char *id_data;
-char *base_login_folder;
-char *menu_name;
-char *pay_str1;
-char *pay_str2;
-char *pay_str3;
-char *payment_string[3];
-char *receipt_base;
-
-// Initialises constants shared across files
-void init(void) {
-
-  id_data = "merchantID.txt";
-
-  base_login_folder = "Merchants/";
-
-  menu_name = "menu.txt";
-
-  pay_str1 = "Cash";
-  pay_str2 = "Credit/Debit Card";
-  pay_str3 = "e-Wallet";
-
-  payment_string[0] = pay_str1;
-  payment_string[1] = pay_str2;
-  payment_string[2] = pay_str3;
-
-  receipt_base = "Receipt_from_";
-
-}
 
 /**
  * Reads a text file specified by path into a menu ADT
  * * assumes each menu item is on a different line
  * Returns true on success, false on failure
  */
-
 bool parse_menu(char* path_to_menu, menu_t* menu) {
   if (!menu) {
     fprintf(stderr, "Cannot parse menu");
@@ -92,7 +60,6 @@ bool parse_menu_item(char *item_str, menu_t *menu) {
 	ADD_MENU_ITEM(menu_item, menu);
   return true;
 }
-
 
 /**
  * Mode 0 : print menu; Mode 1 : print order_list
