@@ -67,7 +67,7 @@ unpaid_list_t *unpaid_list_new(void) {
 }
 
 void free_unpaid_list(unpaid_list_t *unpaid_list) {
-  unpaid_t *curr = unpaid_list->head->next;
+  unpaid_t *curr = unpaid_list->head;
   unpaid_t *next;
   while (curr) {
     next = curr->next;

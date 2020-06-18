@@ -124,6 +124,7 @@ void pay(merchant_t *merchant, unpaid_t *unpaid_in) {
   send_receipt(merchant, path_to_receipt);
   //Remove unpaid order from list, free memory
   remove_unpaid_order(merchant, unpaid);
+  free(receipt);
   free(path_to_receipt);
 }
 
