@@ -1,5 +1,4 @@
-#include "login.h"
-//#include <stdio.h>
+#include "merchant.h"
 
 /* Appends a random ASCII character between 33 ('!') and 122 ('z'),
 this process is known as "peppering", it is done to improve security */
@@ -138,3 +137,59 @@ void login_d(FILE *f){
     printf("%s \n", pw1);
 }
 */
+
+// TO MODIFY - to fit with text file input
+// For interactive mode ensure f = stdin
+// For testing mode f = test file
+merchant_t *login_and_init(char *input, char *output) {
+  merchant_t *merchant = calloc(1, sizeof(merchant_t));
+  if (!merchant) {
+    perror("Cannot make merchant");
+    exit(EXIT_FAILURE);
+  }
+  /* Assign input, output streams */
+  merchant->input = input ? fopen(input, "r") : stdin;
+  merchant->output = output ? fopen(output, "w") : stdout;
+  if (!merchant->input || !merchant->output) {
+    perror("Error opening file");
+    exit(EXIT_FAILURE);
+  }
+  /* Attempt to login, Assign folder path */
+  char* folder_path = login(merchant->input);
+  merchant->folder_path = folder_path;
+  /* Merchant's email login authentication, Assign email and password */
+	//Currently only support gmail accounts that allow access to less secure apps
+  char *email = calloc(MAX_EMAIL_LENGTH, sizeof(char));
+  char *password = calloc(MAX_PASSWORD_LENGTH, sizeof(char));
+  if (merchant->input == stdin) {
+    // Interactive mode
+    fprintf(stdout, "To allow us to send email receipts to customers,\n");
+    fprintf(stdout, "Please enter your email address > ");
+    fscanf(merchant->input, "%s", email);
+    fprintf(stdout, "Please enter your password > ");
+    fscanf(merchant->input, "%s", password);
+    while (!connect(email, password)) {
+      printf("Authentication error!\n\n");
+      fprintf(stdout, "Please enter your email address > ");
+      fscanf(merchant->input, "%s", email);
+      fprintf(stdout, "Please enter your password > ");
+      fscanf(merchant->input, "%s", password);
+      printf("Authentication successful!\n");
+    }
+  } else {
+    // Assume info given in testing mode correct
+		fscanf(merchant->input, "%s", email);
+		fscanf(merchant->input, "%s", password);
+		printf("Authentication successful!\n");
+	}
+  merchant->email = email;
+  merchant->password = password;
+  /* Make merchant's menu */
+	menu_t* menu = MENU_NEW();
+  char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
+	snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", folder_path, menu_name);
+  parse_menu(path_to_menu, menu);
+  merchant->menu = menu;
+  merchant->unpaid_orders = unpaid_list_new();
+  return merchant;
+}

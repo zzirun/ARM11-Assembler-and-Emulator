@@ -34,6 +34,7 @@ extern char *payment_string[3];
 
 extern char *receipt_base;
 
+#define NUM_ACTION (5)
 /* Actions that can be carried out by the system */
 typedef enum action_t {
   QUIT = 0,
