@@ -16,6 +16,7 @@ void print_list(list_t *list, int mode, FILE *dest);
 #define PRINT_MENU(menu, dest) print_list(menu, 0, dest)
 #define PRINT_ORDER_LIST(order_list, dest) print_list(order_list, 1, dest)
 
+/* Frees contents of merchant including merchant itself*/
 void free_merchant(merchant_t *merchant);
 
 /*****************************************************************************/

@@ -1,8 +1,11 @@
 #include "utils.h"
 
 #define MAX_MENU_ITEM_LENGTH (80)
-
 //Max length of email for the sender and receiver of a receipt
+
+#define LINE_DIVIDER \
+("\n******************************************************************\n")
+//Line divider for display purposes when main is printing
 
 char *id_data;
 char *base_login_folder;
@@ -13,6 +16,7 @@ char *pay_str3;
 char *payment_string[3];
 char *receipt_base;
 
+// Initialises constants shared across files
 void init(void) {
 
   id_data = "merchantID.txt";
@@ -32,16 +36,6 @@ void init(void) {
   receipt_base = "Receipt_from_";
 
 }
-
-void free_merchant(merchant_t *merchant) {
-  free(merchant->email);
-  free(merchant->password);
-  free(merchant->folder_path);
-  FREE_MENU(merchant->menu);
-  free_unpaid_list(merchant->unpaid_orders);
-	free(merchant);
-}
-
 
 /**
  * Reads a text file specified by path into a menu ADT
@@ -100,9 +94,6 @@ bool parse_menu_item(char *item_str, menu_t *menu) {
 }
 
 
-#define LINE_DIVIDER \
-("\n******************************************************************\n")
-
 /**
  * Mode 0 : print menu; Mode 1 : print order_list
  * Prints each item's id, name, price, + quantity if order_list
@@ -122,5 +113,14 @@ void print_list(list_t *list, int mode, FILE *dest) {
   fprintf(dest, LINE_DIVIDER);
 }
 
+// Frees contents of merchant including merchant itself
+void free_merchant(merchant_t *merchant) {
+    free(merchant->email);
+    free(merchant->password);
+    free(merchant->folder_path);
+    FREE_MENU(merchant->menu);
+    free_unpaid_list(merchant->unpaid_orders);
+    free(merchant);
+}
 
 
