@@ -1,12 +1,33 @@
-Test cases Information:
+******************************** Welcome to our testsuite! ***************************************
 
-test_take_order_01: tests that taking order works
-test_edit_order_01: tests that ordering and then editing order works by adding an extra order after
-also tests paying later
-test_switch_user_01: tests that switching to a different merchant works
-test_pay_by_cash : test paying by cash
-test_pay_by_card : test paying by card
+In order to test our digital receipt system we have made some text files to simulate user input.
+
+To use our test suite:
+1. Go to command line and make our extension.
+2. Go to the test file you wish to test and replace <enter client's email address>
+with the email address you wish to receive your receipt.
+3. Run ./merchant <filename of test> in your terminal
+4. Check your email address for the receipt and compare the output to the expected text file.
+
+***************************************************************************************************
+
+Test Cases Information:
+
+test_take_order_01: Tests that taking order works
+Expected Text File Location: ...Merchants/bhsz/test_take_order_01_expected.txt
+
+test_edit_order_01: Tests that ordering and then editing order works by adding an extra order.
+Expected Text File Location: ...Merchants/bee/test_edit_order_01_expected.txt
+
+test_pay_by_cash : Tests paying by cash
+Expected Text File Location: ...Merchants/bhsz/test_pay_by_cash_expected.txt
+
+test_pay_by_card : Tests paying by card
+Expected Text File Location: ...Merchants/bee/test_pay_by_card_expected.txt
+
 test_pay_by_ewallet : test paying by e-wallet
-test_cancel_order : Tests cancelling order by taking two orders and cancelling one of them.
-Only one receipt should be made.
-test_register : tests registering a new merchant
+Expected Text File Location: ...Merchants/bhsz/test_pay_by_ewallet_expected.txt
+
+test_cancel_order: Tests cancelling order by taking two orders and cancelling one of them.
+* Only one receipt should be made.
+Expected Text File Location: ...Merchants/bee/test_cancel_order_expected.txt
