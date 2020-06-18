@@ -3,7 +3,7 @@
 /* Checks if payment type selected is valid */
 #define INVALID_PAYMENT(type) (type < 0 || type > NUM_OF_PAYMENT_TYPES)
 /* For purposes of printing payment type */
-char **payment_type_str[3] = {"Cash", "Credit/Debit Card", "e-Wallet"};
+char *payment_type_str[3] = {"Cash", "Credit/Debit Card", "e-Wallet"};
 /* Max length of path to where receipt is stored */
 #define MAX_RECEIPT_PATH_LENGTH (75)
 /* Max length of subject in email sent */
@@ -43,7 +43,12 @@ void pay(merchant_t *merchant, unpaid_t *unpaid_in) {
   // Send receipt to customer
   send_receipt(merchant, path_to_receipt);
   // Remove unpaid order from list, free memory
-  remove_unpaid_order(merchant, unpaid);
+  if (!unpaid_in) {
+    remove_unpaid_order(merchant, unpaid);
+  } else {
+    FREE_ORDER_LIST(unpaid->order_list);
+    free(unpaid);
+  }
   free(receipt);
   free(path_to_receipt);
 }

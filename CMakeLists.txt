@@ -16,8 +16,6 @@ add_executable(arm11_17
         Extension/merchant.c
         Extension/merchant.h
         Extension/runtest.c
-        Extension/test_suite.c
-        Extension/testsuite.c
         Extension/types.h
         Extension/utils.c
         Extension/utils.h
