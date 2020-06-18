@@ -1,0 +1,9 @@
+
+	 Your receipt : 
+	 4   hojicha_parfait                   15.99     1
+	 6   vanilla_soft_serve                 5.90     2
+	 9   warabimochi                       14.00     1
+	 Your total amount due is      :       41.79
+
+
+You paid by : Cash
