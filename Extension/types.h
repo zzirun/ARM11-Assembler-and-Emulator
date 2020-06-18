@@ -105,4 +105,4 @@ void add_to_list(list_elem_t *elem, list_t *list);
 #define ADD_MENU_ITEM(menu_item, menu) add_to_list(menu_item, menu)
 #define ADD_ORDER(order, order_list) add_to_list(order, order_list)
 
-#endif EXTENSION_TYPES_H
+#endif // EXTENSION_TYPES_H

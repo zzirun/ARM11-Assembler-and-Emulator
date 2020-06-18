@@ -5,40 +5,6 @@
 //Line divider for display purposes when a menu/order is printed
 #define LINE_DIVIDER \
 ("\n******************************************************************\n")
-<<<<<<< HEAD
-=======
-//Line divider for display purposes when main is printing
-
-char *id_data;
-char *base_login_folder;
-char *menu_name;
-char *pay_str1;
-char *pay_str2;
-char *pay_str3;
-char *payment_string[3];
-char *receipt_base;
-
-/* Initialises constants shared across files */
-void init(void) {
-
-  id_data = "merchantID.txt";
-
-  base_login_folder = "Merchants/";
-
-  menu_name = "menu.txt";
-
-  pay_str1 = "Cash";
-  pay_str2 = "Credit/Debit Card";
-  pay_str3 = "e-Wallet";
-
-  payment_string[0] = pay_str1;
-  payment_string[1] = pay_str2;
-  payment_string[2] = pay_str3;
-
-  receipt_base = "Receipt_from_";
-
-}
->>>>>>> 35878c38e3735fd41575b2a4e407688bd0d58e5c
 
 /**
  * Reads a text file specified by path into a menu ADT
