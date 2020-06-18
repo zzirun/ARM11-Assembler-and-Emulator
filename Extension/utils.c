@@ -16,7 +16,7 @@ char *pay_str3;
 char *payment_string[3];
 char *receipt_base;
 
-// Initialises constants shared across files
+/* Initialises constants shared across files */
 void init(void) {
 
   id_data = "merchantID.txt";
@@ -113,7 +113,7 @@ void print_list(list_t *list, int mode, FILE *dest) {
   fprintf(dest, LINE_DIVIDER);
 }
 
-// Frees contents of merchant including merchant itself
+/* Frees contents of merchant including merchant itself */
 void free_merchant(merchant_t *merchant) {
     free(merchant->email);
     free(merchant->password);
