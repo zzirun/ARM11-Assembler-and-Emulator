@@ -51,21 +51,7 @@ int main(int argc, char **argv) {
 			fscanf(fp, "%d", &action);
 		}
     if (action == QUIT) {
-			char response;
-			printf("Do you want to login to another user? [y/n] > ");
-			fscanf(fp, " %c", &response);
-			while (response != 'y' && response != 'Y' && response != 'n' && response != 'N') {
-				printf("Invalid input! Do you want to login to another user? [y/n] > ");
-				fscanf(fp, " %c", &response);
-			}
-			if (response == 'y' || response == 'Y') {
-				printf("\n");
-				free_merchant(merchant);
-				merchant = login_and_init(fp);
-				continue;
-			} else {
-				break;
-			}
+			break;
     }
     switch(action) {
       case TAKE_ORDER:

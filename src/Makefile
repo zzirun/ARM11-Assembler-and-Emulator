@@ -1,13 +1,9 @@
 CC = gcc
 CFLAGS = -g -Wall -pedantic
-FILES = emulate.o utils.o decode.o execute.o
-
-#gcc -g -Wall -pedantic emulate.c utils.c decode.c execute.c -o emulate -lm
 
 all: emulate assemble
 
-emulate: $(FILES)
-	$(CC) $(CFLAGS) $(FILES) -o emulate
+emulate: emulate.o emulator/emulate_instruction_utils.o emulator/emulate_utils.o emulator/decode.o emulator/execute.o
 
 emulate.o: emulate.c emulator/emulate.h
 
