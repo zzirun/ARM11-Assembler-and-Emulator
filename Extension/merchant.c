@@ -8,7 +8,7 @@
 int main(int argc, char **argv) {
   init();
   merchant_t *merchant;
-  
+
   if(argc == 0) {
     // Interactive Mode
     merchant = login_and_init(NULL, NULL);
@@ -21,16 +21,16 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Wrong number of arguments passed");
     exit(EXIT_FAILURE);
   }
-  
+
 
   while (1) {
     int action;
     printf(CHOOSE_ACTION_PROMPT);
-		fscanf(fp, "%d", &action);
+		fscanf(merchant->input, "%d", &action);
 		while (INVALID_ACTION(action)) {
 			printf(CHOOSE_ACTION_PROMPT);
 			getchar(); //Absorbs new line
-			fscanf(fp, "%d", &action);
+			fscanf(merchant->input, "%d", &action);
 		}
     if (action == QUIT) {
 			break;

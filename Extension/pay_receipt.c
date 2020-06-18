@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "merchant.h"
 
 receipt_t *make_receipt(unpaid_t *unpaid) {
   order_list_t *order_list = unpaid->order_list;

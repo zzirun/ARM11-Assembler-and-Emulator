@@ -1,16 +1,18 @@
 #include "assemble.h"
 
 /** Parses assembly file to :
- *  * build label to address map 
+ *  * build label to address map
  *  * load non-label instruction strings
  */
 void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
   char buffer[MAX_LINE_LENGTH] = {0};
+
   FILE *assembly_file = fopen(file_path, "r");
   if (!assembly_file) {
     perror("Failed to open source code");
     exit(EXIT_FAILURE);
   }
+
   uint16_t address = 0;
   while (fgets(buffer, MAX_LINE_LENGTH, assembly_file)) {
     char *trim_buffer = trim(buffer);
@@ -31,6 +33,7 @@ void first_pass(char *file_path, symbol_table_t *st, program_t *prog) {
       }
     }
   }
+
   fclose(assembly_file);
   prog->last_instr = prog->tail;
 }
@@ -42,6 +45,7 @@ void binary_writer(program_t *program, char *file_path) {
     perror("Failed to open binary file");
     exit(EXIT_FAILURE);
   }
+
   instr_t *curr = program->head->next;
   uint8_t inst_arr[NUMBER_OF_BYTES_PER_INST];
   for (; curr; curr = curr->next) {
@@ -52,5 +56,6 @@ void binary_writer(program_t *program, char *file_path) {
     }
     fwrite(inst_arr, sizeof(uint8_t), NUMBER_OF_BYTES_PER_INST, binary_file);
   }
+	
   fclose(binary_file);
 }

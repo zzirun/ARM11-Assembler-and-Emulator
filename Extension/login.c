@@ -13,7 +13,8 @@ char* pepper(char* str) {
 
 //djb2 hash with pepper
 long hash(char* to_hash) {
-	long hash = 1906; //Project Deadline :D
+	/* Magic constant which produces better avalanching (changing the input slightly causes massive change in output) */
+	long hash = 5381;
   while (*to_hash) {
 		hash = ((hash << 5) + hash) + *to_hash;
 		to_hash++;

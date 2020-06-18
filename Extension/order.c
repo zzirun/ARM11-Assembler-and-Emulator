@@ -60,7 +60,7 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
 void take_order(merchant_t *merchant, unpaid_t *unpaid_in) {
   unpaid_t *unpaid = unpaid_in ? unpaid_in : create_unpaid();
   order_list_t *order_list = unpaid->order_list;
-	
+
 	while (1) {
 	  PRINT_MENU(merchant->menu, merchant->output);
     char first_input[4] = {0};
@@ -83,7 +83,7 @@ void take_order(merchant_t *merchant, unpaid_t *unpaid_in) {
 				} while (pay_now != '0' && pay_now != '1');
         if (pay_now == '1') {
           // pay now
-          pay(merchant, order_list);
+          pay(merchant, unpaid);
         } else {
           if (!unpaid->customer_name) {
             // add new order to list of unpaid
