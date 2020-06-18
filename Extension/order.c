@@ -70,7 +70,8 @@ bool add_order(int id, int quantity, menu_t *menu, order_list_t *order_list) {
  * Takes new unpaid order
  * Checks if order is empty
  * Gives options to pay now or later
- * Makes sure all unpaid orders are updated and added to unpaid list*/
+ * Makes sure all unpaid orders are updated and added to unpaid list
+ */
 void take_order(merchant_t *merchant, unpaid_t *unpaid_in) {
   unpaid_t *unpaid = unpaid_in ? unpaid_in : create_unpaid();
   order_list_t *order_list = unpaid->order_list;
@@ -144,7 +145,7 @@ void edit_order(merchant_t *merchant) {
 
 /* Cancels unpaid order */
 void cancel_order(merchant_t* merchant) {
-    // Get order to cancel
+  // Get order to cancel
 	unpaid_t* unpaid = get_unpaid_order(merchant);
 	// Checks if order exists and removes order
 	if (unpaid) {

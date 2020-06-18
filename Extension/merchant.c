@@ -6,6 +6,7 @@
 #define INVALID_ACTION(action) (action < 0 || action >= NUM_ACTION)
 
 int main(int argc, char **argv) {
+  // Initialise merchant
   merchant_t *merchant;
 
   if(argc == 0) {
@@ -21,7 +22,7 @@ int main(int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
 
-
+  // Choose an action
   while (1) {
     int action;
     printf(CHOOSE_ACTION_PROMPT);

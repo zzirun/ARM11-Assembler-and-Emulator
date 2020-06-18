@@ -6,7 +6,7 @@ merchant_t *login_and_init(char *input, char *output);
 void take_order(merchant_t *merchant, unpaid_t *unpaid);
 /* Edits a previous order */
 void edit_order(merchant_t *merchant);
-/* Cancels order by removing from unpaid order */
+/* Cancels order by removing from unpaid order list */
 void cancel_order(merchant_t* merchant);
-/* If NULL order, order is selected from list of unpaid orders */
+/* If unpaid is NULL , order is selected from list of unpaid orders */
 void pay(merchant_t *merchant, unpaid_t *unpaid);
