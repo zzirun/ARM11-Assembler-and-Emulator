@@ -1,21 +1,7 @@
-bhsz
-bhsz
-firstyear.grp17@gmail.com
-BLACKpink2
-1
-1
-2
-2
-3
-8
-1
-end
-0
-Ivy
-4
-0
-1
-ivytam2000@gmail.com
-MAMAK
-0
-n
+[For testing]
+
+user ID : bhsz
+password : bhsz
+
+email : firstyear.grp17@gmail.com
+password : BLACKpink2

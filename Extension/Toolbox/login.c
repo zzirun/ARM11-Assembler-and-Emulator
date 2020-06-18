@@ -1,4 +1,4 @@
-#include "merchant.h"
+#include "../merchant.h"
 
 #define PERMISSION_BITS (0777)
 #define MAX_PASSWORD_LENGTH (50)
@@ -7,24 +7,24 @@
 #define ID_DATA_FILE ("merchantID.txt")
 #define BASE_LOGIN_FOLDER ("Merchants/")
 
-/** Peppering a password to improve security : 
+/** Peppering a password to improve security :
  *  Appends a random ASCII character between 33 ('!') and 122 ('z')
  */
 char* pepper(char* password) {
   // Seed with time
-	srand(time(NULL)); 
+	srand(time(NULL));
   // Size of original string including the sentinel character
-	int size = strlen(password) + 1; 
+	int size = strlen(password) + 1;
   // Make room for pepper
-	char* password_copy = calloc(size + 1, sizeof(char)); 
+	char* password_copy = calloc(size + 1, sizeof(char));
 	strcpy(password_copy, password);
   // Set pepper
-	password_copy[size - 1] = rand() % 89 + 33; 
+	password_copy[size - 1] = rand() % 89 + 33;
 	return password_copy;
 }
 
 /** djb2 Hashing of peppered password :
- *  Uses a magic constant which produces better avalanching 
+ *  Uses a magic constant which produces better avalanching
  *  - changing the input slightly causes massive change in output
  */
 long hash(char* to_hash) {
@@ -56,7 +56,7 @@ bool check_password(char* pw, long hash_pw) {
 /** Checks if an ID is registered
  *  against id_file containing all registered IDs
  *  If registered, the password hash stored in the same location
- *  will be retrieved into the pw_hash and return true. 
+ *  will be retrieved into the pw_hash and return true.
  *  If ID is not found, return false.
  */
 bool check_id(FILE *id_file, char *id, long *pw_hash, FILE *input_src) {
@@ -67,19 +67,19 @@ bool check_id(FILE *id_file, char *id, long *pw_hash, FILE *input_src) {
 	char str[MAX_ID_LENGTH] = {0};
 	bool registered = false;
   // Split at space
-	const char delim[2] = " "; 
+	const char delim[2] = " ";
 	while (fgets(str, MAX_ID_LENGTH + MAX_PASSWORD_LENGTH, id_file)) {
 		//Remove new line
-    str[strlen(str) - 1] = 0; 
+    str[strlen(str) - 1] = 0;
 		char* token = strtok(str, " \n");
 		// Check for empty string
-    if (!token) { 
+    if (!token) {
 			break;
 		}
 		if (!strcmp(token, id)) {
 			registered = true;
 			token = strtok(NULL, delim);
-			*pw_hash = atol(token); 
+			*pw_hash = atol(token);
 			break;
 		}
 	}
@@ -100,7 +100,7 @@ char* register_new(FILE* id_file, char* id) {
 		printf("Thank you for joining us as a merchant! Please drag and drop your menu.txt into Merchants/%s\n" ,id);
 		printf("Press any key when you have done so to continue > ");
 		// To skip the \n from previous input
-    getchar(); 
+    getchar();
 		getchar();
 		char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
 		snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", path_name, "menu.txt");
@@ -109,10 +109,10 @@ char* register_new(FILE* id_file, char* id) {
 			printf("Press any key when you have done so to continue > ");
 			getchar();
 		}
-		char* pw_pepper = pepper(pw); 
+		char* pw_pepper = pepper(pw);
 		fprintf(id_file, "%s", id);
     //Add space between user ID and password
-		fprintf(id_file, " "); 
+		fprintf(id_file, " ");
 		fprintf(id_file, "%ld\n", hash(pw_pepper));
 		free(pw_pepper);
 		return path_name;
@@ -123,16 +123,16 @@ char* register_new(FILE* id_file, char* id) {
 }
 
 /** User is prompted for an ID checked against a file of registered ids.
- *  If user has registered, he/she will be prompted for a password. 
+ *  If user has registered, he/she will be prompted for a password.
  *  The password is checked to allow for login.
  *  If user has not registered, he/she will be prompted to register.
- *  A successful login/register returns the path 
+ *  A successful login/register returns the path
  *  to the folder corresponding to the id.
  */
 char* login(FILE *f) {
 	char* result = calloc(MAX_FOLDER_PATH_LENGTH, sizeof(char));
   // Open for reading and possibly writing
-	FILE* fp = fopen(ID_DATA_FILE, "r+"); 
+	FILE* fp = fopen(ID_DATA_FILE, "r+");
 	char id[MAX_ID_LENGTH] = {0};
 	long password = 0;
 	bool registered = check_id(fp, id, &password, f);
@@ -168,7 +168,7 @@ char* login(FILE *f) {
 bool connect(char* email, char* password) {
 	bool result = true;
 	char command[256] = {0};
-	snprintf(command, sizeof(command), "python3 ./send_email.py %s %s", 
+	snprintf(command, sizeof(command), "python3 Toolbox/send_email.py %s %s",
     email, password);
 	printf("Trying to authenticate...\n");
 	FILE* fp = popen(command, "r");
@@ -187,25 +187,25 @@ bool connect(char* email, char* password) {
  *  * merchant's menu parsed as a linked list
  *  * initially empty list of unpaid orders
  *  * input/output files to read and write statements from
- */ 
+ */
 merchant_t *login_and_init(char *input, char *output) {
-  // Create merchant 
+  // Create merchant
   merchant_t *merchant = calloc(1, sizeof(merchant_t));
   if (!merchant) {
     perror("Cannot make merchant");
     exit(EXIT_FAILURE);
   }
-  // Assign input, output streams 
+  // Assign input, output streams
   merchant->input = input ? fopen(input, "r") : stdin;
   merchant->output = output ? fopen(output, "w") : stdout;
   if (!merchant->input || !merchant->output) {
     perror("Error opening file");
     exit(EXIT_FAILURE);
   }
-  // Attempt to login, Assign folder path 
+  // Attempt to login, Assign folder path
   char* folder_path = login(merchant->input);
   merchant->folder_path = folder_path;
-  // Merchant's email login authentication, Assign email and password 
+  // Merchant's email login authentication, Assign email and password
 	// Currently only support gmail accounts allowing access to less secure apps
   char *email = calloc(MAX_EMAIL_LENGTH, sizeof(char));
   char *password = calloc(MAX_PASSWORD_LENGTH, sizeof(char));
@@ -232,7 +232,7 @@ merchant_t *login_and_init(char *input, char *output) {
 	}
   merchant->email = email;
   merchant->password = password;
-  // Make merchant's menu 
+  // Make merchant's menu
 	menu_t* menu = MENU_NEW();
   char path_to_menu[MAX_MENU_PATH_LENGTH] = {0};
 	snprintf(path_to_menu, MAX_MENU_PATH_LENGTH, "%s%s", folder_path, MENU_NAME);

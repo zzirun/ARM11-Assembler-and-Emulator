@@ -1,4 +1,4 @@
-#include "merchant.h"
+#include "../merchant.h"
 
 #define MAX_RESULT_LENGTH (100)
 
