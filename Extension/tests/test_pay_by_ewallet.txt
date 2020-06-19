@@ -12,6 +12,6 @@ BLACKpink2
 end
 1
 3
-<Your email here>
+<Enter Client's Email Address>
 test_pay_by_ewallet
 0

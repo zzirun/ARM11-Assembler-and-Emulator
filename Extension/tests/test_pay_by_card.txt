@@ -10,6 +10,6 @@ BLACKpink2
 end
 1
 2
-tehoram597@rm2rf.com
+<Enter Client's Email Address>
 test_pay_by_card
 0

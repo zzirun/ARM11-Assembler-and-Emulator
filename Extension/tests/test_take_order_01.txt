@@ -12,6 +12,6 @@ BLACKpink2
 end
 1
 1
-<Your email here>
+<Enter Client's Email Address>
 test_take_order_01
 0

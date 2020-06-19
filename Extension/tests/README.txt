@@ -4,7 +4,7 @@ In order to test our digital receipt system we have made some text files to simu
 
 To use our test suite:
 1. Go to command line and make our extension.
-2. Go to the test file you wish to test and replace <enter client's email address>
+2. Go to the test file you wish to test and replace <Enter Client's Email Address>
 with the email address you wish to receive your receipt.
 3. Run ./merchant <filename of test> in your terminal
 4. Check your email address for the receipt and compare the output to the expected text file.
@@ -28,6 +28,6 @@ Expected Text File Location: ...Merchants/bee/test_pay_by_card_expected.txt
 test_pay_by_ewallet : test paying by e-wallet
 Expected Text File Location: ...Merchants/bhsz/test_pay_by_ewallet_expected.txt
 
-test_cancel_order: Tests cancelling order by taking two orders and cancelling one of them.
-* Only one receipt should be made.
+test_cancel_order: Tests cancelling order by taking two orders and cancelling both of them.
+*No receipts should be made
 Expected Text File Location: ...Merchants/bee/test_cancel_order_expected.txt

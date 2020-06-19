@@ -17,6 +17,6 @@ Jennie
 end
 1
 1
-<Your email here>
+<Enter Client's Email Address>
 test_edit_order_01
 0
