@@ -15,7 +15,7 @@ program_t *create_program(void) {
 void add_instr(program_t *program, const char *instr_line, uint16_t address) {
   instr_t *instr = calloc(1, sizeof(instr_t));
   instr_str_t *instr_str = calloc(1, sizeof(instr_str_t));
-  char *i = calloc(1, sizeof(char) * (strlen(instr_line) + 1));
+  char *i = calloc(strlen(instr_line) + 1, sizeof(char));
   if (!instr || !instr_str || !i) {
     perror("Failed Memory Allocation for Instruction");
     exit(EXIT_FAILURE);
