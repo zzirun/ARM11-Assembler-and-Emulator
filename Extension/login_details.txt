@@ -3,5 +3,8 @@
 user ID : bhsz
 password : bhsz
 
+user ID: bee
+password : bee
+
 email : firstyear.grp17@gmail.com
 password : BLACKpink2

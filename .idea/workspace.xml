@@ -79,7 +79,7 @@
       <workItem from="1591174310709" duration="5641000" />
       <workItem from="1591338483053" duration="1397000" />
       <workItem from="1591784752453" duration="33586000" />
-      <workItem from="1591991093435" duration="91495000" />
+      <workItem from="1591991093435" duration="93567000" />
     </task>
     <servers />
   </component>
@@ -108,8 +108,8 @@
     </state>
     <state x="2296" y="357" key="#com.intellij.execution.impl.EditConfigurationsDialog/1680.23.1920.1057/0.23.1680.960@1680.23.1920.1057" timestamp="1590399819562" />
     <state x="2509" y="117" key="#com.intellij.execution.impl.EditConfigurationsDialog/1680.23.1920.992/0.23.1680.1027@1680.23.1920.992" timestamp="1590769230511" />
-    <state x="2852" y="326" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592486928189">
-      <screen x="1680" y="23" width="1920" height="994" />
+    <state x="2852" y="345" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592546762892">
+      <screen x="1680" y="23" width="1920" height="1057" />
     </state>
     <state x="1026" y="319" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1590816420487" />
     <state x="2853" y="344" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.1057/0.23.1680.961@1680.23.1920.1057" timestamp="1592223471829" />
@@ -120,6 +120,7 @@
     <state x="2853" y="344" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.1057/0.23.1680.972@1680.23.1920.1057" timestamp="1592392011073" />
     <state x="2853" y="344" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.1057/0.23.1680.973@1680.23.1920.1057" timestamp="1592319104155" />
     <state x="2853" y="344" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.1057/0.23.1680.974@1680.23.1920.1057" timestamp="1592315285493" />
+    <state x="2852" y="345" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.1057/0.23.1680.985@1680.23.1920.1057" timestamp="1592546762892" />
     <state x="2852" y="322" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.980/0.23.1680.1027@1680.23.1920.980" timestamp="1591864854634" />
     <state x="2853" y="321" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.984/0.23.1680.1027@1680.23.1920.984" timestamp="1592071147043" />
     <state x="2853" y="322" key="#com.intellij.fileTypes.FileTypeChooser/1680.23.1920.986/0.23.1680.1027@1680.23.1920.986" timestamp="1592068987420" />
