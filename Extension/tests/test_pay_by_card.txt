@@ -10,6 +10,6 @@ BLACKpink2
 end
 1
 2
-<Enter Client's Email Address>
+mibok29326@opwebw.com
 test_pay_by_card
 0
