@@ -20,10 +20,4 @@ end
 Rose
 3
 0
-4
 0
-2
-ivytam2000@gmail.com
-test_cancel_order
-0
-

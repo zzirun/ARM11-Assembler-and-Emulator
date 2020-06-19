@@ -17,11 +17,11 @@ Toolbox/pay_receipt.o: Toolbox/pay_receipt.c merchant.h
 
 Toolbox/unpaid_utils.o: Toolbox/unpaid_utils.c Toolbox/utils.h
 
-runtest: Toolbox/runtest.o Toolbox/merchant.o Toolbox/utils.o Toolbox/login.o Toolbox/list_utils.o
+runtest: runtest.o Toolbox/utils.o Toolbox/login.o Toolbox/list_utils.o Toolbox/order.o Toolbox/pay_receipt.o Toolbox/unpaid_utils.o
 
-Toolbox/runtest.o: Toolbox/runtest.c merchant.h
+runtest.o: runtest.c merchant.h
 
 clean:
-	rm -rf Toolbox/*.o merchant.o merchant runtest
+	rm -rf Toolbox/*.o merchant.o runtest.o merchant runtest
 
 .PHONY: clean

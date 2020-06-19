@@ -1,5 +1,5 @@
-<login user ID>
-<password>
+<login user ID> <bhsz for test>
+<password> <bhsz for test>
 firstyear.grp17@gmail.com
 BLACKpink2
 <Choose action>
@@ -10,4 +10,4 @@ end
 <customer email-address>
 <Input name of issuer>
 <Next action>
-<If action above is 0 (Quit) do you want to login to another user y/n>
+<If action above is 0 (Quit)>

@@ -86,8 +86,9 @@ void free_merchant(merchant_t *merchant) {
     free(merchant->password);
     free(merchant->folder_path);
     FREE_MENU(merchant->menu);
+		if (merchant->input != stdin) {
+			fclose(merchant->input);
+		}
     free_unpaid_list(merchant->unpaid_orders);
     free(merchant);
 }
-
-

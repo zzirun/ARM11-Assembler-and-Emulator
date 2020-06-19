@@ -1,18 +1,18 @@
-#include "../merchant.h"
+#include "merchant.h"
 
 #define MAX_RESULT_LENGTH (100)
 
 char* password = "THisISaTesTPasSWorD!";
 
-char* registered_user_txt = "test_BRANDON/example_id_1.txt";
+char* registered_user_txt = "tests/example_id_1.txt";
 
-char* non_registered_user_txt = "test_BRANDON/example_id_2.txt";
+char* non_registered_user_txt = "tests/example_id_2.txt";
 
 char* password_1 = "bhsz"; //Correct password for user in registered_user_txt
 
 char* password_2 = "chsz";
 
-char* path_to_menu = "test_BRANDON/test_menu.txt";
+char* path_to_menu = "tests/test_menu.txt";
 
 char* test_result[2] = {"Failed", "Passed"};
 
@@ -54,7 +54,7 @@ void test_check_id(FILE* test_log) {
 	FILE* user_data = fopen("merchantID.txt", "r");
 	FILE* registered = fopen(registered_user_txt, "r");
 	FILE* not_registered = fopen(non_registered_user_txt, "r");
-	char user_id[MAX_ID_LENGTH] = {0};
+	char* user_id = calloc(MAX_ID_LENGTH, sizeof(char));
 	long password = 0;
 	if (!check_id(user_data, user_id, &password, registered)) {
 		outcome = 0;
@@ -65,6 +65,7 @@ void test_check_id(FILE* test_log) {
 	fclose(user_data);
 	fclose(registered);
 	fclose(not_registered);
+	free(user_id);
 	fprintf(test_log, "CHECK ID TEST : %s\n", test_result[outcome]);
 }
 
@@ -87,7 +88,7 @@ void test_check_password(FILE* test_log) {
 
 void test_login(FILE* test_log) {
 	int outcome = 1;
-	FILE* test_login = fopen("test_BRANDON/test_login.txt", "r");
+	FILE* test_login = fopen("tests/test_login.txt", "r");
 	char* folder_path = login(test_login);
 	if (strcmp(folder_path, "Merchants/bhsz/")) {
 		outcome = 0;
@@ -140,8 +141,7 @@ void test_add_order(FILE* test_log) {
 }
 
 int main(void) {
-	init();
-	FILE* test_log = fopen("test_BRANDON/test.log", "w");
+	FILE* test_log = fopen("tests/test.log", "w");
 	test_pepper(test_log);
 	test_hash(test_log);
 	test_check_id(test_log);

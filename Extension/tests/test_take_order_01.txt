@@ -12,6 +12,6 @@ BLACKpink2
 end
 1
 1
-ivytam2000@gmail.com
+<Your email here>
 test_take_order_01
 0
