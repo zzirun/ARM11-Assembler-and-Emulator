@@ -14,7 +14,7 @@ symbol_table_t *create_symbol_table(void) {
 
 void add_mapping(symbol_table_t *table, const char *label, uint16_t address) {
   symbol_table_elem_t *elem = calloc(1, sizeof(symbol_table_elem_t));
-  char *l = calloc(1, sizeof(char) * (strlen(label) + 1));
+  char *l = calloc(sizeof(char), strlen(label) + 1);
   if (!elem || !l) {
     perror("Failed Memory Allocation for Symbol Table Element");
     exit(EXIT_FAILURE);
